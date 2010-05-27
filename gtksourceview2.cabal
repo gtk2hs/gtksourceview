@@ -21,6 +21,11 @@ Extra-Source-Files: gtksourceview2.h
                     Gtk2HsSetup.hs
                     marshal.list
 
+Data-Dir:		demo
+Data-Files:		haskell.lang
+                SourceViewTest.hs
+                Makefile
+				
 x-Types-File:       Graphics/UI/Gtk/SourceView/Types.chs
 x-Types-Tag:        gtksourceview2
 x-Types-ModName:    Graphics.UI.Gtk.SourceView.Types
