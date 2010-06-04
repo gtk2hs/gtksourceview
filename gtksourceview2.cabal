@@ -20,6 +20,7 @@ Tested-With:    GHC == 6.12.1
 Extra-Source-Files: gtksourceview2.h
                     Gtk2HsSetup.hs
                     marshal.list
+					hierarchy.list
 
 Data-Dir:		demo
 Data-Files:		haskell.lang
@@ -31,6 +32,7 @@ x-Types-Tag:        gtksourceview2
 x-Types-ModName:    Graphics.UI.Gtk.SourceView.Types
 x-Types-Forward:    *Graphics.UI.GtkInternals
 x-Types-Destructor: objectUnrefFromMainloop
+x-Types-Hierarchy:  hierarchy.list
 
 Source-Repository head
   type:         darcs
