@@ -131,16 +131,18 @@ sourceBufferGetHighlightSyntax sb = liftM toBool $
 -- in language will be used to highlight the text contained in the buffer. If language is 'Nothing', the
 -- text contained in the buffer is not highlighted.
 sourceBufferSetLanguage :: SourceBuffer 
-                        -> SourceLanguage  -- ^ @language@ a 'SourceLanguage' to set, or 'Nothing'. 
+                        -> Maybe SourceLanguage  -- ^ @language@ a 'SourceLanguage' to set, or 'Nothing'. 
                         -> IO ()
 sourceBufferSetLanguage sb lang =
-  {#call unsafe source_buffer_set_language#} sb lang
+  {#call unsafe source_buffer_set_language#} 
+    sb 
+    (fromMaybe (SourceLanguage nullForeignPtr) lang)
   
--- | Returns the 'SourceLanguage' associated with the buffer, see 'sourceBufferSetLanguage'. The
--- returned object should not be unreferenced by the user.
+-- | Returns the 'SourceLanguage' associated with the buffer, see 'sourceBufferSetLanguage'. 
 sourceBufferGetLanguage :: SourceBuffer 
-                        -> IO SourceLanguage -- ^ returns 'SourceLanguage' associated with the buffer, or 'Nothing'. 
-sourceBufferGetLanguage sb = makeNewGObject mkSourceLanguage $
+                        -> IO (Maybe SourceLanguage) -- ^ returns 'SourceLanguage' associated with the buffer, or 'Nothing'. 
+sourceBufferGetLanguage sb = 
+  maybeNull (makeNewGObject mkSourceLanguage) $
   {#call unsafe source_buffer_get_language#} sb
 
 -- | Controls the bracket match highlighting function in the buffer. If activated, when you position your
