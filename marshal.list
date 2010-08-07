@@ -43,4 +43,5 @@
 # If it is a Boxed type check that the reference counting is right.
 
 NONE:NONE
+NONE:OBJECT
 NONE:BOXED,BOXED
