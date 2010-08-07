@@ -163,16 +163,19 @@ sourceBufferGetHighlightMatchingBrackets sb = liftM toBool $
 
 -- | Sets style scheme used by the buffer. If scheme is 'Nothing' no style scheme is used.
 sourceBufferSetStyleScheme :: SourceBuffer 
-                           -> SourceStyleScheme  -- ^ @scheme@ style scheme.      
+                           -> Maybe SourceStyleScheme  -- ^ @scheme@ style scheme.      
                            -> IO ()
-sourceBufferSetStyleScheme sb sss =
-    {#call unsafe source_buffer_set_style_scheme#} sb sss
+sourceBufferSetStyleScheme sb scheme =
+    {#call unsafe source_buffer_set_style_scheme#} 
+      sb  
+      (fromMaybe (SourceStyleScheme nullForeignPtr) scheme)
 
 -- | Returns the 'SourceStyleScheme' currently used in buffer.
 sourceBufferGetStyleScheme :: SourceBuffer 
-                           -> IO SourceStyleScheme -- ^ returns the 'SourceStyleScheme' set by 'sourceBufferSetStyleScheme', or 'Nothing'.
-sourceBufferGetStyleScheme sb = makeNewGObject mkSourceStyleScheme $
-  {#call unsafe source_buffer_get_style_scheme#} sb
+                           -> IO (Maybe SourceStyleScheme) -- ^ returns the 'SourceStyleScheme' set by 'sourceBufferSetStyleScheme', or 'Nothing'.
+sourceBufferGetStyleScheme sb = 
+    maybeNull (makeNewGObject mkSourceStyleScheme) $
+    {#call unsafe source_buffer_get_style_scheme#} sb
 
 -- | Sets the number of undo levels for user actions the buffer will track. If the number of user actions
 -- exceeds the limit set by this function, older actions will be discarded.
