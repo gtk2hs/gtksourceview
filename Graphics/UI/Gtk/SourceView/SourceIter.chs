@@ -30,7 +30,10 @@
 -- * There is no SourceIter object, just extra methods for "TextIter"
 --
 module Graphics.UI.Gtk.SourceView.SourceIter (
+-- * Enums
   SourceSearchFlags(..),
+
+-- * Methods
   sourceIterForwardSearch,
   sourceIterBackwardSearch,
 ) where
@@ -53,9 +56,19 @@ instance Flags SourceSearchFlags
 
 -- methods
 
--- | same as 'textIterForwardSearch' but allows
--- case insensitive search and possibly in the future regular expressions.
---
+-- | Searches forward for str. Any match is returned by setting @matchStart@ to the first character of the
+-- match and @matchEnd@ to the first character after the match. The search will not continue past
+-- limit. Note that a search is a linear or O(n) operation, so you may wish to use limit to avoid
+-- locking up your UI on large buffers.
+-- 
+-- If the 'SourceSearchVisibleOnly' flag is present, the match may have invisible text
+-- interspersed in str. i.e. str will be a possibly-noncontiguous subsequence of the matched
+-- range. similarly, if you specify 'SourceSearchTextOnly', the match may have pixbufs or child
+-- widgets mixed inside the matched range. If these flags are not given, the match must be exact; the
+-- special 0xFFFC character in str will match embedded pixbufs or child widgets. If you specify the
+-- 'SourceSearchCaseInsensitive' flag, the text will be matched regardless of what case it is in.
+-- 
+-- Same as 'textIterForwardSearch', but supports case insensitive searching.
 sourceIterForwardSearch :: TextIter -> String -> [SourceSearchFlags] -> 
                            Maybe TextIter -> IO (Maybe (TextIter, TextIter))
 sourceIterForwardSearch ti str flags limit = do
