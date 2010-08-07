@@ -30,6 +30,7 @@ module Graphics.UI.Gtk.SourceView.SourceView (
   SourceView,
   SourceViewClass,
   SourceSmartHomeEndType(..),
+  SourceDrawSpacesFlags(..),
 
 -- * Methods  
   castToSourceView,
@@ -45,6 +46,13 @@ module Graphics.UI.Gtk.SourceView.SourceView (
   sourceViewGetInsertSpacesInsteadOfTabs,
   sourceViewSetSmartHomeEnd,
   sourceViewGetSmartHomeEnd,
+  sourceViewSetMarkCategoryPriority,
+  sourceViewGetMarkCategoryPriority,
+  sourceViewSetMarkCategoryIconFromPixbuf,
+  sourceViewSetMarkCategoryIconFromStock,
+  sourceViewSetMarkCategoryIconFromIconName,
+  sourceViewSetMarkCategoryBackground,
+  sourceViewGetMarkCategoryBackground,
   sourceViewSetHighlightCurrentLine,
   sourceViewGetHighlightCurrentLine,
   sourceViewSetShowLineMarks,
@@ -57,9 +65,12 @@ module Graphics.UI.Gtk.SourceView.SourceView (
   sourceViewGetRightMarginPosition,
   sourceViewSetTabWidth,
   sourceViewGetTabWidth,
+  sourceViewSetDrawSpaces,
+  sourceViewGetDrawSpaces,
 
 -- * Attributes  
   sourceViewAutoIndent,
+  sourceViewDrawSpaces,
   sourceViewHighlightCurrentLine,
   sourceViewIndentOnTab,
   sourceViewIndentWidth,
@@ -73,6 +84,8 @@ module Graphics.UI.Gtk.SourceView.SourceView (
 -- * Signals
   sourceViewUndo,
   sourceViewRedo,
+  sourceViewMoveLines,
+  sourceViewShowCompletion,
 
 -- * Deprecated
 #ifndef DISABLE_DEPRECATED
@@ -82,17 +95,21 @@ module Graphics.UI.Gtk.SourceView.SourceView (
   ) where
 
 import Control.Monad	(liftM)
+import Data.Maybe    (fromMaybe)
 
 import System.Glib.FFI
 {#import System.Glib.Properties#}
 import System.Glib.Attributes
 import Graphics.UI.Gtk.Abstract.Object	(makeNewObject)
+import Graphics.UI.Gtk.Abstract.Widget (Color)
 {#import Graphics.UI.Gtk.SourceView.Types#}
 {#import Graphics.UI.Gtk.SourceView.Signals#}
 
 {# context lib="gtk" prefix="gtk" #}
 
 {# enum SourceSmartHomeEndType {underscoreToCase} deriving (Eq, Bounded, Show, Read) #}
+
+{# enum SourceDrawSpacesFlags {underscoreToCase} deriving (Eq, Bounded, Show, Read) #}
 
 -- | Create a new 'SourceView' widget with a default 'SourceBuffer'.
 --
@@ -278,6 +295,24 @@ sourceViewGetTabWidth :: SourceViewClass sv => sv
 sourceViewGetTabWidth sv = liftM fromIntegral $
   {#call unsafe source_view_get_tab_width#} (toSourceView sv)
 
+-- | Set if and how the spaces should be visualized. Specifying flags as 0 will disable display of
+-- spaces.
+sourceViewSetDrawSpaces :: SourceViewClass sv => sv
+                        -> SourceDrawSpacesFlags -- ^ @flags@ 'SourceDrawSpacesFlags' specifing how white spaces should be displayed
+                        -> IO ()
+sourceViewSetDrawSpaces view flags =
+  {#call gtk_source_view_set_draw_spaces #}  
+    (toSourceView view)
+    (fromIntegral $ fromEnum flags)
+
+-- | Returns the 'SourceDrawSpacesFlags' specifying if and how spaces should be displayed for this view.
+sourceViewGetDrawSpaces :: SourceViewClass sv => sv
+                        -> IO SourceDrawSpacesFlags -- ^ returns the 'SourceDrawSpacesFlags', 0 if no spaces should be drawn. 
+sourceViewGetDrawSpaces view =                        
+  liftM (toEnum . fromIntegral) $
+  {#call gtk_source_view_get_draw_spaces #}
+     (toSourceView view)
+
 -- | Set the priority for the given mark category. When there are multiple marks on the same line, marks
 -- of categories with higher priorities will be drawn on top.
 --
@@ -297,12 +332,87 @@ sourceViewGetMarkCategoryPriority sv markerType = withCString markerType $ \strP
   liftM fromIntegral $
   {#call unsafe source_view_get_mark_category_priority#} (toSourceView sv) strPtr
 
+-- | Sets the icon to be used for category to pixbuf. If pixbuf is 'Nothing', the icon is unset.
+sourceViewSetMarkCategoryIconFromPixbuf :: SourceViewClass sv => sv
+                                        -> String -- ^ @category@ a mark category.     
+                                        -> Maybe Pixbuf -- ^ @pixbuf@   a 'Pixbuf' or 'Nothing'. 
+                                        -> IO ()
+sourceViewSetMarkCategoryIconFromPixbuf sv category pixbuf =
+  withCString category $ \categoryPtr ->
+  {#call gtk_source_view_set_mark_category_icon_from_pixbuf #}
+     (toSourceView sv)
+     categoryPtr
+     (fromMaybe (Pixbuf nullForeignPtr) pixbuf)
+
+-- | Sets the icon to be used for category to the stock item @stockId@. If @stockId@ is 'Nothing', the icon is
+-- unset.
+sourceViewSetMarkCategoryIconFromStock :: SourceViewClass sv => sv
+                                       -> String -- ^ @category@ a mark category.      
+                                       -> Maybe String -- ^ @stockId@ the stock id or 'Nothing'. 
+                                       -> IO ()
+sourceViewSetMarkCategoryIconFromStock sv category stockId =
+  withCString category $ \categoryPtr ->
+  maybeWith withCString stockId $ \stockIdPtr ->
+  {#call gtk_source_view_set_mark_category_icon_from_stock #}
+    (toSourceView sv)
+    categoryPtr
+    stockIdPtr
+
+-- | Sets the icon to be used for category to the named theme item name. If name is 'Nothing', the icon is
+-- unset.
+sourceViewSetMarkCategoryIconFromIconName :: SourceViewClass sv => sv
+                                       -> String -- ^ @category@ a mark category.      
+                                       -> Maybe String -- ^ @name@     the themed icon name or 'Nothing'. 
+                                       -> IO ()
+sourceViewSetMarkCategoryIconFromIconName sv category name =
+  withCString category $ \categoryPtr ->
+  maybeWith withCString name $ \namePtr ->
+  {#call gtk_source_view_set_mark_category_icon_from_icon_name #}
+    (toSourceView sv)
+    categoryPtr
+    namePtr
+
+-- | Sets given background color for mark category. If color is 'Nothing', the background color is unset.
+sourceViewSetMarkCategoryBackground :: SourceViewClass sv => sv
+                                    -> String -- ^ @category@ a mark category.                      
+                                    -> Maybe Color  -- ^ @color@    background color or 'Nothing' to unset it. 
+                                    -> IO ()
+sourceViewSetMarkCategoryBackground sv category color =
+  let withMB :: Storable a => Maybe a -> (Ptr a -> IO b) -> IO b
+      withMB Nothing f = f nullPtr
+      withMB (Just x) f = with x f
+  in withCString category $ \categoryPtr ->
+     withMB color $ \colorPtr ->
+     {#call gtk_source_view_set_mark_category_background #}
+       (toSourceView sv)
+       categoryPtr
+       (castPtr colorPtr)
+
+-- | Gets the background color associated with given category.
+sourceViewGetMarkCategoryBackground :: SourceViewClass sv => sv
+                                    -> String -- ^ @category@ a mark category.
+                                    -> Color -- ^ @dest@     destination 'Color' structure to fill in.
+                                    -> IO Bool -- ^ returns  'True' if background color for category was set and dest is set to a valid color, or 'False' otherwise.
+sourceViewGetMarkCategoryBackground sv category color = 
+    liftM toBool $
+    withCString category $ \ categoryPtr ->
+    with color $ \ colorPtr ->
+    {#call gtk_source_view_get_mark_category_background #}
+      (toSourceView sv)
+      categoryPtr
+      (castPtr colorPtr)
+
 -- | Whether to enable auto indentation.
 -- 
 -- Default value: 'False'
 --
 sourceViewAutoIndent :: SourceViewClass sv => Attr sv Bool
 sourceViewAutoIndent = newAttrFromBoolProperty "auto-indent"
+
+-- | Set if and how the spaces should be visualized.
+--
+sourceViewDrawSpaces :: SourceViewClass sv => Attr sv SourceDrawSpacesFlags
+sourceViewDrawSpaces = newAttrFromEnumProperty "draw-spaces" {#call fun gtk_source_draw_spaces_flags_get_type#}
 
 -- | Whether to highlight the current line.
 -- 
@@ -384,6 +494,20 @@ sourceViewUndo = Signal $ connect_NONE__NONE "undo"
 --
 sourceViewRedo :: SourceViewClass sv => Signal sv (IO ())
 sourceViewRedo = Signal $ connect_NONE__NONE "redo"
+
+-- | The 'moveLines' signal is a keybinding which gets emitted when the user initiates moving a
+-- line. The default binding key is Alt+Up/Down arrow. And moves the currently selected lines, or the
+-- current line by count. For the moment, only count of -1 or 1 is valid.
+sourceViewMoveLines :: SourceViewClass sv => Signal sv (Bool -> Int -> IO ())
+sourceViewMoveLines = Signal $ connect_BOOL_INT__NONE "move-lines"
+
+-- | The 'showCompletion' signal is a keybinding signal which gets emitted when the user initiates a
+-- completion in default mode.
+-- 
+-- Applications should not connect to it, but may emit it with @gSignalEmitByName@ if they need to
+-- control the default mode completion activation.
+sourceViewShowCompletion :: SourceViewClass sv => Signal sv (IO ())
+sourceViewShowCompletion = Signal $ connect_NONE__NONE "show-completion"
 
 -- * Deprecated
 #ifndef DISABLE_DEPRECATED
