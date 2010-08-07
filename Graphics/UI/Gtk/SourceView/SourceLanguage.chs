@@ -38,6 +38,8 @@ module Graphics.UI.Gtk.SourceView.SourceLanguage (
   sourceLanguageGetMetadata,
   sourceLanguageGetMimeTypes,
   sourceLanguageGetGlobs,
+  sourceLanguageGetStyleName,
+  sourceLanguageGetStyleIds,
 
 -- * Attributes
   sourceLanguageHidden,
@@ -94,7 +96,7 @@ sourceLanguageGetHidden sl = liftM toBool $
 --
 sourceLanguageGetMetadata :: SourceLanguage 
                           -> String  -- ^ @name@     metadata property name.
-                          -> IO String -- ^ returns  value of property name stored in the metadata of language or emtpy if language doesn't contain that metadata
+                          -> IO String -- ^ returns  value of property name stored in the metadata of language or empty if language doesn't contain that metadata
 sourceLanguageGetMetadata sl name = do
   withUTFString name ({#call unsafe source_language_get_metadata#} sl) >>= peekUTFString
 
@@ -103,7 +105,7 @@ sourceLanguageGetMetadata sl name = do
 -- an array.
 --
 sourceLanguageGetMimeTypes :: SourceLanguage 
-                           -> IO [String] -- ^ returns  an array containing the mime types or emtpy if no mime types are found. The        
+                           -> IO [String] -- ^ returns  an array containing the mime types or empty if no mime types are found. The        
 sourceLanguageGetMimeTypes sl = do
   mimeTypesArray <- {#call unsafe source_language_get_mime_types#} sl
   mimeTypes <- liftM (fromMaybe []) $ maybePeek peekUTFStringArray0 mimeTypesArray
@@ -118,6 +120,26 @@ sourceLanguageGetGlobs :: SourceLanguage
                        -> IO [String] -- ^ returns  an array containing the globs or empty if no globs are found. 
 sourceLanguageGetGlobs sl = do
   globsArray <- {#call unsafe source_language_get_globs#} sl
+  globs <- liftM (fromMaybe []) $ maybePeek peekUTFStringArray0 globsArray
+  {# call g_strfreev #} globsArray
+  return globs
+
+-- | Returns the name of the style with ID @styleId@ defined by this language.
+sourceLanguageGetStyleName :: SourceLanguage 
+                           -> String -- ^ @styleId@ a style ID
+                           -> IO String  -- ^ returns the name of the style with ID @styleId@ defined by this language or empty if the style has no name or there is no style with ID @styleId@ defined by this language. The returned string is owned by the language and must not be modified.
+sourceLanguageGetStyleName sl styleId =
+    withUTFString styleId $ \styleIdPtr ->
+    {#call gtk_source_language_get_style_name#}
+       sl
+       styleIdPtr
+    >>= peekUTFString
+
+-- | Returns the ids of the styles defined by this language.
+sourceLanguageGetStyleIds :: SourceLanguage 
+                          -> IO [String] -- ^ returns  an array containing ids of the styles defined by this language or empty if no style is defined. 
+sourceLanguageGetStyleIds sl = do
+  globsArray <- {#call gtk_source_language_get_style_ids#} sl
   globs <- liftM (fromMaybe []) $ maybePeek peekUTFStringArray0 globsArray
   {# call g_strfreev #} globsArray
   return globs
