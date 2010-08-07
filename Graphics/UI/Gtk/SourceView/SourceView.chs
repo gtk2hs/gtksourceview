@@ -29,6 +29,8 @@ module Graphics.UI.Gtk.SourceView.SourceView (
 -- * Types
   SourceView,
   SourceViewClass,
+
+-- * Enums
   SourceSmartHomeEndType(..),
   SourceDrawSpacesFlags(..),
 
