@@ -74,9 +74,11 @@ module Graphics.UI.Gtk.SourceView.SourceView (
   sourceViewGetTabWidth,
   sourceViewSetDrawSpaces,
   sourceViewGetDrawSpaces,
+  sourceViewGetGutter,
 
 -- * Attributes  
   sourceViewAutoIndent,
+  sourceViewCompletion,
   sourceViewDrawSpaces,
   sourceViewHighlightCurrentLine,
   sourceViewIndentOnTab,
@@ -113,6 +115,7 @@ import Graphics.UI.Gtk.Abstract.Object	(makeNewObject)
 import Graphics.UI.Gtk.Abstract.Widget (Color)
 import Graphics.UI.GtkInternals  ( TextIter, mkTextIterCopy )
 import Graphics.UI.Gtk.Gdk.EventM (EventM, EAny)
+import Graphics.UI.Gtk.Multiline.TextView (TextWindowType (..))
 {#import Graphics.UI.Gtk.SourceView.Types#}
 {#import Graphics.UI.Gtk.SourceView.Signals#}
 
@@ -326,6 +329,19 @@ sourceViewGetDrawSpaces view =
   {#call gtk_source_view_get_draw_spaces #}
      (toSourceView view)
 
+-- | Returns the 'SourceGutter' object associated with @windowType@ for view. Only 'TextWindowLeft'
+-- and 'TextWindowRight' are supported, respectively corresponding to the left and right
+-- gutter. The line numbers and mark category icons are rendered in the gutter corresponding to
+-- 'TextWindowLeft'.
+sourceViewGetGutter :: SourceViewClass sv => sv 
+                    -> TextWindowType  -- ^ @windowType@ the gutter window type 
+                    -> IO SourceGutter
+sourceViewGetGutter sv windowType =
+  makeNewGObject mkSourceGutter $
+  {#call gtk_source_view_get_gutter #}
+    (toSourceView sv)
+    (fromIntegral $ fromEnum windowType)
+
 -- | Set the priority for the given mark category. When there are multiple marks on the same line, marks
 -- of categories with higher priorities will be drawn on top.
 --
@@ -421,6 +437,12 @@ sourceViewGetMarkCategoryBackground sv category color =
 --
 sourceViewAutoIndent :: SourceViewClass sv => Attr sv Bool
 sourceViewAutoIndent = newAttrFromBoolProperty "auto-indent"
+
+-- | The completion object associated with the view.
+--
+sourceViewCompletion :: SourceViewClass sv => ReadAttr sv SourceCompletion
+sourceViewCompletion = readAttrFromObjectProperty "completion"
+                       {#call pure unsafe gtk_source_completion_get_type #}
 
 -- | Set if and how the spaces should be visualized.
 --

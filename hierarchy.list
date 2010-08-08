@@ -17,6 +17,8 @@
 
 
     GObject 
+		GtkSourceGutter if gtksourceview2
+		GtkSourceUndoManager if gtksourceview2
         GdkDrawable 
             GdkWindow		as DrawWindow, gdk_window_object_get_type
 #            GdkDrawableImplX11
@@ -46,7 +48,6 @@
 	GdkPixbufAnimationIter
         GtkTextChildAnchor
         GtkTextMark
-		GtkSourceUndoManager if gtksourceview2
 	    GtkSourceMarker	if sourceview
             GtkSourceMark       if gtksourceview2
         GtkObject
@@ -211,7 +212,6 @@
         GtkSourceLanguage		if gtksourceview2
         GtkSourceLanguagesManager	if sourceview
         GtkSourceLanguageManager	if gtksourceview2
-		GtkSourceGutter if gtksourceview2
 	GladeXML			as GladeXML, glade_xml_get_type if libglade
 	GConfClient			as GConf if gconf
 # These ones are actualy interfaces, but interface implementations are GObjects
