@@ -45,6 +45,7 @@ module Graphics.UI.Gtk.SourceView.SourceGutter (
 
 -- * Types
     SourceGutter,
+    SourceGutterClass,
 
 -- * Methods
     sourceGutterGetWindow,
@@ -80,63 +81,63 @@ import Graphics.UI.Gtk.Gdk.EventM (EventM, EAny)
 
 -- | Get the 'Window' of the gutter. The window will only be available when the gutter has at least one,
 -- non-zero width, cell renderer packed.
-sourceGutterGetWindow :: SourceGutter -> IO (Maybe DrawWindow)
+sourceGutterGetWindow :: SourceGutterClass sg => sg -> IO (Maybe DrawWindow)
 sourceGutterGetWindow sb =
     maybeNull (makeNewGObject mkDrawWindow) $
-    {#call gtk_source_gutter_get_window #} sb
+    {#call gtk_source_gutter_get_window #} (toSourceGutter sb)
 
 -- | Inserts renderer into gutter at position.
-sourceGutterInsert :: CellRendererClass cell => SourceGutter 
+sourceGutterInsert :: (CellRendererClass cell, SourceGutterClass sg) => sg
                    -> cell -- ^ @renderer@ a 'CellRenderer'      
                    -> Int -- ^ @position@ the renderers position 
                    -> IO ()
 sourceGutterInsert gutter renderer position =
   {#call gtk_source_gutter_insert #}
-     gutter
+     (toSourceGutter gutter)
      (toCellRenderer renderer)
      (fromIntegral position)
 
 -- | Reorders renderer in gutter to new position.
-sourceGutterReorder :: CellRendererClass cell => SourceGutter 
+sourceGutterReorder :: (CellRendererClass cell, SourceGutterClass sg) => sg
                     -> cell -- ^ @renderer@ a 'CellRenderer'         
                     -> Int -- ^ @position@ the new renderer position 
                     -> IO ()
 sourceGutterReorder gutter renderer position =
   {#call gtk_source_gutter_reorder #}
-     gutter
+     (toSourceGutter gutter)
      (toCellRenderer renderer)
      (fromIntegral position)
 
 -- | Removes renderer from gutter.
-sourceGutterRemove :: CellRendererClass cell => SourceGutter
+sourceGutterRemove :: (CellRendererClass cell, SourceGutterClass sg) => sg
                    -> cell -- ^ @renderer@ a 'CellRenderer' 
                    -> IO ()
 sourceGutterRemove gutter renderer =
   {#call gtk_source_gutter_remove #}
-     gutter
+     (toSourceGutter gutter)
      (toCellRenderer renderer)
 
 -- | Invalidates the drawable area of the gutter. You can use this to force a redraw of the gutter if
 -- something has changed and needs to be redrawn.
-sourceGutterQueueDraw :: SourceGutter -> IO ()
+sourceGutterQueueDraw :: SourceGutterClass sg => sg -> IO ()
 sourceGutterQueueDraw sb =
-  {#call gtk_source_gutter_queue_draw #} sb
+  {#call gtk_source_gutter_queue_draw #} (toSourceGutter sb)
 
 -- | The 'SourceView' of the gutter
-sourceGutterView :: Attr SourceGutter SourceView
+sourceGutterView :: SourceGutterClass sg => Attr sg SourceView
 sourceGutterView = newAttrFromObjectProperty "view"
                    {#call pure unsafe gtk_source_view_get_type #}
 
 -- | The text window type on which the window is placed
 -- 
 -- Default value: 'TextWindowPrivate'
-sourceGutterWindowType :: Attr SourceGutter TextWindowType
+sourceGutterWindowType :: SourceGutterClass sg => Attr sg TextWindowType
 sourceGutterWindowType = newAttrFromEnumProperty "window-type"
                          {#call pure unsafe gtk_text_window_type_get_type #}
                          
 -- | Emitted when a cell has been activated (for instance when there was a button press on the cell). The
 -- signal is only emitted for cells that have the activatable property set to 'True'.
-sourceGutterCellActivated :: Signal SourceGutter (CellRenderer -> TextIter -> EventM EAny ())                         
+sourceGutterCellActivated :: SourceGutterClass sg => Signal sg (CellRenderer -> TextIter -> EventM EAny ())                         
 sourceGutterCellActivated =
   Signal (\after obj fun -> 
            connect_OBJECT_PTR_BOXED__NONE "cell-activated" mkTextIterCopy after obj
@@ -145,6 +146,6 @@ sourceGutterCellActivated =
 
 -- | Emitted when a tooltip is requested for a specific cell. Signal handlers can return 'True' to notify
 -- the tooltip has been handled.
-sourceGutterQueryTooltip :: Signal SourceGutter (CellRenderer -> TextIter -> Tooltip -> IO Bool)
+sourceGutterQueryTooltip :: SourceGutterClass sg => Signal sg (CellRenderer -> TextIter -> Tooltip -> IO Bool)
 sourceGutterQueryTooltip = 
     Signal $ connect_OBJECT_BOXED_OBJECT__BOOL "query-tooltip" mkTextIterCopy
