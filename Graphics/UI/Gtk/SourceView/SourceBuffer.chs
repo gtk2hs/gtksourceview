@@ -78,6 +78,7 @@ module Graphics.UI.Gtk.SourceView.SourceBuffer (
   sourceBufferLanguage,
   sourceBufferSourceStyleScheme,
   sourceBufferMaxUndoLevels,
+  sourceBufferUndoManager,
 
 -- * Signals
   sourceBufferHighlightUpdated,
@@ -425,6 +426,11 @@ sourceBufferMaxUndoLevels = newAttrFromIntProperty "max-undo-levels"
 -- 
 sourceBufferSourceStyleScheme :: SourceBufferClass buffer => Attr buffer (Maybe SourceStyleScheme)
 sourceBufferSourceStyleScheme = newAttrFromMaybeObjectProperty "style-scheme" gTypeSourceStyleScheme
+
+-- | The buffer undo manager.
+sourceBufferUndoManager :: SourceBufferClass buffer => Attr buffer SourceUndoManager
+sourceBufferUndoManager = newAttrFromObjectProperty "undo-manager"
+                          {# call pure unsafe gtk_source_undo_manager_get_type #}
 
 -- |
 --
