@@ -36,6 +36,8 @@ module Graphics.UI.Gtk.SourceView.SourceCompletionProvider (
    sourceCompletionProviderGetIcon,
    sourceCompletionProviderGetInteractiveDelay,
    sourceCompletionProviderGetPriority,
+   sourceCompletionProviderGetInfoWidget,
+   sourceCompletionProviderActivateProposal,
 ) where
 
 import Control.Monad	(liftM)
@@ -45,6 +47,7 @@ import System.Glib.UTFString
 import System.Glib.GObject	(makeNewGObject)
 import System.Glib.Attributes
 import System.Glib.Properties
+import Graphics.UI.Gtk.Abstract.Object	(makeNewObject)
 {#import Graphics.UI.Gtk.SourceView.Signals#}
 {#import Graphics.UI.Gtk.SourceView.Types#}
 
@@ -85,4 +88,30 @@ sourceCompletionProviderGetPriority scp =
   {#call gtk_source_completion_provider_get_priority #}
     (toSourceCompletionProvider scp)
   
+-- | Get a customized info widget to show extra information of a proposal. This allows for customized
+-- widgets on a proposal basis, although in general providers will have the same custom widget for all
+-- their proposals and proposal can be ignored.  The implementation of this function is optional. If
+-- implemented, 'sourceCompletionProviderUpdateInfo' MUST also be implemented. If not
+-- implemented, the default 'sourceCompletionProposalGetInfo' will be used to display extra
+-- information about a 'SourceCompletionProposal'.
+sourceCompletionProviderGetInfoWidget :: SourceCompletionProviderClass scp => scp
+                                      -> SourceCompletionProposal -- ^ @proposal@ The currently selected 'SourceCompletionProposal'           
+                                     -> IO Widget -- ^ returns  a custom 'Widget' to show extra information about proposal. 
+sourceCompletionProviderGetInfoWidget scp proposal =
+  makeNewObject mkWidget $
+  {#call gtk_source_completion_provider_get_info_widget #}
+    (toSourceCompletionProvider scp)
+    proposal
 
+-- | Activate proposal at iter. When this functions returns 'False', the default activation of proposal
+-- will take place which replaces the word at iter with the label of proposal.
+sourceCompletionProviderActivateProposal :: SourceCompletionProviderClass scp => scp
+                                         -> SourceCompletionProposal
+                                         -> TextIter
+                                         -> IO Bool -- ^ returns  'True' to indicate that the proposal activation has been handled, 'False' otherwise.
+sourceCompletionProviderActivateProposal scp proposal iter =
+  liftM toBool $
+  {#call gtk_source_completion_provider_activate_proposal #}
+    (toSourceCompletionProvider scp)
+    proposal
+    iter
