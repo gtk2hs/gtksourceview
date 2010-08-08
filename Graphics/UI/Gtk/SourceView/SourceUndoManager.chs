@@ -34,6 +34,7 @@ module Graphics.UI.Gtk.SourceView.SourceUndoManager (
 
 -- * Types  
     SourceUndoManager,
+    SourceUndoManagerClass,
   
 -- * Methods  
     sourceUndoManagerCanUndo,
@@ -61,49 +62,49 @@ import System.Glib.Properties
 {# context lib="gtk" prefix="gtk" #}
 
 -- | Get whether there are undo operations available.
-sourceUndoManagerCanUndo :: SourceUndoManager
+sourceUndoManagerCanUndo :: SourceUndoManagerClass sum => sum
                          -> IO Bool  -- ^ returns 'True' if there are undo operations available, 'False' otherwise 
 sourceUndoManagerCanUndo sm =
   liftM toBool $
-  {#call gtk_source_undo_manager_can_undo #} sm
+  {#call gtk_source_undo_manager_can_undo #} (toSourceUndoManager sm)
 
 -- | Get whether there are redo operations available.
-sourceUndoManagerCanRedo :: SourceUndoManager
+sourceUndoManagerCanRedo :: SourceUndoManagerClass sum => sum
                          -> IO Bool  -- ^ returns 'True' if there are redo operations available, 'False' otherwise 
 sourceUndoManagerCanRedo sm =
   liftM toBool $
-  {#call gtk_source_undo_manager_can_redo #} sm
+  {#call gtk_source_undo_manager_can_redo #} (toSourceUndoManager sm)
 
 -- | Perform a single undo. Calling this function when there are no undo operations available is an
 -- error. Use @gtkSourceUndoManagerCanUndo@ to find out if there are undo operations available.
-sourceUndoManagerUndo :: SourceUndoManager -> IO ()
+sourceUndoManagerUndo :: SourceUndoManagerClass sum => sum -> IO ()
 sourceUndoManagerUndo sm =
-  {#call gtk_source_undo_manager_undo #} sm
+  {#call gtk_source_undo_manager_undo #} (toSourceUndoManager sm)
 
 -- | Perform a single redo. Calling this function when there are no redo operations available is an
 -- error. Use @gtkSourceUndoManagerCanRedo@ to find out if there are redo operations available.
-sourceUndoManagerRedo :: SourceUndoManager -> IO ()
+sourceUndoManagerRedo :: SourceUndoManagerClass sum => sum -> IO ()
 sourceUndoManagerRedo sm =
-  {#call gtk_source_undo_manager_redo #} sm
+  {#call gtk_source_undo_manager_redo #} (toSourceUndoManager sm)
 
 -- | Begin a not undoable action on the buffer. All changes between this call and the call to
 -- @gtkSourceUndoManagerEndNotUndoableAction@ cannot be undone. This function should be
 -- re-entrant.
-sourceUndoManagerBeginNotUndoableAction :: SourceUndoManager -> IO ()
+sourceUndoManagerBeginNotUndoableAction :: SourceUndoManagerClass sum => sum -> IO ()
 sourceUndoManagerBeginNotUndoableAction sm =
-  {#call gtk_source_undo_manager_begin_not_undoable_action #} sm
+  {#call gtk_source_undo_manager_begin_not_undoable_action #} (toSourceUndoManager sm)
 
 -- | Ends a not undoable action on the buffer.
-sourceUndoManagerEndNotUndoableAction :: SourceUndoManager -> IO ()
+sourceUndoManagerEndNotUndoableAction :: SourceUndoManagerClass sum => sum -> IO ()
 sourceUndoManagerEndNotUndoableAction sm =
-  {#call gtk_source_undo_manager_end_not_undoable_action #} sm
+  {#call gtk_source_undo_manager_end_not_undoable_action #} (toSourceUndoManager sm)
 
 -- | Emitted when the ability to redo has changed.
 --
-sourceUndoManagerCanRedoChanged :: Signal SourceUndoManager (IO ())
+sourceUndoManagerCanRedoChanged :: SourceUndoManagerClass sum => Signal sum (IO ())
 sourceUndoManagerCanRedoChanged = Signal $ connect_NONE__NONE "can-redo-changed"
 
 -- | Emitted when the ability to undo has changed.
 --
-sourceUndoManagerCanUndoChanged :: Signal SourceUndoManager (IO ())
+sourceUndoManagerCanUndoChanged :: SourceUndoManagerClass sum => Signal sum (IO ())
 sourceUndoManagerCanUndoChanged = Signal $ connect_NONE__NONE "can-undo-changed"
