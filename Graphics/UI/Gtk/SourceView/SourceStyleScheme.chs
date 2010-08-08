@@ -35,6 +35,7 @@ module Graphics.UI.Gtk.SourceView.SourceStyleScheme (
 
 -- * Types
   SourceStyleScheme,
+  SourceStyleSchemeClass,
 
 -- * Methods  
   castToSourceStyleScheme,
@@ -69,73 +70,73 @@ import Graphics.UI.Gtk.SourceView.SourceStyle
 
 -- | 
 -- 
-sourceStyleSchemeGetId :: SourceStyleScheme
+sourceStyleSchemeGetId :: SourceStyleSchemeClass sss => sss
                        -> IO String -- ^ returns scheme id.              
 sourceStyleSchemeGetId ss =
-  {#call source_style_scheme_get_id#} ss >>= peekUTFString
+  {#call source_style_scheme_get_id#} (toSourceStyleScheme ss) >>= peekUTFString
 
 -- | 
 -- 
-sourceStyleSchemeGetName :: SourceStyleScheme 
+sourceStyleSchemeGetName :: SourceStyleSchemeClass sss => sss 
                          -> IO String -- ^ returns scheme name.            
 sourceStyleSchemeGetName ss =
-  {#call source_style_scheme_get_name#} ss >>= peekUTFString
+  {#call source_style_scheme_get_name#} (toSourceStyleScheme ss) >>= peekUTFString
 
 -- | 
 -- 
-sourceStyleSchemeGetDescription :: SourceStyleScheme 
+sourceStyleSchemeGetDescription :: SourceStyleSchemeClass sss => sss 
                                 -> IO String -- ^ returns scheme description (if defined) or empty. 
 sourceStyleSchemeGetDescription ss =
-  {#call source_style_scheme_get_description#} ss >>= peekUTFString
+  {#call source_style_scheme_get_description#} (toSourceStyleScheme ss) >>= peekUTFString
 
 -- |
 --
-sourceStyleSchemeGetAuthors :: SourceStyleScheme 
+sourceStyleSchemeGetAuthors :: SourceStyleSchemeClass sss => sss 
                             -> IO [String] -- ^ returns an array containing the scheme authors or empty if no author is specified by the style scheme.
 sourceStyleSchemeGetAuthors ss =
-  {#call source_style_scheme_get_authors#} ss >>= peekUTFStringArray0
+  {#call source_style_scheme_get_authors#} (toSourceStyleScheme ss) >>= peekUTFStringArray0
 
 -- | 
 -- 
-sourceStyleSchemeGetFilename :: SourceStyleScheme 
+sourceStyleSchemeGetFilename :: SourceStyleSchemeClass sss => sss 
                              -> IO String -- ^ returns scheme file name if the scheme was created parsing a style scheme file or empty in the other cases.
 sourceStyleSchemeGetFilename ss =
-  {#call source_style_scheme_get_filename#} ss >>= peekUTFString
+  {#call source_style_scheme_get_filename#} (toSourceStyleScheme ss) >>= peekUTFString
 
 -- | 
 -- 
-sourceStyleSchemeGetStyle :: SourceStyleScheme 
+sourceStyleSchemeGetStyle :: SourceStyleSchemeClass sss => sss 
                           -> String  -- ^ @styleId@ id of the style to retrieve.
                           -> IO SourceStyle -- ^ returns  style which corresponds to @styleId@ in the scheme
 sourceStyleSchemeGetStyle ss id = do
   styleObj <- makeNewGObject mkSourceStyleObject $
-              withUTFString id ({#call source_style_scheme_get_style#} ss)
+              withUTFString id ({#call source_style_scheme_get_style#} (toSourceStyleScheme ss))
   sourceStyleFromObject styleObj
 
 -- | Style scheme description.
 -- 
 -- Default value: \"\"
 --
-sourceStyleSchemeDescription :: ReadAttr SourceStyleScheme String
+sourceStyleSchemeDescription :: SourceStyleSchemeClass sss => ReadAttr sss String
 sourceStyleSchemeDescription = readAttrFromStringProperty "description"
 
 -- | Style scheme filename or 'Nothing'.
 -- 
 -- Default value: \"\"
 --
-sourceStyleSchemeFilename :: ReadAttr SourceStyleScheme FilePath
+sourceStyleSchemeFilename :: SourceStyleSchemeClass sss => ReadAttr sss FilePath
 sourceStyleSchemeFilename = readAttrFromStringProperty "filename"
 
 -- | Style scheme id, a unique string used to identify the style scheme in 'SourceStyleSchemeManager'.
 -- 
 -- Default value: \"\"
 --
-sourceStyleSchemeId :: ReadAttr SourceStyleScheme String
+sourceStyleSchemeId :: SourceStyleSchemeClass sss => ReadAttr sss String
 sourceStyleSchemeId = readAttrFromStringProperty "id"
 
 -- | Style scheme name, a translatable string to present to user.
 -- 
 -- Default value: \"\"
 --
-sourceStyleSchemeName :: ReadAttr SourceStyleScheme String
+sourceStyleSchemeName :: SourceStyleSchemeClass sss => ReadAttr sss String
 sourceStyleSchemeName = readAttrFromStringProperty "name"
