@@ -26,6 +26,10 @@
 -- Portability : portable (depends on GHC)
 --
 module Graphics.UI.Gtk.SourceView.SourceView (
+-- * Description
+-- | 'SourceView' is the main object of the gtksourceview library. It provides a text view which syntax
+-- highlighting, undo/redo and text marks. Use a 'SourceBuffer' to display text with a 'SourceView'.
+
 -- * Types
   SourceView,
   SourceViewClass,
