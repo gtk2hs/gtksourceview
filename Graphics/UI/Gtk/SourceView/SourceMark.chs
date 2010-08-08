@@ -42,9 +42,13 @@ module Graphics.UI.Gtk.SourceView.SourceMark (
 
 -- * Methods
   castToSourceMark,
+  sourceMarkNew,
   sourceMarkGetCategory,
   sourceMarkNext,
-  sourceMarkPrev
+  sourceMarkPrev,
+
+-- * Attributes
+  sourceMarkCategory
 ) where
 
 import Control.Monad	(liftM)
@@ -52,11 +56,28 @@ import Control.Monad	(liftM)
 import System.Glib.FFI
 import System.Glib.UTFString
 import System.Glib.GObject	(makeNewGObject)
+import System.Glib.Attributes
+import System.Glib.Properties
 {#import Graphics.UI.Gtk.SourceView.Types#}
 
 {# context lib="gtk" prefix="gtk" #}
 
 -- methods
+
+-- | Creates a text mark. Add it to a buffer using 'textBufferAddMark'. If name is 'Nothing', the mark
+-- is anonymous; otherwise, the mark can be retrieved by name using
+-- 'textBufferGetMark'. Normally marks are created using the utility function
+-- 'sourceBufferCreateMark'.
+sourceMarkNew :: Maybe String -- ^ @name@     Name of the 'SourceMark', can be 'Nothing' when not using a name
+              -> String  -- ^ @category@ is used to classify marks according to common characteristics (e.g. all the marks representing a bookmark could  
+              -> IO SourceMark
+sourceMarkNew name category = 
+  makeNewGObject mkSourceMark $
+  maybeWith withUTFString name $ \namePtr ->
+  withUTFString category $ \categoryPtr ->
+  {#call gtk_source_mark_new#}
+    namePtr
+    categoryPtr
 
 -- | Returns the mark category
 -- 
@@ -92,3 +113,9 @@ sourceMarkPrev mark category =
     maybeNull (makeNewGObject mkSourceMark) $
     maybeWith withUTFString category $ {#call unsafe source_mark_prev#} mark
 
+-- | The category of the 'SourceMark', classifies the mark and controls which pixbuf is used and with
+-- which priority it is drawn.
+-- Default value: \"\"
+--
+sourceMarkCategory :: Attr SourceMark String
+sourceMarkCategory = newAttrFromStringProperty "category"
