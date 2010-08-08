@@ -74,10 +74,11 @@ sourceMarkGetCategory mark = do
 -- If category is 'Nothing', looks for marks of any category
 -- 
 sourceMarkNext :: SourceMark 
-               -> String  -- ^ @category@ a string specifying the mark category or 'Nothing' 
-               -> IO SourceMark -- ^ returns  the next 'SourceMark' or 'Nothing'                
-sourceMarkNext mark category = makeNewGObject mkSourceMark $
-  withUTFString category $ {#call unsafe source_mark_next#} mark
+               -> Maybe String  -- ^ @category@ a string specifying the mark category or 'Nothing' 
+               -> IO (Maybe SourceMark) -- ^ returns  the next 'SourceMark' or 'Nothing'                
+sourceMarkNext mark category = 
+    maybeNull (makeNewGObject mkSourceMark) $
+    maybeWith withUTFString category $ {#call unsafe source_mark_next#} mark
 
 -- | Returns the previous 'SourceMark' in the buffer or 'Nothing' if the mark was not added to a buffer. If
 -- there is no previous mark, 'Nothing' is returned.
@@ -85,8 +86,9 @@ sourceMarkNext mark category = makeNewGObject mkSourceMark $
 -- If category is 'Nothing', looks for marks of any category
 -- 
 sourceMarkPrev :: SourceMark 
-               -> String  -- ^ @category@ a string specifying the mark category or 'Nothing' 
-               -> IO SourceMark -- ^ returns  the previous 'SourceMark' or 'Nothing'            
-sourceMarkPrev mark category = makeNewGObject mkSourceMark $
-  withUTFString category $ {#call unsafe source_mark_prev#} mark
+               -> Maybe String  -- ^ @category@ a string specifying the mark category or 'Nothing' 
+               -> IO (Maybe SourceMark) -- ^ returns  the previous 'SourceMark' or 'Nothing'            
+sourceMarkPrev mark category = 
+    maybeNull (makeNewGObject mkSourceMark) $
+    maybeWith withUTFString category $ {#call unsafe source_mark_prev#} mark
 
