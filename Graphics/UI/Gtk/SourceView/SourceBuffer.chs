@@ -26,6 +26,18 @@
 -- Portability : portable (depends on GHC)
 --
 module Graphics.UI.Gtk.SourceView.SourceBuffer (
+-- * Description
+-- | The 'SourceBuffer' object is the model for 'SourceView' widgets. It extends the 'TextBuffer'
+-- object by adding features useful to display and edit source code as syntax highlighting and bracket
+-- matching. It also implements support for undo/redo operations.
+-- 
+-- To create a 'SourceBuffer' use 'sourceBufferNew' or
+-- 'sourceBufferNewWithLanguage'. The second form is just a convenience function which allows
+-- you to initially set a 'SourceLanguage'.
+-- 
+-- By default highlighting is enabled, but you can disable it with
+-- 'sourceBufferSetHighlightSyntax'.
+
 -- * Types
   SourceBuffer,
   SourceBufferClass,
