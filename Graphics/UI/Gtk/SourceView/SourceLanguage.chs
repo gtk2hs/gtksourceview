@@ -71,49 +71,49 @@ import System.Glib.Attributes
 
 -- | Returns the ID of the language. The ID is not locale-dependent.
 --
-sourceLanguageGetId :: SourceLanguage
+sourceLanguageGetId :: SourceLanguageClass sl => sl
                     -> IO String -- ^ returns  the ID of language. The returned string is owned by language and should not be freed or modified.
 sourceLanguageGetId sl =
-  {#call unsafe source_language_get_id#} sl >>= peekUTFString
+  {#call unsafe source_language_get_id#} (toSourceLanguage sl) >>= peekUTFString
 
 -- | Returns the localized name of the language.
 --
-sourceLanguageGetName :: SourceLanguage 
+sourceLanguageGetName :: SourceLanguageClass sl => sl 
                       -> IO String -- ^ returns  the name of language. The returned string is owned by language and should not be freed or modified.
 sourceLanguageGetName sl =
-  {#call unsafe source_language_get_name#} sl >>= peekUTFString
+  {#call unsafe source_language_get_name#} (toSourceLanguage sl) >>= peekUTFString
 
 -- | Returns the localized section of the language. Each language belong to a section (ex. HTML belogs to
 -- the Markup section).
 --
-sourceLanguageGetSection :: SourceLanguage 
+sourceLanguageGetSection :: SourceLanguageClass sl => sl 
                          -> IO String -- ^ returns  the section of language. The returned string is owned by language and should not be freed or modified.
 sourceLanguageGetSection sl =
-  {#call unsafe source_language_get_section#} sl >>= peekUTFString
+  {#call unsafe source_language_get_section#} (toSourceLanguage sl) >>= peekUTFString
 
 -- | Returns whether the language should be hidden from the user.
 --
-sourceLanguageGetHidden :: SourceLanguage 
+sourceLanguageGetHidden :: SourceLanguageClass sl => sl 
                         -> IO Bool -- ^ returns  'True' if the language should be hidden, 'False' otherwise. 
 sourceLanguageGetHidden sl = liftM toBool $
-  {#call unsafe source_language_get_hidden#} sl
+  {#call unsafe source_language_get_hidden#} (toSourceLanguage sl)
 
 -- |
 --
-sourceLanguageGetMetadata :: SourceLanguage 
+sourceLanguageGetMetadata :: SourceLanguageClass sl => sl 
                           -> String  -- ^ @name@     metadata property name.
                           -> IO String -- ^ returns  value of property name stored in the metadata of language or empty if language doesn't contain that metadata
 sourceLanguageGetMetadata sl name = do
-  withUTFString name ({#call unsafe source_language_get_metadata#} sl) >>= peekUTFString
+  withUTFString name ({#call unsafe source_language_get_metadata#} (toSourceLanguage sl)) >>= peekUTFString
 
 -- | Returns the mime types associated to this language. This is just an utility wrapper around
 -- 'sourceLanguageGetMetadata ' to retrieve the "mimetypes" metadata property and split it into
 -- an array.
 --
-sourceLanguageGetMimeTypes :: SourceLanguage 
+sourceLanguageGetMimeTypes :: SourceLanguageClass sl => sl 
                            -> IO [String] -- ^ returns  an array containing the mime types or empty if no mime types are found. The        
 sourceLanguageGetMimeTypes sl = do
-  mimeTypesArray <- {#call unsafe source_language_get_mime_types#} sl
+  mimeTypesArray <- {#call unsafe source_language_get_mime_types#} (toSourceLanguage sl)
   mimeTypes <- liftM (fromMaybe []) $ maybePeek peekUTFStringArray0 mimeTypesArray
   {# call g_strfreev #} mimeTypesArray
   return mimeTypes
@@ -122,30 +122,30 @@ sourceLanguageGetMimeTypes sl = do
 -- 'sourceLanguageGetMetadata' to retrieve the "globs" metadata property and split it into an
 -- array.
 --
-sourceLanguageGetGlobs :: SourceLanguage 
+sourceLanguageGetGlobs :: SourceLanguageClass sl => sl 
                        -> IO [String] -- ^ returns  an array containing the globs or empty if no globs are found. 
 sourceLanguageGetGlobs sl = do
-  globsArray <- {#call unsafe source_language_get_globs#} sl
+  globsArray <- {#call unsafe source_language_get_globs#} (toSourceLanguage sl)
   globs <- liftM (fromMaybe []) $ maybePeek peekUTFStringArray0 globsArray
   {# call g_strfreev #} globsArray
   return globs
 
 -- | Returns the name of the style with ID @styleId@ defined by this language.
-sourceLanguageGetStyleName :: SourceLanguage 
+sourceLanguageGetStyleName :: SourceLanguageClass sl => sl 
                            -> String -- ^ @styleId@ a style ID
                            -> IO String  -- ^ returns the name of the style with ID @styleId@ defined by this language or empty if the style has no name or there is no style with ID @styleId@ defined by this language. The returned string is owned by the language and must not be modified.
 sourceLanguageGetStyleName sl styleId =
     withUTFString styleId $ \styleIdPtr ->
     {#call gtk_source_language_get_style_name#}
-       sl
+       (toSourceLanguage sl)
        styleIdPtr
     >>= peekUTFString
 
 -- | Returns the ids of the styles defined by this language.
-sourceLanguageGetStyleIds :: SourceLanguage 
+sourceLanguageGetStyleIds :: SourceLanguageClass sl => sl 
                           -> IO [String] -- ^ returns  an array containing ids of the styles defined by this language or empty if no style is defined. 
 sourceLanguageGetStyleIds sl = do
-  globsArray <- {#call gtk_source_language_get_style_ids#} sl
+  globsArray <- {#call gtk_source_language_get_style_ids#} (toSourceLanguage sl)
   globs <- liftM (fromMaybe []) $ maybePeek peekUTFStringArray0 globsArray
   {# call g_strfreev #} globsArray
   return globs
@@ -154,26 +154,26 @@ sourceLanguageGetStyleIds sl = do
 -- 
 -- Default value: 'False'
 --
-sourceLanguageHidden :: ReadAttr SourceLanguage Bool
+sourceLanguageHidden :: SourceLanguageClass sl => ReadAttr sl Bool
 sourceLanguageHidden = readAttrFromBoolProperty "hidden"
 
 -- | Language id.
 -- 
 -- Default value: \"\"
 --
-sourceLanguageId :: ReadAttr SourceLanguage String
+sourceLanguageId :: SourceLanguageClass sl => ReadAttr sl String
 sourceLanguageId = readAttrFromStringProperty "id"
 
 -- | Language name.
 -- 
 -- Default value: \"\"
 --
-sourceLanguageName :: ReadAttr SourceLanguage String
+sourceLanguageName :: SourceLanguageClass sl => ReadAttr sl String
 sourceLanguageName = readAttrFromStringProperty "name"
 
 -- | Language section.
 -- 
 -- Default value: \"\"
 --
-sourceLanguageSection :: ReadAttr SourceLanguage String
+sourceLanguageSection :: SourceLanguageClass sl => ReadAttr sl String
 sourceLanguageSection = readAttrFromStringProperty "section"
