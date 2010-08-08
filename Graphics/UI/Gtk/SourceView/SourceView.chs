@@ -37,6 +37,7 @@ module Graphics.UI.Gtk.SourceView.SourceView (
 -- * Enums
   SourceSmartHomeEndType(..),
   SourceDrawSpacesFlags(..),
+  SourceViewGutterPosition (..),
 
 -- * Methods  
   castToSourceView,
@@ -92,6 +93,7 @@ module Graphics.UI.Gtk.SourceView.SourceView (
   sourceViewRedo,
   sourceViewMoveLines,
   sourceViewShowCompletion,
+  sourceViewLineMarkActivated,
 
 -- * Deprecated
 #ifndef DISABLE_DEPRECATED
@@ -102,12 +104,15 @@ module Graphics.UI.Gtk.SourceView.SourceView (
 
 import Control.Monad	(liftM)
 import Data.Maybe    (fromMaybe)
+import Control.Monad.Reader ( runReaderT )
 
 import System.Glib.FFI
 {#import System.Glib.Properties#}
 import System.Glib.Attributes
 import Graphics.UI.Gtk.Abstract.Object	(makeNewObject)
 import Graphics.UI.Gtk.Abstract.Widget (Color)
+import Graphics.UI.GtkInternals  ( TextIter, mkTextIterCopy )
+import Graphics.UI.Gtk.Gdk.EventM (EventM, EAny)
 {#import Graphics.UI.Gtk.SourceView.Types#}
 {#import Graphics.UI.Gtk.SourceView.Signals#}
 
@@ -116,6 +121,8 @@ import Graphics.UI.Gtk.Abstract.Widget (Color)
 {# enum SourceSmartHomeEndType {underscoreToCase} deriving (Eq, Bounded, Show, Read) #}
 
 {# enum SourceDrawSpacesFlags {underscoreToCase} deriving (Eq, Bounded, Show, Read) #}
+
+{# enum SourceViewGutterPosition {underscoreToCase} deriving (Eq, Bounded, Show, Read) #}
 
 -- | Create a new 'SourceView' widget with a default 'SourceBuffer'.
 --
@@ -514,6 +521,15 @@ sourceViewMoveLines = Signal $ connect_BOOL_INT__NONE "move-lines"
 -- control the default mode completion activation.
 sourceViewShowCompletion :: SourceViewClass sv => Signal sv (IO ())
 sourceViewShowCompletion = Signal $ connect_NONE__NONE "show-completion"
+
+-- | Emitted when a line mark has been activated (for instance when there was a button press in the line
+-- marks gutter). You can use iter to determine on which line the activation took place.
+sourceViewLineMarkActivated :: SourceViewClass sv => Signal sv (TextIter -> EventM EAny ())
+sourceViewLineMarkActivated = 
+  Signal (\after obj fun -> 
+           connect_PTR_BOXED__NONE "line-mark-activated" mkTextIterCopy after obj
+                                   (\eventPtr iter -> runReaderT (fun iter) eventPtr)
+         )
 
 -- * Deprecated
 #ifndef DISABLE_DEPRECATED
