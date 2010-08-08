@@ -2,12 +2,13 @@
 -- -*-haskell-*-
 --  GIMP Toolkit (GTK) Widget SourceView
 --
---  Author : Peter Gavin
+--  Author : Peter Gavin, Andy Stewart
 --  derived from sourceview bindings by Axel Simon and Duncan Coutts
 --
 --  Created: 18 December 2008
 --
 --  Copyright (C) 2004-2008 Peter Gavin, Duncan Coutts, Axel Simon
+--  Copyright (C) Andy Stewart
 --
 --  This library is free software; you can redistribute it and/or
 --  modify it under the terms of the GNU Lesser General Public
@@ -25,6 +26,11 @@
 -- Portability : portable (depends on GHC)
 --
 module Graphics.UI.Gtk.SourceView.SourceLanguage (
+-- * Description
+-- | 'SourceLanguage' encapsulates syntax and highlighting styles for a particular language. Use
+-- 'SourceLanguageManager' to obtain a 'SourceLanguage' instance, and
+-- 'sourceBufferSetLanguage' to apply it to a 'SourceBuffer'.
+
 -- * Types
   SourceLanguage,
   SourceLanguageClass,
