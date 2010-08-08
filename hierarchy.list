@@ -210,6 +210,7 @@
         GtkSourceLanguage		if gtksourceview2
         GtkSourceLanguagesManager	if sourceview
         GtkSourceLanguageManager	if gtksourceview2
+		GtkSourceGutter if gtksourceview2
 	GladeXML			as GladeXML, glade_xml_get_type if libglade
 	GConfClient			as GConf if gconf
 # These ones are actualy interfaces, but interface implementations are GObjects
