@@ -46,6 +46,7 @@
 	GdkPixbufAnimationIter
         GtkTextChildAnchor
         GtkTextMark
+		GtkSourceUndoManager if gtksourceview2
 	    GtkSourceMarker	if sourceview
             GtkSourceMark       if gtksourceview2
         GtkObject

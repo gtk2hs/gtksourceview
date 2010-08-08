@@ -7,3 +7,4 @@
 #include <gtksourceview/gtksourcestyleschememanager.h>
 #include <gtksourceview/gtksourceview.h>
 #include <gtksourceview/gtksourceview-typebuiltins.h>
+#include <gtksourceview/gtksourceundomanager.h>
