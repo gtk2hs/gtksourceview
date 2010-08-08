@@ -59,6 +59,7 @@ Library
           Graphics.UI.Gtk.SourceView.SourceUndoManager
           Graphics.UI.Gtk.SourceView.SourceGutter
           Graphics.UI.Gtk.SourceView.SourceCompletion
+          Graphics.UI.Gtk.SourceView.SourceCompletionProvider
         other-modules:
           Graphics.UI.Gtk.SourceView.SourceStyle.Internal
           Graphics.UI.Gtk.SourceView.Types		  

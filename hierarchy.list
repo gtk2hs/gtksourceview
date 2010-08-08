@@ -19,6 +19,7 @@
     GObject 
 		GtkSourceGutter if gtksourceview2
 		GtkSourceUndoManager if gtksourceview2
+		GtkSourceCompletionProvider if gtksourceview2
         GdkDrawable 
             GdkWindow		as DrawWindow, gdk_window_object_get_type
 #            GdkDrawableImplX11

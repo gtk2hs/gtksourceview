@@ -1,6 +1,7 @@
 module Graphics.UI.Gtk.SourceView (
 	module Graphics.UI.Gtk.SourceView.SourceBuffer,
 	module Graphics.UI.Gtk.SourceView.SourceCompletion,
+	module Graphics.UI.Gtk.SourceView.SourceCompletionProvider,
 	module Graphics.UI.Gtk.SourceView.SourceGutter,
 	module Graphics.UI.Gtk.SourceView.SourceIter,
 	module Graphics.UI.Gtk.SourceView.SourceLanguage,
@@ -15,6 +16,7 @@ module Graphics.UI.Gtk.SourceView (
 
 import Graphics.UI.Gtk.SourceView.SourceBuffer
 import Graphics.UI.Gtk.SourceView.SourceCompletion
+import Graphics.UI.Gtk.SourceView.SourceCompletionProvider
 import Graphics.UI.Gtk.SourceView.SourceGutter
 import Graphics.UI.Gtk.SourceView.SourceIter
 import Graphics.UI.Gtk.SourceView.SourceLanguage
