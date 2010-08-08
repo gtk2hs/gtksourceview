@@ -74,70 +74,70 @@ sourceStyleSchemeManagerGetDefault = makeNewGObject mkSourceStyleSchemeManager $
 -- | Sets the list of directories where the manager looks for style scheme files. If dirs is 'Nothing', the
 -- search path is reset to default.
 --
-sourceStyleSchemeManagerSetSearchPath :: SourceStyleSchemeManager -> Maybe [String] -> IO ()
+sourceStyleSchemeManagerSetSearchPath :: SourceStyleSchemeManagerClass sssm => sssm -> Maybe [String] -> IO ()
 sourceStyleSchemeManagerSetSearchPath ssm dirs =
   maybeWith withUTFStringArray0 dirs $ \dirsPtr -> do
-    {#call unsafe source_style_scheme_manager_set_search_path#} ssm dirsPtr
+    {#call unsafe source_style_scheme_manager_set_search_path#} (toSourceStyleSchemeManager ssm) dirsPtr
 
 -- | Appends path to the list of directories where the manager looks for style scheme files. See
 -- 'sourceStyleSchemeManagerSetSearchPath' for details.
 --
-sourceStyleSchemeManagerAppendSearchPath :: SourceStyleSchemeManager 
+sourceStyleSchemeManagerAppendSearchPath :: SourceStyleSchemeManagerClass sssm => sssm 
                                          -> String  -- ^ @path@    a directory or a filename.     
                                          -> IO ()
 sourceStyleSchemeManagerAppendSearchPath ssm dir =
-  withUTFString dir $ {#call unsafe source_style_scheme_manager_append_search_path#} ssm
+  withUTFString dir $ {#call unsafe source_style_scheme_manager_append_search_path#} (toSourceStyleSchemeManager ssm)
 
 -- | Prepends path to the list of directories where the manager looks for style scheme files. See
 -- 'sourceStyleSchemeManagerSetSearchPath' for details.
 --
-sourceStyleSchemeManagerPrependSearchPath :: SourceStyleSchemeManager 
+sourceStyleSchemeManagerPrependSearchPath :: SourceStyleSchemeManagerClass sssm => sssm 
                                           -> String  -- ^ @path@    a directory or a filename.     
                                           -> IO ()
 sourceStyleSchemeManagerPrependSearchPath ssm dir =
-  withUTFString dir $ {#call unsafe source_style_scheme_manager_prepend_search_path#} ssm
+  withUTFString dir $ {#call unsafe source_style_scheme_manager_prepend_search_path#} (toSourceStyleSchemeManager ssm)
 
 -- | Returns the current search path for the manager. See
 -- 'sourceStyleSchemeManagerSetSearchPath' for details.
 --
-sourceStyleSchemeManagerGetSearchPath :: SourceStyleSchemeManager 
+sourceStyleSchemeManagerGetSearchPath :: SourceStyleSchemeManagerClass sssm => sssm 
                                       -> IO [String]
 sourceStyleSchemeManagerGetSearchPath ssm = do
-  dirsPtr <- {#call unsafe source_style_scheme_manager_get_search_path#} ssm
+  dirsPtr <- {#call unsafe source_style_scheme_manager_get_search_path#} (toSourceStyleSchemeManager ssm)
   peekUTFStringArray0 dirsPtr
 
 -- | Returns the ids of the available style schemes.
 --
-sourceStyleSchemeManagerGetSchemeIds :: SourceStyleSchemeManager -> IO [String]
+sourceStyleSchemeManagerGetSchemeIds :: SourceStyleSchemeManagerClass sssm => sssm -> IO [String]
 sourceStyleSchemeManagerGetSchemeIds ssm = do
-  idsPtr <- {#call unsafe source_style_scheme_manager_get_scheme_ids#} ssm
+  idsPtr <- {#call unsafe source_style_scheme_manager_get_scheme_ids#} (toSourceStyleSchemeManager ssm)
   liftM (fromMaybe []) $ maybePeek peekUTFStringArray0 idsPtr
 
 -- | Looks up style scheme by id.
 --
-sourceStyleSchemeManagerGetScheme :: SourceStyleSchemeManager 
+sourceStyleSchemeManagerGetScheme :: SourceStyleSchemeManagerClass sssm => sssm 
                                   -> String  -- ^ @schemeId@ style scheme id to find
                                   -> IO SourceStyleScheme
 sourceStyleSchemeManagerGetScheme ssm id = makeNewGObject mkSourceStyleScheme $
-  withUTFString id $ {#call unsafe source_style_scheme_manager_get_scheme#} ssm
+  withUTFString id $ {#call unsafe source_style_scheme_manager_get_scheme#} (toSourceStyleSchemeManager ssm)
 
 -- | Mark any currently cached information about the available style scehems as invalid. All the
 -- available style schemes will be reloaded next time the manager is accessed.
 --
-sourceStyleSchemeManagerForceRescan :: SourceStyleSchemeManager -> IO ()
-sourceStyleSchemeManagerForceRescan =
-  {#call unsafe source_style_scheme_manager_force_rescan#}
+sourceStyleSchemeManagerForceRescan :: SourceStyleSchemeManagerClass sssm => sssm -> IO ()
+sourceStyleSchemeManagerForceRescan ssm =
+  {#call unsafe source_style_scheme_manager_force_rescan#} (toSourceStyleSchemeManager ssm)
 
 -- | List of the ids of the available style schemes.
 --
-sourceStyleSchemeManagerStyleIds :: ReadAttr SourceStyleSchemeManager [String]
+sourceStyleSchemeManagerStyleIds :: SourceStyleSchemeManagerClass sssm => ReadAttr sssm [String]
 sourceStyleSchemeManagerStyleIds =
   readAttrFromBoxedOpaqueProperty (liftM (fromMaybe []) . maybePeek peekUTFStringArray0 . castPtr)
                                   "style-ids" {#call pure g_strv_get_type#}
 
 -- | List of directories and files where the style schemes are located.
 --
-sourceStyleSchemeManagerSearchPath :: ReadWriteAttr SourceStyleSchemeManager [String] (Maybe [String])
+sourceStyleSchemeManagerSearchPath :: SourceStyleSchemeManagerClass sssm => ReadWriteAttr sssm [String] (Maybe [String])
 sourceStyleSchemeManagerSearchPath =
   newAttr (objectGetPropertyBoxedOpaque (peekUTFStringArray0 . castPtr) gtype "search-path")
           (objectSetPropertyBoxedOpaque (\dirs f -> maybeWith withUTFStringArray0 dirs (f . castPtr)) gtype "search-path")
