@@ -50,6 +50,7 @@
 	    GtkSourceMarker	if sourceview
             GtkSourceMark       if gtksourceview2
         GtkObject
+		    GtkSourceCompletion if gtksourceview2
             GtkWidget
                 GtkMisc
                     GtkLabel
