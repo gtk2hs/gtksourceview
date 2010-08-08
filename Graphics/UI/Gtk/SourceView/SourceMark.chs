@@ -39,6 +39,7 @@ module Graphics.UI.Gtk.SourceView.SourceMark (
 
 -- * Types
   SourceMark,
+  SourceMarkClass,
 
 -- * Methods
   castToSourceMark,
@@ -81,10 +82,10 @@ sourceMarkNew name category =
 
 -- | Returns the mark category
 -- 
-sourceMarkGetCategory :: SourceMark
+sourceMarkGetCategory :: SourceMarkClass mark => mark
                       -> IO String -- ^ returns the category of the 'SourceMark' 
 sourceMarkGetCategory mark = do
-  strPtr <- {#call unsafe source_mark_get_category#} mark
+  strPtr <- {#call unsafe source_mark_get_category#} (toSourceMark mark)
   markType <- peekUTFString strPtr
   {#call unsafe g_free#} (castPtr strPtr)
   return markType
@@ -94,28 +95,28 @@ sourceMarkGetCategory mark = do
 -- 
 -- If category is 'Nothing', looks for marks of any category
 -- 
-sourceMarkNext :: SourceMark 
+sourceMarkNext :: SourceMarkClass mark => mark 
                -> Maybe String  -- ^ @category@ a string specifying the mark category or 'Nothing' 
                -> IO (Maybe SourceMark) -- ^ returns  the next 'SourceMark' or 'Nothing'                
 sourceMarkNext mark category = 
     maybeNull (makeNewGObject mkSourceMark) $
-    maybeWith withUTFString category $ {#call unsafe source_mark_next#} mark
+    maybeWith withUTFString category $ {#call unsafe source_mark_next#} (toSourceMark mark)
 
 -- | Returns the previous 'SourceMark' in the buffer or 'Nothing' if the mark was not added to a buffer. If
 -- there is no previous mark, 'Nothing' is returned.
 -- 
 -- If category is 'Nothing', looks for marks of any category
 -- 
-sourceMarkPrev :: SourceMark 
+sourceMarkPrev :: SourceMarkClass mark => mark 
                -> Maybe String  -- ^ @category@ a string specifying the mark category or 'Nothing' 
                -> IO (Maybe SourceMark) -- ^ returns  the previous 'SourceMark' or 'Nothing'            
 sourceMarkPrev mark category = 
     maybeNull (makeNewGObject mkSourceMark) $
-    maybeWith withUTFString category $ {#call unsafe source_mark_prev#} mark
+    maybeWith withUTFString category $ {#call unsafe source_mark_prev#} (toSourceMark mark)
 
 -- | The category of the 'SourceMark', classifies the mark and controls which pixbuf is used and with
 -- which priority it is drawn.
 -- Default value: \"\"
 --
-sourceMarkCategory :: Attr SourceMark String
+sourceMarkCategory :: SourceMarkClass mark => Attr mark String
 sourceMarkCategory = newAttrFromStringProperty "category"
