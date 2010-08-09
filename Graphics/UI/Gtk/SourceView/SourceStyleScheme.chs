@@ -55,14 +55,15 @@ module Graphics.UI.Gtk.SourceView.SourceStyleScheme (
 
 import Control.Monad	(liftM)
 
-import System.Glib.FFI
-import System.Glib.UTFString
-import System.Glib.GObject	(constructNewGObject)
-import System.Glib.Attributes
-{#import System.Glib.Properties#}
-{#import Graphics.UI.Gtk.SourceView.Types#}
 import Graphics.UI.Gtk.SourceView.SourceStyle
+import System.Glib.Attributes
+import System.Glib.FFI
+import System.Glib.GObject	(constructNewGObject)
+import System.Glib.UTFString
+
 {#import Graphics.UI.Gtk.SourceView.SourceStyle.Internal#}
+{#import Graphics.UI.Gtk.SourceView.Types#}
+{#import System.Glib.Properties#}
 
 {# context lib="gtk" prefix="gtk" #}
 

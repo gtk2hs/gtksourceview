@@ -50,13 +50,14 @@ module Graphics.UI.Gtk.SourceView.SourceStyleSchemeManager (
 import Control.Monad	(liftM)
 import Data.Maybe (fromMaybe)
 
+import System.Glib.Attributes
 import System.Glib.FFI
 import System.Glib.GObject (constructNewGObject, makeNewGObject)
 import System.Glib.UTFString
-import System.Glib.Attributes
-{#import System.Glib.Properties#}
-{#import Graphics.UI.Gtk.SourceView.Types#}
+
 {#import Graphics.UI.Gtk.SourceView.SourceStyleScheme#}
+{#import Graphics.UI.Gtk.SourceView.Types#}
+{#import System.Glib.Properties#}
 
 -- | Creates a new style manager. If you do not need more than one style manager then use
 -- 'sourceStyleSchemeManagerGetDefault' instead.

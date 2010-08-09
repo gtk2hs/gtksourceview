@@ -41,13 +41,14 @@ module Graphics.UI.Gtk.SourceView.SourceIter (
 import Control.Monad	(liftM)
 import Data.Maybe    (fromMaybe)
 
+import Graphics.UI.Gtk.Abstract.Object	(makeNewObject)
+import Graphics.UI.Gtk.SourceView.Enums
 import System.Glib.FFI
 import System.Glib.Flags		(Flags, fromFlags)
 import System.Glib.UTFString
-import Graphics.UI.Gtk.Abstract.Object	(makeNewObject)
-import Graphics.UI.Gtk.SourceView.Enums
-{#import Graphics.UI.Gtk.SourceView.Types#}
+
 {#import Graphics.UI.Gtk.Multiline.TextIter#}
+{#import Graphics.UI.Gtk.SourceView.Types#}
 
 {# context lib="gtk" prefix="gtk" #}
 

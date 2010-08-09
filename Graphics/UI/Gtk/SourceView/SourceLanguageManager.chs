@@ -55,11 +55,12 @@ module Graphics.UI.Gtk.SourceView.SourceLanguageManager (
 import Control.Monad	(liftM)
 import Data.Maybe (fromMaybe)
 
+import System.Glib.Attributes
 import System.Glib.FFI
 import System.Glib.GObject (constructNewGObject, makeNewGObject)
-import System.Glib.UTFString
-import System.Glib.Attributes
 import System.Glib.Properties
+import System.Glib.UTFString
+
 {#import Graphics.UI.Gtk.SourceView.Types#}
 
 {# context lib="gtk" prefix="gtk" #}

@@ -105,20 +105,21 @@ module Graphics.UI.Gtk.SourceView.SourceView (
   ) where
 
 import Control.Monad	(liftM)
-import Data.Maybe    (fromMaybe)
 import Control.Monad.Reader ( runReaderT )
+import Data.Maybe    (fromMaybe)
 
-import System.Glib.FFI
-{#import System.Glib.Properties#}
-import System.Glib.Attributes
 import Graphics.UI.Gtk.Abstract.Object	(makeNewObject)
 import Graphics.UI.Gtk.Abstract.Widget (Color)
-import Graphics.UI.GtkInternals  ( TextIter, mkTextIterCopy )
 import Graphics.UI.Gtk.Gdk.EventM (EventM, EAny)
 import Graphics.UI.Gtk.Multiline.TextView (TextWindowType (..))
 import Graphics.UI.Gtk.SourceView.Enums
-{#import Graphics.UI.Gtk.SourceView.Types#}
+import Graphics.UI.GtkInternals  ( TextIter, mkTextIterCopy )
+import System.Glib.Attributes
+import System.Glib.FFI
+
 {#import Graphics.UI.Gtk.SourceView.Signals#}
+{#import Graphics.UI.Gtk.SourceView.Types#}
+{#import System.Glib.Properties#}
 
 {# context lib="gtk" prefix="gtk" #}
 

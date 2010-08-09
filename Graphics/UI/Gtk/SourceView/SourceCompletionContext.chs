@@ -45,13 +45,14 @@ module Graphics.UI.Gtk.SourceView.SourceCompletionContext (
 
 import Control.Monad	(liftM)
 
-import System.Glib.FFI
-import System.Glib.UTFString
-import System.Glib.GObject	(makeNewGObject)
-import System.Glib.Attributes
-import System.Glib.Properties
-import System.Glib.GList		(fromGList, withGList)
 import Graphics.UI.Gtk.SourceView.Enums
+import System.Glib.Attributes
+import System.Glib.FFI
+import System.Glib.GList		(fromGList, withGList)
+import System.Glib.GObject	(makeNewGObject)
+import System.Glib.Properties
+import System.Glib.UTFString
+
 {#import Graphics.UI.Gtk.SourceView.Signals#}
 {#import Graphics.UI.Gtk.SourceView.Types#}
 

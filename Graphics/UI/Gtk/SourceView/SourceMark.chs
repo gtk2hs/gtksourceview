@@ -54,11 +54,12 @@ module Graphics.UI.Gtk.SourceView.SourceMark (
 
 import Control.Monad	(liftM)
 
-import System.Glib.FFI
-import System.Glib.UTFString
-import System.Glib.GObject	(makeNewGObject)
 import System.Glib.Attributes
+import System.Glib.FFI
+import System.Glib.GObject	(makeNewGObject)
 import System.Glib.Properties
+import System.Glib.UTFString
+
 {#import Graphics.UI.Gtk.SourceView.Types#}
 
 {# context lib="gtk" prefix="gtk" #}

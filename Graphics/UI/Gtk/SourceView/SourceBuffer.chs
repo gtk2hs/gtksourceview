@@ -90,18 +90,17 @@ module Graphics.UI.Gtk.SourceView.SourceBuffer (
 import Control.Monad	(liftM)
 import Data.Maybe    (fromMaybe)
 
+import Graphics.UI.Gtk.Abstract.Object	(makeNewObject)
+import System.Glib.Attributes
 import System.Glib.FFI
 import System.Glib.GList
-import System.Glib.GObject              (constructNewGObject,
-					 makeNewGObject)
-{#import System.Glib.Properties#}
-import System.Glib.Attributes
-import Graphics.UI.Gtk.Abstract.Object	(makeNewObject)
-{#import Graphics.UI.Gtk.SourceView.Types#}
-{#import Graphics.UI.Gtk.SourceView.Signals#}
-{#import Graphics.UI.Gtk.Multiline.TextIter#}
+import System.Glib.GObject              (constructNewGObject, makeNewGObject)
 
+{#import Graphics.UI.Gtk.Multiline.TextIter#}
+{#import Graphics.UI.Gtk.SourceView.Signals#}
 {#import Graphics.UI.Gtk.SourceView.SourceMark#}
+{#import Graphics.UI.Gtk.SourceView.Types#}
+{#import System.Glib.Properties#}
 
 {# context lib="gtk" prefix="gtk" #}
 

@@ -34,15 +34,16 @@ module Graphics.UI.Gtk.SourceView.SourceStyle.Internal (
 import Control.Monad (liftM, sequence)
 import Data.Maybe (catMaybes)
 
+import Graphics.UI.Gtk.SourceView.SourceStyle
 import System.Glib.FFI
-{#import System.Glib.GObject#}              (objectNew, constructNewGObject)
 import System.Glib.GType (GType)
-import qualified System.Glib.GTypeConstants as GType
 import System.Glib.GValue (GValue, valueInit, allocaGValue)
 import System.Glib.GValueTypes (valueSetString, valueSetBool)
-{#import System.Glib.Properties#}
+import qualified System.Glib.GTypeConstants as GType
+
 {#import Graphics.UI.Gtk.SourceView.Types#}
-import Graphics.UI.Gtk.SourceView.SourceStyle
+{#import System.Glib.GObject#}              (objectNew, constructNewGObject)
+{#import System.Glib.Properties#}
 
 {# context lib="gtk" prefix="gtk" #}
 

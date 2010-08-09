@@ -63,16 +63,17 @@ module Graphics.UI.Gtk.SourceView.SourceCompletion (
 import Control.Monad	(liftM)
 import Data.Maybe (fromMaybe)
 
-import System.Glib.FFI
-import System.Glib.UTFString
-import System.Glib.GObject	(makeNewGObject)
+import Graphics.UI.Gtk.Abstract.Object	(makeNewObject)
+import Graphics.UI.Gtk.General.Enums (ScrollStep (..))
+import Graphics.UI.Gtk.Multiline.TextView (TextWindowType (..))
 import System.Glib.Attributes
-import System.Glib.Properties
+import System.Glib.FFI
 import System.Glib.GError
 import System.Glib.GList		(fromGList, withGList)
-import Graphics.UI.Gtk.Abstract.Object	(makeNewObject)
-import Graphics.UI.Gtk.Multiline.TextView (TextWindowType (..))
-import Graphics.UI.Gtk.General.Enums (ScrollStep (..))
+import System.Glib.GObject	(makeNewGObject)
+import System.Glib.Properties
+import System.Glib.UTFString
+
 {#import Graphics.UI.Gtk.SourceView.Signals#}
 {#import Graphics.UI.Gtk.SourceView.Types#}
 
