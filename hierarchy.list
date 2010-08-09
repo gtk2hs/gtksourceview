@@ -84,6 +84,7 @@
                             GtkListItem			if deprecated
 #			    GtkTreeItem
                         GtkWindow
+							GtkSourceCompletionInfo if gtksourceview2
                             GtkDialog
 			    	GtkAboutDialog		if gtk-2.6
                                 GtkColorSelectionDialog
