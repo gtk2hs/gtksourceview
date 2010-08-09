@@ -38,6 +38,7 @@ module Graphics.UI.Gtk.SourceView.SourceCompletionProvider (
    sourceCompletionProviderGetPriority,
    sourceCompletionProviderGetInfoWidget,
    sourceCompletionProviderGetActivation,
+   sourceCompletionProviderMatch,
    sourceCompletionProviderPopulate,
    sourceCompletionProviderActivateProposal,
 ) where
@@ -113,6 +114,16 @@ sourceCompletionProviderGetActivation scp =
     liftM (toEnum . fromIntegral) $
     {#call gtk_source_completion_provider_get_activation #}
       (toSourceCompletionProvider scp)
+
+-- | Get whether the provider match the context of completion detailed in context.
+sourceCompletionProviderMatch :: SourceCompletionProviderClass scp => scp
+                              -> SourceCompletionContext
+                              -> IO Bool  -- ^ returns  'True' if provider matches the completion context, 'False' otherwise
+sourceCompletionProviderMatch scp context =
+  liftM toBool $
+  {#call gtk_source_completion_provider_match #}
+   (toSourceCompletionProvider scp)
+   context
 
 -- | Populate context with proposals from provider
 sourceCompletionProviderPopulate :: SourceCompletionProviderClass scp => scp
