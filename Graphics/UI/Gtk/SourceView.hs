@@ -3,6 +3,7 @@ module Graphics.UI.Gtk.SourceView (
 	module Graphics.UI.Gtk.SourceView.SourceCompletion,
 	module Graphics.UI.Gtk.SourceView.SourceCompletionContext,
 	module Graphics.UI.Gtk.SourceView.SourceCompletionInfo,
+	module Graphics.UI.Gtk.SourceView.SourceCompletionItem,
 	module Graphics.UI.Gtk.SourceView.SourceCompletionProposal,
 	module Graphics.UI.Gtk.SourceView.SourceCompletionProvider,
 	module Graphics.UI.Gtk.SourceView.SourceGutter,
@@ -21,6 +22,7 @@ import Graphics.UI.Gtk.SourceView.SourceBuffer
 import Graphics.UI.Gtk.SourceView.SourceCompletion
 import Graphics.UI.Gtk.SourceView.SourceCompletionContext
 import Graphics.UI.Gtk.SourceView.SourceCompletionInfo
+import Graphics.UI.Gtk.SourceView.SourceCompletionItem
 import Graphics.UI.Gtk.SourceView.SourceCompletionProposal
 import Graphics.UI.Gtk.SourceView.SourceCompletionProvider
 import Graphics.UI.Gtk.SourceView.SourceGutter

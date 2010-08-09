@@ -22,6 +22,7 @@
 		GtkSourceCompletionProvider if gtksourceview2
 		GtkSourceCompletionProposal if gtksourceview2
 		GtkSourceCompletionContext if gtksourceview2
+		GtkSourceCompletionItem if gtksourceview2
         GdkDrawable 
             GdkWindow		as DrawWindow, gdk_window_object_get_type
 #            GdkDrawableImplX11
