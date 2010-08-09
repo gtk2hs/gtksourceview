@@ -37,6 +37,7 @@ module Graphics.UI.Gtk.SourceView.SourceCompletionProvider (
    sourceCompletionProviderGetInteractiveDelay,
    sourceCompletionProviderGetPriority,
    sourceCompletionProviderGetInfoWidget,
+   sourceCompletionProviderGetActivation,
    sourceCompletionProviderPopulate,
    sourceCompletionProviderActivateProposal,
 ) where
@@ -49,6 +50,7 @@ import System.Glib.GObject	(makeNewGObject)
 import System.Glib.Attributes
 import System.Glib.Properties
 import Graphics.UI.Gtk.Abstract.Object	(makeNewObject)
+import Graphics.UI.Gtk.SourceView.Enums
 {#import Graphics.UI.Gtk.SourceView.Signals#}
 {#import Graphics.UI.Gtk.SourceView.Types#}
 
@@ -103,6 +105,14 @@ sourceCompletionProviderGetInfoWidget scp proposal =
   {#call gtk_source_completion_provider_get_info_widget #}
     (toSourceCompletionProvider scp)
     proposal
+
+-- | Get with what kind of activation the provider should be activated.
+sourceCompletionProviderGetActivation :: SourceCompletionProviderClass scp => scp
+                                      -> IO SourceCompletionActivation
+sourceCompletionProviderGetActivation scp =
+    liftM (toEnum . fromIntegral) $
+    {#call gtk_source_completion_provider_get_activation #}
+      (toSourceCompletionProvider scp)
 
 -- | Populate context with proposals from provider
 sourceCompletionProviderPopulate :: SourceCompletionProviderClass scp => scp
