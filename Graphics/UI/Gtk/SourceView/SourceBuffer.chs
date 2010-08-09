@@ -435,7 +435,7 @@ sourceBufferUndoManager = newAttrFromObjectProperty "undo-manager"
 -- |
 --
 sourceBufferHighlightUpdated :: SourceBufferClass buffer => Signal buffer (TextIter -> TextIter -> IO ())
-sourceBufferHighlightUpdated = Signal $ connect_BOXED_BOXED__NONE "highlight-updated" mkTextIterCopy mkTextIterCopy
+sourceBufferHighlightUpdated = Signal $ connect_BOXED_BOXED__NONE "highlight_updated" mkTextIterCopy mkTextIterCopy
 
 -- |
 --
@@ -451,4 +451,4 @@ sourceBufferUndoSignal = Signal $ connect_NONE__NONE "undo"
 -- buffer.
 --
 sourceBufferSourceMarkUpdated :: SourceBufferClass buffer => Signal buffer (TextMark -> IO ())
-sourceBufferSourceMarkUpdated = Signal $ connect_OBJECT__NONE "source-mark-updated" 
+sourceBufferSourceMarkUpdated = Signal $ connect_OBJECT__NONE "source_mark_updated" 

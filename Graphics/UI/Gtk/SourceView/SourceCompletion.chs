@@ -219,7 +219,7 @@ sourceCompletionView = newAttrFromObjectProperty "view"
 -- control the proposal activation programmatically.
 sourceCompletionActivateProposal :: SourceCompletionClass sc => Signal sc (IO ())
 sourceCompletionActivateProposal = 
-  Signal $ connect_NONE__NONE "activate-proposal"
+  Signal $ connect_NONE__NONE "activate_proposal"
 
 -- | Emitted when the completion window is hidden. The default handler will actually hide the window.
 sourceCompletionHideSignal :: SourceCompletionClass sc => Signal sc (IO ())
@@ -233,7 +233,7 @@ sourceCompletionHideSignal =
 -- control the cursor programmatically.
 sourceCompletionMoveCursor :: SourceCompletionClass sc => Signal sc (ScrollStep -> Int -> IO ())
 sourceCompletionMoveCursor =
-  Signal $ connect_ENUM_INT__NONE "move-cursor"
+  Signal $ connect_ENUM_INT__NONE "move_cursor"
 
 -- | The 'movePage' signal is a keybinding signal which gets emitted when the user initiates a page
 -- movement (i.e. switches between provider pages).
@@ -242,7 +242,7 @@ sourceCompletionMoveCursor =
 -- control the page selection programmatically.
 sourceCompletionMovePage :: SourceCompletionClass sc => Signal sc (ScrollStep -> Int -> IO ())
 sourceCompletionMovePage =
-  Signal $ connect_ENUM_INT__NONE "move-page"
+  Signal $ connect_ENUM_INT__NONE "move_page"
 
 -- | Emitted when the completion window is shown. The default handler will actually show the window.
 sourceCompletionShowSignal :: SourceCompletionClass sc => Signal sc (IO ())

@@ -102,9 +102,9 @@ sourceUndoManagerEndNotUndoableAction sm =
 -- | Emitted when the ability to redo has changed.
 --
 sourceUndoManagerCanRedoChanged :: SourceUndoManagerClass sum => Signal sum (IO ())
-sourceUndoManagerCanRedoChanged = Signal $ connect_NONE__NONE "can-redo-changed"
+sourceUndoManagerCanRedoChanged = Signal $ connect_NONE__NONE "can_redo_changed"
 
 -- | Emitted when the ability to undo has changed.
 --
 sourceUndoManagerCanUndoChanged :: SourceUndoManagerClass sum => Signal sum (IO ())
-sourceUndoManagerCanUndoChanged = Signal $ connect_NONE__NONE "can-undo-changed"
+sourceUndoManagerCanUndoChanged = Signal $ connect_NONE__NONE "can_undo_changed"
