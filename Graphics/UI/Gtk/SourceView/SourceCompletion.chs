@@ -34,6 +34,7 @@ module Graphics.UI.Gtk.SourceView.SourceCompletion (
     sourceCompletionGetProviders,
     -- sourceCompletionShow,
     sourceCompletionHide,
+    sourceCompletionGetInfoWindow,
     sourceCompletionMoveWindow,
     sourceCompletionBlockInteractive,
     sourceCompletionUnblockInteractive,
@@ -67,6 +68,7 @@ import System.Glib.Attributes
 import System.Glib.Properties
 import System.Glib.GError
 import System.Glib.GList		(fromGList, withGList)
+import Graphics.UI.Gtk.Abstract.Object	(makeNewObject)
 import Graphics.UI.Gtk.Multiline.TextView (TextWindowType (..))
 import Graphics.UI.Gtk.General.Enums (ScrollStep (..))
 {#import Graphics.UI.Gtk.SourceView.Signals#}
@@ -117,6 +119,14 @@ sourceCompletionGetProviders sc = do
 sourceCompletionHide :: SourceCompletionClass sc => sc -> IO ()
 sourceCompletionHide sc =
   {#call gtk_source_completion_hide #} (toSourceCompletion sc)
+
+-- | The info widget is the window where the completion displays optional extra information of the
+-- proposal.
+sourceCompletionGetInfoWindow :: SourceCompletionClass sc => sc -> IO SourceCompletionInfo
+sourceCompletionGetInfoWindow sc =
+  makeNewObject mkSourceCompletionInfo $
+  {#call gtk_source_completion_get_info_window #}
+    (toSourceCompletion sc)
 
 -- | Move the completion window to a specific iter.
 sourceCompletionMoveWindow :: SourceCompletionClass sc => sc
