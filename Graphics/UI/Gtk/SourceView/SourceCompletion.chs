@@ -56,7 +56,7 @@ module Graphics.UI.Gtk.SourceView.SourceCompletion (
     sourceCompletionHideSignal,
     sourceCompletionMoveCursor,
     sourceCompletionMovePage,
-    -- sourceCompletionPopulateContext,
+    sourceCompletionPopulateContext,
     sourceCompletionShowSignal,
 ) where
 
@@ -267,6 +267,11 @@ sourceCompletionMoveCursor =
 sourceCompletionMovePage :: SourceCompletionClass sc => Signal sc (ScrollStep -> Int -> IO ())
 sourceCompletionMovePage =
   Signal $ connect_ENUM_INT__NONE "move_page"
+
+-- | Emitted just before starting to populate the completion with providers. You can use this signal to
+-- add additional attributes in the context.
+sourceCompletionPopulateContext :: SourceCompletionClass sc => Signal sc (SourceCompletionContext -> IO ())
+sourceCompletionPopulateContext = Signal $ connect_OBJECT__NONE "populate_context"
 
 -- | Emitted when the completion window is shown. The default handler will actually show the window.
 sourceCompletionShowSignal :: SourceCompletionClass sc => Signal sc (IO ())
