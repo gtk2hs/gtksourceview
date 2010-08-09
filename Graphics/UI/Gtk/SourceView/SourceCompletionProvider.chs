@@ -37,6 +37,7 @@ module Graphics.UI.Gtk.SourceView.SourceCompletionProvider (
    sourceCompletionProviderGetInteractiveDelay,
    sourceCompletionProviderGetPriority,
    sourceCompletionProviderGetInfoWidget,
+   sourceCompletionProviderPopulate,
    sourceCompletionProviderActivateProposal,
 ) where
 
@@ -102,6 +103,15 @@ sourceCompletionProviderGetInfoWidget scp proposal =
   {#call gtk_source_completion_provider_get_info_widget #}
     (toSourceCompletionProvider scp)
     proposal
+
+-- | Populate context with proposals from provider
+sourceCompletionProviderPopulate :: SourceCompletionProviderClass scp => scp
+                                 -> SourceCompletionContext
+                                 -> IO ()
+sourceCompletionProviderPopulate scp context =
+  {#call gtk_source_completion_provider_populate #}
+     (toSourceCompletionProvider scp)
+     context
 
 -- | Activate proposal at iter. When this functions returns 'False', the default activation of proposal
 -- will take place which replaces the word at iter with the label of proposal.
