@@ -35,6 +35,7 @@ module Graphics.UI.Gtk.SourceView.SourceCompletion (
     -- sourceCompletionShow,
     sourceCompletionHide,
     sourceCompletionGetInfoWindow,
+    sourceCompletionCreateContext,
     sourceCompletionMoveWindow,
     sourceCompletionBlockInteractive,
     sourceCompletionUnblockInteractive,
@@ -60,6 +61,7 @@ module Graphics.UI.Gtk.SourceView.SourceCompletion (
 ) where
 
 import Control.Monad	(liftM)
+import Data.Maybe (fromMaybe)
 
 import System.Glib.FFI
 import System.Glib.UTFString
@@ -127,6 +129,18 @@ sourceCompletionGetInfoWindow sc =
   makeNewObject mkSourceCompletionInfo $
   {#call gtk_source_completion_get_info_window #}
     (toSourceCompletion sc)
+
+-- | Create a new 'SourceCompletionContext' for completion. The position at which the completion using
+-- the new context will consider completion can be provider by position. If position is 'Nothing', the
+-- current cursor position will be used.
+sourceCompletionCreateContext :: SourceCompletionClass sc => sc
+                              -> Maybe TextIter
+                              -> IO SourceCompletionContext
+sourceCompletionCreateContext sc iter = 
+  makeNewGObject mkSourceCompletionContext $
+  {#call gtk_source_completion_create_context #}
+    (toSourceCompletion sc)
+    (fromMaybe (TextIter nullForeignPtr) iter)
 
 -- | Move the completion window to a specific iter.
 sourceCompletionMoveWindow :: SourceCompletionClass sc => sc
