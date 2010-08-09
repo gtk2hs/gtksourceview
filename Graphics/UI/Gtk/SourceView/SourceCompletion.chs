@@ -32,7 +32,7 @@ module Graphics.UI.Gtk.SourceView.SourceCompletion (
     sourceCompletionAddProvider,
     sourceCompletionRemoveProvider,
     sourceCompletionGetProviders,
-    -- sourceCompletionShow,
+    sourceCompletionShow,
     sourceCompletionHide,
     sourceCompletionGetInfoWindow,
     sourceCompletionCreateContext,
@@ -113,9 +113,18 @@ sourceCompletionGetProviders sc = do
 
 -- | Starts a new completion with the specified 'SourceCompletionContext' and a list of potential
 -- candidate providers for completion.
--- sourceCompletionShow :: SourceCompletionClass sc => sc
---                      -> [SourceCompletionProvider]
---                      -> 
+sourceCompletionShow :: SourceCompletionClass sc => sc
+                     -> [SourceCompletionProvider] -- ^ @providers@  A list of 'SourceCompletionProvider' 
+                     -> SourceCompletionContext -- ^ @context@    The 'SourceCompletionContext' with which to start the completion
+                     -> IO Bool -- ^ returns    'True' if it was possible to the show completion window.           
+sourceCompletionShow sc providers context =
+  liftM toBool $
+  withForeignPtrs (map unSourceCompletionProvider providers) $ \providersPtr ->
+  withGList providersPtr $ \glist ->
+  {#call gtk_source_completion_show #}
+    (toSourceCompletion sc)
+    glist
+    context
 
 -- | Hides the completion if it is active (visible).
 sourceCompletionHide :: SourceCompletionClass sc => sc -> IO ()
