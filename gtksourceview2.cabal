@@ -47,7 +47,15 @@ Library
 						
         exposed-modules:
           Graphics.UI.Gtk.SourceView
+          Graphics.UI.Gtk.SourceView.Enums
           Graphics.UI.Gtk.SourceView.SourceBuffer
+          Graphics.UI.Gtk.SourceView.SourceCompletion
+          Graphics.UI.Gtk.SourceView.SourceCompletionContext
+          Graphics.UI.Gtk.SourceView.SourceCompletionInfo
+          Graphics.UI.Gtk.SourceView.SourceCompletionItem
+          Graphics.UI.Gtk.SourceView.SourceCompletionProposal
+          Graphics.UI.Gtk.SourceView.SourceCompletionProvider
+          Graphics.UI.Gtk.SourceView.SourceGutter
           Graphics.UI.Gtk.SourceView.SourceIter
           Graphics.UI.Gtk.SourceView.SourceLanguage
           Graphics.UI.Gtk.SourceView.SourceLanguageManager
@@ -55,15 +63,8 @@ Library
           Graphics.UI.Gtk.SourceView.SourceStyle
           Graphics.UI.Gtk.SourceView.SourceStyleScheme
           Graphics.UI.Gtk.SourceView.SourceStyleSchemeManager
-          Graphics.UI.Gtk.SourceView.SourceView
           Graphics.UI.Gtk.SourceView.SourceUndoManager
-          Graphics.UI.Gtk.SourceView.SourceGutter
-          Graphics.UI.Gtk.SourceView.SourceCompletion
-          Graphics.UI.Gtk.SourceView.SourceCompletionProvider
-          Graphics.UI.Gtk.SourceView.SourceCompletionProposal
-          Graphics.UI.Gtk.SourceView.SourceCompletionInfo
-          Graphics.UI.Gtk.SourceView.SourceCompletionContext
-          Graphics.UI.Gtk.SourceView.SourceCompletionItem
+          Graphics.UI.Gtk.SourceView.SourceView
         other-modules:
           Graphics.UI.Gtk.SourceView.SourceStyle.Internal
           Graphics.UI.Gtk.SourceView.Types		  

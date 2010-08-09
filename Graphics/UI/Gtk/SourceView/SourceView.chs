@@ -116,16 +116,11 @@ import Graphics.UI.Gtk.Abstract.Widget (Color)
 import Graphics.UI.GtkInternals  ( TextIter, mkTextIterCopy )
 import Graphics.UI.Gtk.Gdk.EventM (EventM, EAny)
 import Graphics.UI.Gtk.Multiline.TextView (TextWindowType (..))
+import Graphics.UI.Gtk.SourceView.Enums
 {#import Graphics.UI.Gtk.SourceView.Types#}
 {#import Graphics.UI.Gtk.SourceView.Signals#}
 
 {# context lib="gtk" prefix="gtk" #}
-
-{# enum SourceSmartHomeEndType {underscoreToCase} deriving (Eq, Bounded, Show, Read) #}
-
-{# enum SourceDrawSpacesFlags {underscoreToCase} deriving (Eq, Bounded, Show, Read) #}
-
-{# enum SourceViewGutterPosition {underscoreToCase} deriving (Eq, Bounded, Show, Read) #}
 
 -- | Create a new 'SourceView' widget with a default 'SourceBuffer'.
 --

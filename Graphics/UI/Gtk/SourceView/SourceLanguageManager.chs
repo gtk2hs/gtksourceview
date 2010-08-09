@@ -64,8 +64,6 @@ import System.Glib.Properties
 
 {# context lib="gtk" prefix="gtk" #}
 
-{# enum SourceSmartHomeEndType {underscoreToCase} deriving (Eq, Bounded, Show, Read) #}
-
 -- | Creates a new language manager. If you do not need more than one language manager or a private
 -- language manager instance then use 'sourceLanguageManagerGetDefault' instead.
 --

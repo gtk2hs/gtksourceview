@@ -51,12 +51,11 @@ import System.Glib.GObject	(makeNewGObject)
 import System.Glib.Attributes
 import System.Glib.Properties
 import System.Glib.GList		(fromGList, withGList)
+import Graphics.UI.Gtk.SourceView.Enums
 {#import Graphics.UI.Gtk.SourceView.Signals#}
 {#import Graphics.UI.Gtk.SourceView.Types#}
 
 {# context lib="gtk" prefix="gtk" #}
-
-{# enum SourceCompletionActivation {underscoreToCase} deriving(Eq,Bounded,Show,Read) #}
 
 -- | Providers can use this function to add proposals to the completion. They can do so asynchronously by
 -- means of the finished argument. Providers must ensure that they always call this function with
