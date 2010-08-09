@@ -29,6 +29,10 @@ module Graphics.UI.Gtk.SourceView.SourceCompletion (
     SourceCompletionClass,
 
 -- * Methods
+    sourceCompletionAddProvider,
+    sourceCompletionRemoveProvider,
+    sourceCompletionGetProviders,
+    -- sourceCompletionShow,
     sourceCompletionHide,
     sourceCompletionMoveWindow,
     sourceCompletionBlockInteractive,
@@ -51,7 +55,7 @@ module Graphics.UI.Gtk.SourceView.SourceCompletion (
     sourceCompletionMoveCursor,
     sourceCompletionMovePage,
     -- sourceCompletionPopulateContext,
-    sourceCompletionShow,
+    sourceCompletionShowSignal,
 ) where
 
 import Control.Monad	(liftM)
@@ -61,12 +65,53 @@ import System.Glib.UTFString
 import System.Glib.GObject	(makeNewGObject)
 import System.Glib.Attributes
 import System.Glib.Properties
+import System.Glib.GError
+import System.Glib.GList		(fromGList, withGList)
 import Graphics.UI.Gtk.Multiline.TextView (TextWindowType (..))
 import Graphics.UI.Gtk.General.Enums (ScrollStep (..))
 {#import Graphics.UI.Gtk.SourceView.Signals#}
 {#import Graphics.UI.Gtk.SourceView.Types#}
 
 {# context lib="gtk" prefix="gtk" #}
+
+-- | Add a new 'SourceCompletionProvider' to the completion object. This will add a reference provider,
+-- so make sure to unref your own copy when you no longer need it.
+sourceCompletionAddProvider :: SourceCompletionClass sc => sc 
+                            -> SourceCompletionProvider
+                            -> IO Bool -- ^ returns    'True' if provider was successfully added, otherwise if error is provided, it will be set with the error and     
+sourceCompletionAddProvider sc provider = 
+  liftM toBool $
+  propagateGError $ \gErrorPtr -> 
+      {# call gtk_source_completion_add_provider #}  
+          (toSourceCompletion sc)
+          provider
+          gErrorPtr
+
+-- | Remove provider from the completion.
+sourceCompletionRemoveProvider :: SourceCompletionClass sc => sc 
+                               -> SourceCompletionProvider
+                               -> IO Bool  -- ^ returns    'True' if provider was successfully removed, otherwise if error is provided, it will be set with the error and   
+sourceCompletionRemoveProvider sc provider =
+  liftM toBool $
+  propagateGError $ \gErrorPtr -> 
+      {#call gtk_source_completion_remove_provider #}
+         (toSourceCompletion sc)
+         provider
+         gErrorPtr
+      
+-- | Get list of providers registered on completion. The returned list is owned by the completion and
+-- should not be freed.
+sourceCompletionGetProviders :: SourceCompletionClass sc => sc -> IO [SourceCompletionProvider]
+sourceCompletionGetProviders sc = do
+  glist <- {#call gtk_source_completion_get_providers #} (toSourceCompletion sc)
+  glistPtrs <- fromGList glist
+  mapM (makeNewGObject mkSourceCompletionProvider . return) glistPtrs  
+
+-- | Starts a new completion with the specified 'SourceCompletionContext' and a list of potential
+-- candidate providers for completion.
+-- sourceCompletionShow :: SourceCompletionClass sc => sc
+--                      -> [SourceCompletionProvider]
+--                      -> 
 
 -- | Hides the completion if it is active (visible).
 sourceCompletionHide :: SourceCompletionClass sc => sc -> IO ()
@@ -200,6 +245,6 @@ sourceCompletionMovePage =
   Signal $ connect_ENUM_INT__NONE "move-page"
 
 -- | Emitted when the completion window is shown. The default handler will actually show the window.
-sourceCompletionShow :: SourceCompletionClass sc => Signal sc (IO ())
-sourceCompletionShow =
+sourceCompletionShowSignal :: SourceCompletionClass sc => Signal sc (IO ())
+sourceCompletionShowSignal =
   Signal $ connect_NONE__NONE "show"
