@@ -62,6 +62,7 @@ Library
           Graphics.UI.Gtk.SourceView.SourceCompletionProvider
           Graphics.UI.Gtk.SourceView.SourceCompletionProposal
           Graphics.UI.Gtk.SourceView.SourceCompletionInfo
+          Graphics.UI.Gtk.SourceView.SourceCompletionContext
         other-modules:
           Graphics.UI.Gtk.SourceView.SourceStyle.Internal
           Graphics.UI.Gtk.SourceView.Types		  
