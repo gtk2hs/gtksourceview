@@ -39,6 +39,7 @@ module Graphics.UI.Gtk.SourceView.SourceCompletionProvider (
    sourceCompletionProviderGetInfoWidget,
    sourceCompletionProviderGetActivation,
    sourceCompletionProviderMatch,
+   sourceCompletionProviderUpdateInfo,
    sourceCompletionProviderPopulate,
    sourceCompletionProviderActivateProposal,
 ) where
@@ -124,6 +125,19 @@ sourceCompletionProviderMatch scp context =
   {#call gtk_source_completion_provider_match #}
    (toSourceCompletionProvider scp)
    context
+
+-- | Update extra information shown in info for proposal. This should be implemented if your provider
+-- sets a custom info widget for proposal. This function MUST be implemented when
+-- 'sourceCompletionProviderGetInfoWidget' is implemented.
+sourceCompletionProviderUpdateInfo :: SourceCompletionProviderClass scp => scp
+                                   -> SourceCompletionProposal
+                                   -> SourceCompletionInfo
+                                   -> IO ()
+sourceCompletionProviderUpdateInfo scp proposal info =
+  {#call gtk_source_completion_provider_update_info #}
+    (toSourceCompletionProvider scp)
+    proposal
+    info
 
 -- | Populate context with proposals from provider
 sourceCompletionProviderPopulate :: SourceCompletionProviderClass scp => scp
