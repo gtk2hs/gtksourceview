@@ -38,6 +38,7 @@ module Graphics.UI.Gtk.SourceView.SourceCompletionProvider (
    sourceCompletionProviderGetPriority,
    sourceCompletionProviderGetInfoWidget,
    sourceCompletionProviderGetActivation,
+   sourceCompletionProviderGetStartIter,
    sourceCompletionProviderMatch,
    sourceCompletionProviderUpdateInfo,
    sourceCompletionProviderPopulate,
@@ -115,6 +116,24 @@ sourceCompletionProviderGetActivation scp =
     liftM (toEnum . fromIntegral) $
     {#call gtk_source_completion_provider_get_activation #}
       (toSourceCompletionProvider scp)
+
+-- | Get the 'TextIter' at which the completion for proposal starts. When implemented, the completion
+-- can use this information to position the completion window accordingly when a proposal is selected
+-- in the completion window.
+sourceCompletionProviderGetStartIter :: SourceCompletionProviderClass scp => scp
+                                     -> SourceCompletionContext
+                                     -> SourceCompletionProposal
+                                     -> IO (Maybe TextIter)
+sourceCompletionProviderGetStartIter scp context proposal = do
+  iter <- makeEmptyTextIter
+  success <- liftM toBool $ {#call gtk_source_completion_provider_get_start_iter #}
+                (toSourceCompletionProvider scp)
+                context
+                proposal
+                iter
+  if success 
+     then return (Just iter)
+     else return Nothing
 
 -- | Get whether the provider match the context of completion detailed in context.
 sourceCompletionProviderMatch :: SourceCompletionProviderClass scp => scp
