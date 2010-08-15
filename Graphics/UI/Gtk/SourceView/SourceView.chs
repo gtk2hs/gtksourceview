@@ -530,7 +530,7 @@ sourceViewRedo = Signal $ connect_NONE__NONE "redo"
 -- line. The default binding key is Alt+Up/Down arrow. And moves the currently selected lines, or the
 -- current line by count. For the moment, only count of -1 or 1 is valid.
 sourceViewMoveLines :: SourceViewClass sv => Signal sv (Bool -> Int -> IO ())
-sourceViewMoveLines = Signal $ connect_BOOL_INT__NONE "move_lines"
+sourceViewMoveLines = Signal $ connect_BOOL_INT__NONE "move-lines"
 
 -- | The 'showCompletion' signal is a keybinding signal which gets emitted when the user initiates a
 -- completion in default mode.
@@ -538,14 +538,14 @@ sourceViewMoveLines = Signal $ connect_BOOL_INT__NONE "move_lines"
 -- Applications should not connect to it, but may emit it with @gSignalEmitByName@ if they need to
 -- control the default mode completion activation.
 sourceViewShowCompletion :: SourceViewClass sv => Signal sv (IO ())
-sourceViewShowCompletion = Signal $ connect_NONE__NONE "show_completion"
+sourceViewShowCompletion = Signal $ connect_NONE__NONE "show-completion"
 
 -- | Emitted when a line mark has been activated (for instance when there was a button press in the line
 -- marks gutter). You can use iter to determine on which line the activation took place.
 sourceViewLineMarkActivated :: SourceViewClass sv => Signal sv (TextIter -> EventM EAny ())
 sourceViewLineMarkActivated = 
   Signal (\after obj fun -> 
-           connect_PTR_BOXED__NONE "line_mark_activated" mkTextIterCopy after obj
+           connect_PTR_BOXED__NONE "line-mark-activated" mkTextIterCopy after obj
                                    (\eventPtr iter -> runReaderT (fun iter) eventPtr)
          )
 

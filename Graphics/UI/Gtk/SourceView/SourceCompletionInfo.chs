@@ -155,4 +155,4 @@ sourceCompletionInfoShrinkWidth = newAttrFromBoolProperty "shrink-width"
 
 -- |
 sourceCompletionInfoBeforeShow :: SourceCompletionInfoClass info => Signal info (IO ())
-sourceCompletionInfoBeforeShow = Signal $ connect_NONE__NONE "before_show"
+sourceCompletionInfoBeforeShow = Signal $ connect_NONE__NONE "before-show"

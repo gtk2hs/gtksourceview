@@ -141,7 +141,7 @@ sourceGutterWindowType = newAttrFromEnumProperty "window-type"
 sourceGutterCellActivated :: SourceGutterClass sg => Signal sg (CellRenderer -> TextIter -> EventM EAny ())                         
 sourceGutterCellActivated =
   Signal (\after obj fun -> 
-           connect_OBJECT_PTR_BOXED__NONE "cell_activated" mkTextIterCopy after obj
+           connect_OBJECT_PTR_BOXED__NONE "cell-activated" mkTextIterCopy after obj
                                    (\cr eventPtr iter -> runReaderT (fun cr iter) eventPtr)
          )
 
@@ -149,4 +149,4 @@ sourceGutterCellActivated =
 -- the tooltip has been handled.
 sourceGutterQueryTooltip :: SourceGutterClass sg => Signal sg (CellRenderer -> TextIter -> Tooltip -> IO Bool)
 sourceGutterQueryTooltip = 
-    Signal $ connect_OBJECT_BOXED_OBJECT__BOOL "query_tooltip" mkTextIterCopy
+    Signal $ connect_OBJECT_BOXED_OBJECT__BOOL "query-tooltip" mkTextIterCopy
