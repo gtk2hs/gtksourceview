@@ -38,7 +38,7 @@ main = do
   scrolledWindowSetPolicy sw PolicyAutomatic PolicyAutomatic
   sw `scrolledWindowSetShadowType` ShadowIn
   win `containerAdd` sw
-  
+
   -- show the widget and run the main loop
   windowSetDefaultSize win 400 500
   widgetShowAll win
