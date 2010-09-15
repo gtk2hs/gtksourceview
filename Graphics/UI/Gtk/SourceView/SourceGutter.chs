@@ -53,6 +53,8 @@ module Graphics.UI.Gtk.SourceView.SourceGutter (
     sourceGutterReorder,
     sourceGutterRemove,
     sourceGutterQueueDraw,
+    sourceGutterSetCellDataFunc,
+    sourceGutterSetCellSizeFunc,
 
 -- * Attributes
     sourceGutterView,
@@ -79,6 +81,18 @@ import System.Glib.UTFString
 {#import Graphics.UI.Gtk.SourceView.Types#}
 
 {# context lib="gtk" prefix="gtk" #}
+
+{#pointer SourceGutterDataFunc#}
+
+foreign import ccall "wrapper" mkSourceGutterDataFunc ::
+  (Ptr SourceGutter -> Ptr CellRenderer -> {#type gint#} -> {#type gboolean#} -> Ptr () -> IO ())
+  -> IO SourceGutterDataFunc
+
+{#pointer SourceGutterSizeFunc#}
+
+foreign import ccall "wrapper" mkSourceGutterSizeFunc ::
+  (Ptr SourceGutter -> Ptr CellRenderer -> Ptr () -> IO ())
+  -> IO SourceGutterSizeFunc
 
 -- | Get the 'Window' of the gutter. The window will only be available when the gutter has at least one,
 -- non-zero width, cell renderer packed.
@@ -124,6 +138,42 @@ sourceGutterQueueDraw :: SourceGutterClass sg => sg -> IO ()
 sourceGutterQueueDraw sb =
   {#call gtk_source_gutter_queue_draw #} (toSourceGutter sb)
 
+-- | Sets the 'SourceGutterDataFunc' to use for renderer. This function is used to setup the cell
+-- renderer properties for rendering the current cell.
+sourceGutterSetCellDataFunc :: (SourceGutterClass sg, CellRendererClass cell)
+                              => sg
+                              -> cell
+                              -> (CellRenderer -> Int -> Bool -> IO ())
+                              -> IO ()
+sourceGutterSetCellDataFunc gutter cell func = do
+  funcPtr <- mkSourceGutterDataFunc $ \_ c line currentLine _ -> do
+    func (toCellRenderer cell)
+         (fromIntegral line)
+         (toBool currentLine)
+  {#call gtk_source_gutter_set_cell_data_func #}
+     (toSourceGutter gutter)
+     (toCellRenderer cell)
+     funcPtr
+     (castFunPtrToPtr funcPtr)
+     destroyFunPtr
+
+-- | Sets the 'SourceGutterSizeFunc' to use for renderer. This function is used to setup the cell
+-- renderer properties for measuring the maximum size of the cell.
+sourceGutterSetCellSizeFunc :: (SourceGutterClass gutter, CellRendererClass cell)
+                              => gutter
+                              -> cell
+                              -> (CellRenderer -> IO ())
+                              -> IO ()
+sourceGutterSetCellSizeFunc gutter cell func = do
+  funcPtr <- mkSourceGutterSizeFunc $ \ _ c _ -> do
+    func (toCellRenderer cell)
+  {#call gtk_source_gutter_set_cell_size_func #}
+     (toSourceGutter gutter)
+     (toCellRenderer cell)
+     funcPtr
+     (castFunPtrToPtr funcPtr)
+     destroyFunPtr
+
 -- | The 'SourceView' of the gutter
 sourceGutterView :: SourceGutterClass sg => Attr sg SourceView
 sourceGutterView = newAttrFromObjectProperty "view"
@@ -150,3 +200,4 @@ sourceGutterCellActivated =
 sourceGutterQueryTooltip :: SourceGutterClass sg => Signal sg (CellRenderer -> TextIter -> Tooltip -> IO Bool)
 sourceGutterQueryTooltip = 
     Signal $ connect_OBJECT_BOXED_OBJECT__BOOL "query-tooltip" mkTextIterCopy
+
