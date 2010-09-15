@@ -7,6 +7,7 @@ import Graphics.UI.Gtk.SourceView
 main = do
   initGUI
   win <- windowNew
+  windowSetPosition win WinPosCenter
   win `onDestroy` mainQuit
 
   -- create the appropriate language
@@ -23,7 +24,7 @@ main = do
   buffer <- sourceBufferNewWithLanguage lang
 
   -- load up and display a file
-  fileContents <- readFile "SourceViewTest.hs"
+  fileContents <- readFile "SourceView.hs"
   textBufferSetText buffer fileContents
   textBufferSetModified buffer False
 

@@ -24,8 +24,9 @@ Extra-Source-Files: gtksourceview2.h
 
 Data-Dir:		demo
 Data-Files:		haskell.lang
-                SourceViewTest.hs
+                SourceView.hs
                 Makefile
+                LineNumber.hs
 				
 x-Types-File:       Graphics/UI/Gtk/SourceView/Types.chs
 x-Types-Tag:        gtksourceview2
