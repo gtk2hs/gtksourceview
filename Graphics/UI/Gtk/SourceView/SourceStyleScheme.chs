@@ -58,7 +58,7 @@ import Control.Monad	(liftM)
 import Graphics.UI.Gtk.SourceView.SourceStyle
 import System.Glib.Attributes
 import System.Glib.FFI
-import System.Glib.GObject	(constructNewGObject)
+import System.Glib.GObject	(makeNewGObject)
 import System.Glib.UTFString
 
 {#import Graphics.UI.Gtk.SourceView.SourceStyle.Internal#}

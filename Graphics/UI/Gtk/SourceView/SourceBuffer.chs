@@ -94,7 +94,7 @@ import Graphics.UI.Gtk.Abstract.Object	(makeNewObject)
 import System.Glib.Attributes
 import System.Glib.FFI
 import System.Glib.GList
-import System.Glib.GObject              (constructNewGObject, makeNewGObject)
+import System.Glib.GObject              (wrapNewGObject, makeNewGObject)
 
 {#import Graphics.UI.Gtk.Multiline.TextIter#}
 {#import Graphics.UI.Gtk.SourceView.Signals#}
@@ -110,7 +110,7 @@ import System.Glib.GObject              (constructNewGObject, makeNewGObject)
 -- taking a 'TextTagTable'.
 --
 sourceBufferNew :: Maybe TextTagTable -> IO SourceBuffer
-sourceBufferNew tt = constructNewGObject mkSourceBuffer $
+sourceBufferNew tt = wrapNewGObject mkSourceBuffer $
   {#call unsafe source_buffer_new#} 
   (fromMaybe (TextTagTable nullForeignPtr) tt)
 
@@ -118,7 +118,7 @@ sourceBufferNew tt = constructNewGObject mkSourceBuffer $
 -- with a 'SourceLanguage'.
 --
 sourceBufferNewWithLanguage :: SourceLanguage -> IO SourceBuffer
-sourceBufferNewWithLanguage lang = constructNewGObject mkSourceBuffer $
+sourceBufferNewWithLanguage lang = wrapNewGObject mkSourceBuffer $
   {#call unsafe source_buffer_new_with_language#} lang
 
 -- | Controls whether syntax is highlighted in the buffer. If highlight is 'True', the text will be

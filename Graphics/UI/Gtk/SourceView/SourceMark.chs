@@ -56,7 +56,7 @@ import Control.Monad	(liftM)
 
 import System.Glib.Attributes
 import System.Glib.FFI
-import System.Glib.GObject	(makeNewGObject)
+import System.Glib.GObject	(wrapNewGObject, makeNewGObject)
 import System.Glib.Properties
 import System.Glib.UTFString
 
@@ -74,7 +74,7 @@ sourceMarkNew :: Maybe String -- ^ @name@     Name of the 'SourceMark', can be '
               -> String  -- ^ @category@ is used to classify marks according to common characteristics (e.g. all the marks representing a bookmark could  
               -> IO SourceMark
 sourceMarkNew name category = 
-  makeNewGObject mkSourceMark $
+  wrapNewGObject mkSourceMark $
   maybeWith withUTFString name $ \namePtr ->
   withUTFString category $ \categoryPtr ->
   {#call gtk_source_mark_new#}

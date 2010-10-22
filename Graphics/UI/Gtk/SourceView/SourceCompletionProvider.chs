@@ -51,7 +51,7 @@ import Graphics.UI.Gtk.Abstract.Object	(makeNewObject)
 import Graphics.UI.Gtk.SourceView.Enums
 import System.Glib.Attributes
 import System.Glib.FFI
-import System.Glib.GObject	(makeNewGObject)
+import System.Glib.GObject	(wrapNewGObject)
 import System.Glib.Properties
 import System.Glib.UTFString
 
@@ -73,7 +73,7 @@ sourceCompletionProviderGetName scp =
 sourceCompletionProviderGetIcon :: SourceCompletionProviderClass scp => scp 
                                 -> IO (Maybe Pixbuf)
 sourceCompletionProviderGetIcon scp =
-  maybeNull (makeNewGObject mkPixbuf) $
+  maybeNull (wrapNewGObject mkPixbuf) $
   {#call gtk_source_completion_provider_get_icon #}
     (toSourceCompletionProvider scp)
 

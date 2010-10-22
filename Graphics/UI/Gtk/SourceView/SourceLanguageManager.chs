@@ -57,7 +57,7 @@ import Data.Maybe (fromMaybe)
 
 import System.Glib.Attributes
 import System.Glib.FFI
-import System.Glib.GObject (constructNewGObject, makeNewGObject)
+import System.Glib.GObject (wrapNewGObject, makeNewGObject)
 import System.Glib.Properties
 import System.Glib.UTFString
 
@@ -69,14 +69,14 @@ import System.Glib.UTFString
 -- language manager instance then use 'sourceLanguageManagerGetDefault' instead.
 --
 sourceLanguageManagerNew :: IO SourceLanguageManager
-sourceLanguageManagerNew = constructNewGObject mkSourceLanguageManager $ liftM castPtr
+sourceLanguageManagerNew = wrapNewGObject mkSourceLanguageManager $ liftM castPtr
   {#call unsafe source_language_manager_new#}
 
 -- | Returns the default 'SourceLanguageManager' instance.
 --
 sourceLanguageManagerGetDefault :: IO SourceLanguageManager
-sourceLanguageManagerGetDefault = makeNewGObject mkSourceLanguageManager $ liftM castPtr
-  {#call unsafe source_language_manager_new#}
+sourceLanguageManagerGetDefault = wrapNewGObject mkSourceLanguageManager $ liftM castPtr
+  {#call unsafe source_language_manager_get_default#}
 
 -- | Sets the list of directories where the lm looks for language files. If dirs is 'Nothing', the search path
 -- is reset to default.

@@ -50,7 +50,7 @@ import Control.Monad	(liftM)
 
 import System.Glib.Attributes
 import System.Glib.FFI
-import System.Glib.GObject	(makeNewGObject)
+import System.Glib.GObject	(wrapNewGObject)
 import System.Glib.Properties
 import System.Glib.UTFString
 
@@ -92,7 +92,7 @@ sourceCompletionProposalGetText scp =
 sourceCompletionProposalGetIcon :: SourceCompletionProposalClass scp => scp
                                 -> IO Pixbuf -- ^ returns  The icon of proposal.         
 sourceCompletionProposalGetIcon scp =
-  makeNewGObject mkPixbuf $
+  wrapNewGObject mkPixbuf $
   {#call gtk_source_completion_proposal_get_icon #}
     (toSourceCompletionProposal scp)
 

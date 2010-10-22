@@ -52,7 +52,7 @@ import Data.Maybe (fromMaybe)
 
 import System.Glib.Attributes
 import System.Glib.FFI
-import System.Glib.GObject (constructNewGObject, makeNewGObject)
+import System.Glib.GObject (wrapNewGObject, makeNewGObject)
 import System.Glib.UTFString
 
 {#import Graphics.UI.Gtk.SourceView.SourceStyleScheme#}
@@ -63,7 +63,7 @@ import System.Glib.UTFString
 -- 'sourceStyleSchemeManagerGetDefault' instead.
 --
 sourceStyleSchemeManagerNew :: IO SourceStyleSchemeManager
-sourceStyleSchemeManagerNew = constructNewGObject mkSourceStyleSchemeManager $ liftM castPtr
+sourceStyleSchemeManagerNew = wrapNewGObject mkSourceStyleSchemeManager $ liftM castPtr
   {#call unsafe source_style_scheme_manager_new#}
 
 -- | Returns the default 'SourceStyleSchemeManager' instance.

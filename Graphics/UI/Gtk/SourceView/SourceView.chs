@@ -108,12 +108,13 @@ import Control.Monad	(liftM)
 import Control.Monad.Reader ( runReaderT )
 import Data.Maybe    (fromMaybe)
 
-import Graphics.UI.Gtk.Abstract.Object	(makeNewObject)
+import Graphics.UI.Gtk.Abstract.Object (makeNewObject)
 import Graphics.UI.Gtk.Abstract.Widget (Color)
 import Graphics.UI.Gtk.Gdk.EventM (EventM, EAny)
 import Graphics.UI.Gtk.Multiline.TextView (TextWindowType (..))
 import Graphics.UI.Gtk.SourceView.Enums
 import Graphics.UI.GtkInternals  ( TextIter, mkTextIterCopy )
+import System.Glib.GObject	(wrapNewGObject, makeNewGObject)
 import System.Glib.Attributes
 import System.Glib.FFI
 
@@ -562,7 +563,7 @@ sourceViewSetMarkCategoryPixbuf sv markerType marker = withCString markerType $ 
 --
 sourceViewGetMarkCategoryPixbuf :: SourceViewClass sv => sv -> String -> IO Pixbuf
 sourceViewGetMarkCategoryPixbuf sv markerType = withCString markerType $ \strPtr ->
-  constructNewGObject mkPixbuf $
+  wrapNewGObject mkPixbuf $
   {#call unsafe source_view_get_mark_category_pixbuf#} (toSourceView sv) strPtr
 #endif
 

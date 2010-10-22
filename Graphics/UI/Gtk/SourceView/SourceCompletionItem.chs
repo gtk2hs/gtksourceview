@@ -46,7 +46,7 @@ import Data.Maybe (fromMaybe)
 
 import System.Glib.Attributes
 import System.Glib.FFI
-import System.Glib.GObject	(makeNewGObject)
+import System.Glib.GObject	(wrapNewGObject)
 import System.Glib.Properties
 import System.Glib.UTFString
 
@@ -64,7 +64,7 @@ sourceCompletionItemNew :: String -- ^ @label@   The item label
                         -> String -- ^ @info@    The item extra information       
                         -> IO SourceCompletionItem
 sourceCompletionItemNew label text icon info =
-  makeNewGObject mkSourceCompletionItem $
+  wrapNewGObject mkSourceCompletionItem $
   withUTFString label $ \ labelPtr -> 
   withUTFString text $ \ textPtr -> 
   withUTFString info $ \ infoPtr -> 
@@ -84,7 +84,7 @@ sourceCompletionItemNewWithMarkup :: String
                                   -> String
                                   -> IO SourceCompletionItem
 sourceCompletionItemNewWithMarkup markup text icon info = 
-  makeNewGObject mkSourceCompletionItem $ 
+  wrapNewGObject mkSourceCompletionItem $ 
   withUTFString markup $ \ markupPtr -> 
   withUTFString text $ \ textPtr -> 
   withUTFString info $ \ infoPtr -> 
@@ -102,7 +102,7 @@ sourceCompletionItemNewFromStock :: Maybe String -- ^ @label@   The item label o
                                  -> String -- ^ @info@    The item extra information                     
                                  -> IO SourceCompletionItem
 sourceCompletionItemNewFromStock label text stock info =
-  makeNewGObject mkSourceCompletionItem $
+  wrapNewGObject mkSourceCompletionItem $
   maybeWith withUTFString label $ \ labelPtr -> 
   withUTFString text $ \ textPtr -> 
   withUTFString stock $ \ stockPtr -> 

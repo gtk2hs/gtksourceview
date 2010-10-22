@@ -54,7 +54,6 @@ import Data.Maybe (fromMaybe)
 import Graphics.UI.Gtk.Abstract.Object	(makeNewObject)
 import System.Glib.Attributes
 import System.Glib.FFI
-import System.Glib.GObject	(makeNewGObject)
 import System.Glib.Properties
 import System.Glib.UTFString
 
