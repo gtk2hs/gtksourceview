@@ -78,5 +78,6 @@ Library
         x-Signals-Modname: Graphics.UI.Gtk.SourceView.Signals
         x-Signals-Types: marshal.list
 		
+        include-dirs: .
         x-c2hs-Header:  gtksourceview2.h
         pkgconfig-depends: gtksourceview-2.0 >= 2.0.2
