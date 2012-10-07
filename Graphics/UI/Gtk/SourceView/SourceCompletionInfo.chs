@@ -34,10 +34,14 @@ module Graphics.UI.Gtk.SourceView.SourceCompletionInfo (
 -- * Methods
    sourceCompletionInfoNew,
    sourceCompletionInfoMoveToIter,
+#if GTK_MAJOR_VERSION < 3
    sourceCompletionInfoSetSizing,
+#endif
    sourceCompletionInfoSetWidget,
    sourceCompletionInfoGetWidget,
+#if GTK_MAJOR_VERSION < 3
    sourceCompletionInfoProcessResize,
+#endif
 
 -- * Attributes
    sourceCompletionInfoMaxHeight,
@@ -81,6 +85,7 @@ sourceCompletionInfoMoveToIter info view iter =
     view
     (fromMaybe (TextIter nullForeignPtr) iter)
 
+#if GTK_MAJOR_VERSION < 3
 -- | Set sizing information for the info window. If @shrinkWidth@ or @shrinkHeight@ is 'True', the info
 -- window will try to resize to fit the window contents, with a maximum size given by width and
 -- height. Setting width or height to -1 removes the maximum size of respectively the width and height
@@ -98,6 +103,7 @@ sourceCompletionInfoSetSizing info width height shrinkWidth shrinkHeight =
      (fromIntegral height)
      (fromBool shrinkWidth)
      (fromBool shrinkHeight)
+#endif
 
 -- | Sets the content widget of the info window. If widget does not fit within the size requirements of
 -- the window, a 'ScrolledWindow' will automatically be created and added to the window.
@@ -117,12 +123,14 @@ sourceCompletionInfoGetWidget info =
   {#call gtk_source_completion_info_get_widget #}
      (toSourceCompletionInfo info)
 
+#if GTK_MAJOR_VERSION < 3
 -- |
 sourceCompletionInfoProcessResize :: SourceCompletionInfoClass info => info 
                                   -> IO ()
 sourceCompletionInfoProcessResize info =
   {#call gtk_source_completion_info_process_resize #}
      (toSourceCompletionInfo info)
+#endif
 
 -- | The maximum allowed height.
 -- 

@@ -53,8 +53,10 @@ module Graphics.UI.Gtk.SourceView.SourceGutter (
     sourceGutterReorder,
     sourceGutterRemove,
     sourceGutterQueueDraw,
+#if GTK_MAJOR_VERSION < 3
     sourceGutterSetCellDataFunc,
     sourceGutterSetCellSizeFunc,
+#endif
 
 -- * Attributes
     sourceGutterView,
@@ -82,6 +84,7 @@ import System.Glib.UTFString
 
 {# context lib="gtk" prefix="gtk" #}
 
+#if GTK_MAJOR_VERSION < 3
 {#pointer SourceGutterDataFunc#}
 
 foreign import ccall "wrapper" mkSourceGutterDataFunc ::
@@ -93,6 +96,7 @@ foreign import ccall "wrapper" mkSourceGutterDataFunc ::
 foreign import ccall "wrapper" mkSourceGutterSizeFunc ::
   (Ptr SourceGutter -> Ptr CellRenderer -> Ptr () -> IO ())
   -> IO SourceGutterSizeFunc
+#endif
 
 -- | Get the 'Window' of the gutter. The window will only be available when the gutter has at least one,
 -- non-zero width, cell renderer packed.
@@ -102,35 +106,36 @@ sourceGutterGetWindow sb =
     {#call gtk_source_gutter_get_window #} (toSourceGutter sb)
 
 -- | Inserts renderer into gutter at position.
-sourceGutterInsert :: (CellRendererClass cell, SourceGutterClass sg) => sg
+sourceGutterInsert :: (SourceGutterRendererClass cell, SourceGutterClass sg) => sg
                    -> cell -- ^ @renderer@ a 'CellRenderer'      
                    -> Int -- ^ @position@ the renderers position 
-                   -> IO ()
+                   -> IO Int
 sourceGutterInsert gutter renderer position =
+  liftM fromIntegral $
   {#call gtk_source_gutter_insert #}
      (toSourceGutter gutter)
-     (toCellRenderer renderer)
+     (toSourceGutterRenderer renderer)
      (fromIntegral position)
 
 -- | Reorders renderer in gutter to new position.
-sourceGutterReorder :: (CellRendererClass cell, SourceGutterClass sg) => sg
+sourceGutterReorder :: (SourceGutterRendererClass cell, SourceGutterClass sg) => sg
                     -> cell -- ^ @renderer@ a 'CellRenderer'         
                     -> Int -- ^ @position@ the new renderer position 
                     -> IO ()
 sourceGutterReorder gutter renderer position =
   {#call gtk_source_gutter_reorder #}
      (toSourceGutter gutter)
-     (toCellRenderer renderer)
+     (toSourceGutterRenderer renderer)
      (fromIntegral position)
 
 -- | Removes renderer from gutter.
-sourceGutterRemove :: (CellRendererClass cell, SourceGutterClass sg) => sg
+sourceGutterRemove :: (SourceGutterRendererClass cell, SourceGutterClass sg) => sg
                    -> cell -- ^ @renderer@ a 'CellRenderer' 
                    -> IO ()
 sourceGutterRemove gutter renderer =
   {#call gtk_source_gutter_remove #}
      (toSourceGutter gutter)
-     (toCellRenderer renderer)
+     (toSourceGutterRenderer renderer)
 
 -- | Invalidates the drawable area of the gutter. You can use this to force a redraw of the gutter if
 -- something has changed and needs to be redrawn.
@@ -138,6 +143,7 @@ sourceGutterQueueDraw :: SourceGutterClass sg => sg -> IO ()
 sourceGutterQueueDraw sb =
   {#call gtk_source_gutter_queue_draw #} (toSourceGutter sb)
 
+#if GTK_MAJOR_VERSION < 3
 -- | Sets the 'SourceGutterDataFunc' to use for renderer. This function is used to setup the cell
 -- renderer properties for rendering the current cell.
 sourceGutterSetCellDataFunc :: (SourceGutterClass sg, CellRendererClass cell)
@@ -173,6 +179,7 @@ sourceGutterSetCellSizeFunc gutter cell func = do
      funcPtr
      (castFunPtrToPtr funcPtr)
      destroyFunPtr
+#endif
 
 -- | The 'SourceView' of the gutter
 sourceGutterView :: SourceGutterClass sg => Attr sg SourceView

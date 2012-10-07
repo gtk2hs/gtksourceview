@@ -1,5 +1,7 @@
 #include <gtksourceview/gtksourcebuffer.h>
+#if GTK_MAJOR_VERSION < 3
 #include <gtksourceview/gtksourceiter.h>
+#endif
 #include <gtksourceview/gtksourcelanguage.h>
 #include <gtksourceview/gtksourcelanguagemanager.h>
 #include <gtksourceview/gtksourcestyle.h>

@@ -30,14 +30,17 @@
 -- * There is no SourceIter object, just extra methods for "TextIter"
 --
 module Graphics.UI.Gtk.SourceView.SourceIter (
+#if GTK_MAJOR_VERSION < 3
 -- * Enums
   SourceSearchFlags(..),
 
 -- * Methods
   sourceIterForwardSearch,
   sourceIterBackwardSearch,
+#endif
 ) where
 
+#if GTK_MAJOR_VERSION < 3
 import Control.Monad	(liftM)
 import Data.Maybe    (fromMaybe)
 
@@ -91,3 +94,4 @@ sourceIterBackwardSearch ti str flags limit = do
        ((fromIntegral.fromFlags) flags) start end
        (fromMaybe (TextIter nullForeignPtr) limit)
    return $ if found then Just (start,end) else Nothing
+#endif

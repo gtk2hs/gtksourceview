@@ -60,18 +60,17 @@ import System.Glib.UTFString
 -- | Providers can use this function to add proposals to the completion. They can do so asynchronously by
 -- means of the finished argument. Providers must ensure that they always call this function with
 -- finished set to 'True' once each population (even if no proposals need to be added).
-sourceCompletionContextAddProposals :: SourceCompletionContextClass scc => scc
-                                    -> SourceCompletionProvider
+sourceCompletionContextAddProposals :: (SourceCompletionContextClass scc, SourceCompletionProviderClass scp) => scc
+                                    -> scp
                                     -> [SourceCompletionProposal] -- ^ @proposals@ The list of proposals to add                      
                                     -> Bool -- ^ @finished@  Whether the provider is finished adding proposals 
                                     -> IO ()
 sourceCompletionContextAddProposals scc provider proposals finished = 
     withForeignPtrs (map unSourceCompletionProposal proposals) $ \proposalsPtr ->
-    withForeignPtr (unSourceCompletionProvider provider) $ \providerPtr ->
     withGList proposalsPtr $ \glist ->
     {#call gtk_source_completion_context_add_proposals #}
       (toSourceCompletionContext scc)
-      (castPtr providerPtr)
+      (toSourceCompletionProvider provider)
       glist
       (fromBool finished)
 

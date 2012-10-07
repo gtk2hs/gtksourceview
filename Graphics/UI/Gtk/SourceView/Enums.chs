@@ -26,7 +26,9 @@
 module Graphics.UI.Gtk.SourceView.Enums (
 -- * Enums
    SourceCompletionActivation (..),
+#if GTK_MAJOR_VERSION < 3
    SourceSearchFlags (..),
+#endif
    SourceSmartHomeEndType (..),
    SourceDrawSpacesFlags (..),
    SourceViewGutterPosition (..)
@@ -41,9 +43,11 @@ import System.Glib.Flags
 
 {# enum SourceCompletionActivation {underscoreToCase} deriving(Eq,Bounded,Show,Read) #}
 
+#if GTK_MAJOR_VERSION < 3
 {# enum SourceSearchFlags {underscoreToCase} deriving(Eq,Bounded,Show,Read) #}
 
 instance Flags SourceSearchFlags
+#endif
 
 {# enum SourceSmartHomeEndType {underscoreToCase} deriving (Eq, Bounded, Show, Read) #}
 

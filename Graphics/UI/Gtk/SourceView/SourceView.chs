@@ -53,6 +53,7 @@ module Graphics.UI.Gtk.SourceView.SourceView (
   sourceViewGetInsertSpacesInsteadOfTabs,
   sourceViewSetSmartHomeEnd,
   sourceViewGetSmartHomeEnd,
+#if GTK_MAJOR_VERSION < 3
   sourceViewSetMarkCategoryPriority,
   sourceViewGetMarkCategoryPriority,
   sourceViewSetMarkCategoryIconFromPixbuf,
@@ -60,6 +61,7 @@ module Graphics.UI.Gtk.SourceView.SourceView (
   sourceViewSetMarkCategoryIconFromIconName,
   sourceViewSetMarkCategoryBackground,
   sourceViewGetMarkCategoryBackground,
+#endif
   sourceViewSetHighlightCurrentLine,
   sourceViewGetHighlightCurrentLine,
   sourceViewSetShowLineMarks,
@@ -98,9 +100,11 @@ module Graphics.UI.Gtk.SourceView.SourceView (
   sourceViewLineMarkActivated,
 
 -- * Deprecated
+#if GTK_MAJOR_VERSION < 3
 #ifndef DISABLE_DEPRECATED
   sourceViewSetMarkCategoryPixbuf,
   sourceViewGetMarkCategoryPixbuf,
+#endif
 #endif
   ) where
 
@@ -339,6 +343,7 @@ sourceViewGetGutter sv windowType =
     (toSourceView sv)
     (fromIntegral $ fromEnum windowType)
 
+#if GTK_MAJOR_VERSION < 3
 -- | Set the priority for the given mark category. When there are multiple marks on the same line, marks
 -- of categories with higher priorities will be drawn on top.
 --
@@ -427,6 +432,7 @@ sourceViewGetMarkCategoryBackground sv category color =
       (toSourceView sv)
       categoryPtr
       (castPtr colorPtr)
+#endif
 
 -- | Whether to enable auto indentation.
 -- 
@@ -550,6 +556,7 @@ sourceViewLineMarkActivated =
                                    (\eventPtr iter -> runReaderT (fun iter) eventPtr)
          )
 
+#if GTK_MAJOR_VERSION < 3
 -- * Deprecated
 #ifndef DISABLE_DEPRECATED
 -- | 'sourceViewSetMarkCategoryPixbuf' is deprecated and should not be used in newly-written
@@ -565,5 +572,6 @@ sourceViewGetMarkCategoryPixbuf :: SourceViewClass sv => sv -> String -> IO Pixb
 sourceViewGetMarkCategoryPixbuf sv markerType = withCString markerType $ \strPtr ->
   wrapNewGObject mkPixbuf $
   {#call unsafe source_view_get_mark_category_pixbuf#} (toSourceView sv) strPtr
+#endif
 #endif
 
