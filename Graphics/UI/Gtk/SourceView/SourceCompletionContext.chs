@@ -67,10 +67,17 @@ sourceCompletionContextAddProposals :: (SourceCompletionContextClass scc, Source
                                     -> IO ()
 sourceCompletionContextAddProposals scc provider proposals finished = 
     withForeignPtrs (map unSourceCompletionProposal proposals) $ \proposalsPtr ->
+#if GTK_MAJOR_VERSION < 3
+    withForeignPtr (unSourceCompletionProvider $ toSourceCompletionProvider provider) $ \providerPtr ->
+#endif
     withGList proposalsPtr $ \glist ->
     {#call gtk_source_completion_context_add_proposals #}
       (toSourceCompletionContext scc)
+#if GTK_MAJOR_VERSION < 3
+      (castPtr providerPtr)
+#else
       (toSourceCompletionProvider provider)
+#endif
       glist
       (fromBool finished)
 

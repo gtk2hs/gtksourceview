@@ -23,6 +23,8 @@
 		GtkSourceCompletionProposal if gtksourceview2
 		GtkSourceCompletionContext if gtksourceview2
 		GtkSourceCompletionItem if gtksourceview2
+        GtkSourceCompletion if gtksourceview2
+        GtkSourceGutterRenderer if gtksourceview2
         GdkDrawable 
             GdkWindow		as DrawWindow, gdk_window_object_get_type
 #            GdkDrawableImplX11
@@ -54,8 +56,6 @@
         GtkTextMark
 	    GtkSourceMarker	if sourceview
             GtkSourceMark       if gtksourceview2
-        GtkObject
-		    GtkSourceCompletion if gtksourceview2
             GtkWidget
                 GtkMisc
                     GtkLabel

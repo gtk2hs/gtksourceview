@@ -38,6 +38,10 @@ x-Types-Hierarchy:  hierarchy.list
 Source-Repository head
   type:         darcs
   location:     http://code.haskell.org/gtksourceview/
+
+Flag gtk3
+  Description: Use GTK3 rather than GTK2
+  Default: False
   
 Library
         build-depends:  base >= 4 && < 5, mtl,
@@ -80,4 +84,9 @@ Library
 		
         include-dirs: .
         x-c2hs-Header:  gtksourceview2.h
-        pkgconfig-depends: gtksourceview-3.0 >= 3.0.0
+        if flag(gtk3)
+          pkgconfig-depends: gtksourceview-3.0 >= 3.0.0
+          x-Types-Hierarchy:  hierarchy3.list
+        else
+          pkgconfig-depends: gtksourceview-2.0 >= 2.0.2
+          x-Types-Hierarchy:  hierarchy.list

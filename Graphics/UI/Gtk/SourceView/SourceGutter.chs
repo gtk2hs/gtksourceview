@@ -49,10 +49,12 @@ module Graphics.UI.Gtk.SourceView.SourceGutter (
 
 -- * Methods
     sourceGutterGetWindow,
+#if GTK_MAJOR_VERSION >= 3
     sourceGutterInsert,
     sourceGutterReorder,
     sourceGutterRemove,
     sourceGutterQueueDraw,
+#endif
 #if GTK_MAJOR_VERSION < 3
     sourceGutterSetCellDataFunc,
     sourceGutterSetCellSizeFunc,
@@ -105,6 +107,7 @@ sourceGutterGetWindow sb =
     maybeNull (makeNewGObject mkDrawWindow) $
     {#call gtk_source_gutter_get_window #} (toSourceGutter sb)
 
+#if GTK_MAJOR_VERSION >= 3
 -- | Inserts renderer into gutter at position.
 sourceGutterInsert :: (SourceGutterRendererClass cell, SourceGutterClass sg) => sg
                    -> cell -- ^ @renderer@ a 'CellRenderer'      
@@ -142,6 +145,7 @@ sourceGutterRemove gutter renderer =
 sourceGutterQueueDraw :: SourceGutterClass sg => sg -> IO ()
 sourceGutterQueueDraw sb =
   {#call gtk_source_gutter_queue_draw #} (toSourceGutter sb)
+#endif
 
 #if GTK_MAJOR_VERSION < 3
 -- | Sets the 'SourceGutterDataFunc' to use for renderer. This function is used to setup the cell
