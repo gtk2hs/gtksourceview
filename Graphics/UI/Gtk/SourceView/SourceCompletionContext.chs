@@ -74,7 +74,7 @@ sourceCompletionContextAddProposals scc provider proposals finished =
     {#call gtk_source_completion_context_add_proposals #}
       (toSourceCompletionContext scc)
 #if MIN_VERSION_gtksourceview_3_0(3,6,0)
-      (castPtr $ toSourceCompletionProvider provider)
+      (toSourceCompletionProvider provider)
 #else
       (castPtr providerPtr)
 #endif
