@@ -67,14 +67,23 @@ sourceCompletionContextAddProposals :: (SourceCompletionContextClass scc, Source
                                     -> IO ()
 sourceCompletionContextAddProposals scc provider proposals finished = 
     withForeignPtrs (map unSourceCompletionProposal proposals) $ \proposalsPtr ->
-#if !MIN_VERSION_gtksourceview_3_0(3,6,0)
+#ifdef MIN_VERSION_gtksourceview_3_0
+#if MIN_VERSION_gtksourceview_3_0(3,6,0)
+#else
+    withForeignPtr (unSourceCompletionProvider $ toSourceCompletionProvider provider) $ \providerPtr ->
+#endif
+#else
     withForeignPtr (unSourceCompletionProvider $ toSourceCompletionProvider provider) $ \providerPtr ->
 #endif
     withGList proposalsPtr $ \glist ->
     {#call gtk_source_completion_context_add_proposals #}
       (toSourceCompletionContext scc)
+#ifdef MIN_VERSION_gtksourceview_3_0
 #if MIN_VERSION_gtksourceview_3_0(3,6,0)
       (toSourceCompletionProvider provider)
+#else
+      (castPtr providerPtr)
+#endif
 #else
       (castPtr providerPtr)
 #endif
