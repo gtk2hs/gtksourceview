@@ -202,8 +202,8 @@ sourceGutterWindowType = newAttrFromEnumProperty "window-type"
 sourceGutterCellActivated :: SourceGutterClass sg => Signal sg (CellRenderer -> TextIter -> EventM EAny ())                         
 sourceGutterCellActivated =
   Signal (\after obj fun -> 
-           connect_OBJECT_PTR_BOXED__NONE "cell-activated" mkTextIterCopy after obj
-                                   (\cr eventPtr iter -> runReaderT (fun cr iter) eventPtr)
+           connect_OBJECT_BOXED_PTR__NONE "cell-activated" mkTextIterCopy after obj
+                                   (\cr iter eventPtr -> runReaderT (fun cr iter) eventPtr)
          )
 
 -- | Emitted when a tooltip is requested for a specific cell. Signal handlers can return 'True' to notify

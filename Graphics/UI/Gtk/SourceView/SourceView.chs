@@ -552,8 +552,8 @@ sourceViewShowCompletion = Signal $ connect_NONE__NONE "show-completion"
 sourceViewLineMarkActivated :: SourceViewClass sv => Signal sv (TextIter -> EventM EAny ())
 sourceViewLineMarkActivated = 
   Signal (\after obj fun -> 
-           connect_PTR_BOXED__NONE "line-mark-activated" mkTextIterCopy after obj
-                                   (\eventPtr iter -> runReaderT (fun iter) eventPtr)
+           connect_BOXED_PTR__NONE "line-mark-activated" mkTextIterCopy after obj
+                                   (\iter eventPtr -> runReaderT (fun iter) eventPtr)
          )
 
 #if GTK_MAJOR_VERSION < 3
