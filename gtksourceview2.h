@@ -12,3 +12,8 @@
 #include <gtksourceview/gtksourceview-typebuiltins.h>
 #include <gtksourceview/gtksourceundomanager.h>
 #include <gtksourceview/gtksourcecompletionitem.h>
+#include <gtksourceview/gtksourcegutter.h>
+#include <gtksourceview/gtksourcecompletionprovider.h>
+#include <gtksourceview/gtksourcecompletionproposal.h>
+#include <gtksourceview/gtksourcemark.h>
+#include <gtksourceview/gtksourcecompletioninfo.h>
