@@ -20,14 +20,14 @@ Tested-With:    GHC == 6.10.4, GHC == 6.12.3, GHC == 7.0.4, GHC == 7.2.1
 Extra-Source-Files: gtksourceview2.h
                     SetupWrapper.hs SetupMain.hs Gtk2HsSetup.hs
                     marshal.list
-					hierarchy.list
+                    hierarchy.list
 
-Data-Dir:		demo
-Data-Files:		haskell.lang
+Data-Dir:       demo
+Data-Files:     haskell.lang
                 SourceView.hs
                 Makefile
                 LineNumber.hs
-				
+
 x-Types-File:       Graphics/UI/Gtk/SourceView/Types.chs
 x-Types-Tag:        gtksourceview2
 x-Types-ModName:    Graphics.UI.Gtk.SourceView.Types
@@ -47,10 +47,10 @@ Flag gtk3
 Library
         build-depends:  base >= 4 && < 5, array, containers, mtl,
                         glib  >= 0.12 && < 0.13
-						
+
         build-tools:    gtk2hsC2hs >= 0.13.5,
                         gtk2hsHookGenerator, gtk2hsTypeGen
-						
+
         exposed-modules:
           Graphics.UI.Gtk.SourceView
           Graphics.UI.Gtk.SourceView.Enums
@@ -73,15 +73,15 @@ Library
           Graphics.UI.Gtk.SourceView.SourceView
         other-modules:
           Graphics.UI.Gtk.SourceView.SourceStyle.Internal
-          Graphics.UI.Gtk.SourceView.Types		
+          Graphics.UI.Gtk.SourceView.Types
           Graphics.UI.Gtk.SourceView.Signals
-		
+
         extensions:     ForeignFunctionInterface
 
         x-Signals-File:  Graphics/UI/Gtk/SourceView/Signals.chs
         x-Signals-Modname: Graphics.UI.Gtk.SourceView.Signals
         x-Signals-Types: marshal.list
-		
+
         include-dirs: .
         x-c2hs-Header:  gtksourceview2.h
         if flag(gtk3)
