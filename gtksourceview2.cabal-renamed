@@ -1,5 +1,5 @@
 Name:           gtksourceview2
-Version:        0.12.3.1
+Version:        0.12.4.1
 License:        LGPL-2.1
 License-file:   COPYING
 Copyright:      (c) 2001-2010 The Gtk2Hs Team
@@ -34,15 +34,10 @@ x-Types-ModName:    Graphics.UI.Gtk.SourceView.Types
 x-Types-Forward:    *Graphics.UI.GtkInternals
 x-Types-Destructor: objectUnrefFromMainloop
 x-Types-Hierarchy:  hierarchy.list
-                    hierarchy3.list
 
 Source-Repository head
   type:         darcs
   location:     http://code.haskell.org/gtksourceview/
-
-Flag gtk3
-  Description: Use GTK3 rather than GTK2
-  Default: True
 
 Library
         build-depends:  base >= 4 && < 5, array, containers, mtl,
@@ -82,13 +77,8 @@ Library
         x-Signals-Modname: Graphics.UI.Gtk.SourceView.Signals
         x-Signals-Types: marshal.list
 
-        include-dirs: .
-        x-c2hs-Header:  gtksourceview2.h
-        if flag(gtk3)
-          pkgconfig-depends: gtksourceview-3.0 >= 3.0.0
-          x-Types-Hierarchy:  hierarchy3.list
-          build-depends: gtk >=3.12.4.1 && <3.13
-        else
-          pkgconfig-depends: gtksourceview-2.0 >= 2.0.2
-          x-Types-Hierarchy:  hierarchy.list
-          build-depends: gtk >=0.12.4.1 && <0.13
+        include-dirs:      .
+        x-c2hs-Header:     gtksourceview2.h
+        pkgconfig-depends: gtksourceview-2.0 >= 2.0.2
+        x-Types-Hierarchy: hierarchy.list
+        build-depends:     gtk >=0.12.4.1 && <0.13
