@@ -81,4 +81,4 @@ Library
         x-c2hs-Header:     gtksourceview2.h
         pkgconfig-depends: gtksourceview-2.0 >= 2.0.2
         x-Types-Hierarchy: hierarchy.list
-        build-depends:     gtk >=0.12.4.1 && <0.13
+        build-depends:     gtk >=0.12.4 && <0.13

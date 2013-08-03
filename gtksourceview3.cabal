@@ -20,7 +20,7 @@ Tested-With:    GHC == 6.10.4, GHC == 6.12.3, GHC == 7.0.4, GHC == 7.2.1
 Extra-Source-Files: gtksourceview2.h
                     SetupWrapper.hs SetupMain.hs Gtk2HsSetup.hs
                     marshal.list
-                    hierarchy.list
+                    hierarchy3.list
 
 Data-Dir:       demo
 Data-Files:     haskell.lang
