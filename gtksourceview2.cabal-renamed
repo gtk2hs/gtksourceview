@@ -1,5 +1,5 @@
 Name:           gtksourceview2
-Version:        0.12.4.1
+Version:        0.12.5.0
 License:        LGPL-2.1
 License-file:   COPYING
 Copyright:      (c) 2001-2010 The Gtk2Hs Team
@@ -43,7 +43,7 @@ Library
         build-depends:  base >= 4 && < 5, array, containers, mtl,
                         glib  >= 0.12 && < 0.13
 
-        build-tools:    gtk2hsC2hs >= 0.13.5,
+        build-tools:    gtk2hsC2hs >= 0.13.8,
                         gtk2hsHookGenerator, gtk2hsTypeGen
 
         exposed-modules:
@@ -81,4 +81,4 @@ Library
         x-c2hs-Header:     gtksourceview2.h
         pkgconfig-depends: gtksourceview-2.0 >= 2.0.2
         x-Types-Hierarchy: hierarchy.list
-        build-depends:     gtk >=0.12.4 && <0.13
+        build-depends:     gtk >=0.12.5.0 && <0.13
