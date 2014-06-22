@@ -27,7 +27,7 @@ module Graphics.UI.Gtk.SourceView.SourceCompletionProvider (
 -- * Description
 -- | You must implement this interface to provide proposals to 'SourceCompletion'
 
--- * Types  
+-- * Types
    SourceCompletionProvider,
    SourceCompletionProviderClass,
 
@@ -61,16 +61,16 @@ import System.Glib.UTFString
 {# context lib="gtk" prefix="gtk" #}
 
 -- | Get the name of the provider. This should be a translatable name for display to the user. For
--- example: _("Document word completion provider"). 
-sourceCompletionProviderGetName :: SourceCompletionProviderClass scp => scp 
-                                -> IO String -- ^ returns  A new string containing the name of the provider. 
+-- example: _("Document word completion provider").
+sourceCompletionProviderGetName :: (SourceCompletionProviderClass scp, GlibString string) => scp
+                                -> IO string -- ^ returns  A new string containing the name of the provider.
 sourceCompletionProviderGetName scp =
   {#call gtk_source_completion_provider_get_name #}
     (toSourceCompletionProvider scp)
   >>= peekUTFString
 
 -- | Get the icon of the provider.
-sourceCompletionProviderGetIcon :: SourceCompletionProviderClass scp => scp 
+sourceCompletionProviderGetIcon :: SourceCompletionProviderClass scp => scp
                                 -> IO (Maybe Pixbuf)
 sourceCompletionProviderGetIcon scp =
   maybeNull (wrapNewGObject mkPixbuf) $
@@ -79,8 +79,8 @@ sourceCompletionProviderGetIcon scp =
 
 -- | Get the delay in milliseconds before starting interactive completion for this provider. A value of
 -- -1 indicates to use the default value as set by 'autoCompleteDelay'.
-sourceCompletionProviderGetInteractiveDelay :: SourceCompletionProviderClass scp => scp 
-                                            -> IO Int -- ^ returns  the interactive delay in milliseconds. 
+sourceCompletionProviderGetInteractiveDelay :: SourceCompletionProviderClass scp => scp
+                                            -> IO Int -- ^ returns  the interactive delay in milliseconds.
 sourceCompletionProviderGetInteractiveDelay scp =
   liftM fromIntegral $
   {#call gtk_source_completion_provider_get_interactive_delay #}
@@ -88,13 +88,13 @@ sourceCompletionProviderGetInteractiveDelay scp =
 
 -- | Get the provider priority. The priority determines the order in which proposals appear in the
 -- completion popup. Higher priorities are sorted before lower priorities. The default priority is 0.
-sourceCompletionProviderGetPriority :: SourceCompletionProviderClass scp => scp 
-                                    -> IO Int -- ^ returns  the provider priority.          
+sourceCompletionProviderGetPriority :: SourceCompletionProviderClass scp => scp
+                                    -> IO Int -- ^ returns  the provider priority.
 sourceCompletionProviderGetPriority scp =
   liftM fromIntegral $
   {#call gtk_source_completion_provider_get_priority #}
     (toSourceCompletionProvider scp)
-  
+
 -- | Get a customized info widget to show extra information of a proposal. This allows for customized
 -- widgets on a proposal basis, although in general providers will have the same custom widget for all
 -- their proposals and proposal can be ignored.  The implementation of this function is optional. If
@@ -102,8 +102,8 @@ sourceCompletionProviderGetPriority scp =
 -- implemented, the default 'sourceCompletionProposalGetInfo' will be used to display extra
 -- information about a 'SourceCompletionProposal'.
 sourceCompletionProviderGetInfoWidget :: SourceCompletionProviderClass scp => scp
-                                      -> SourceCompletionProposal -- ^ @proposal@ The currently selected 'SourceCompletionProposal'           
-                                     -> IO Widget -- ^ returns  a custom 'Widget' to show extra information about proposal. 
+                                      -> SourceCompletionProposal -- ^ @proposal@ The currently selected 'SourceCompletionProposal'
+                                     -> IO Widget -- ^ returns  a custom 'Widget' to show extra information about proposal.
 sourceCompletionProviderGetInfoWidget scp proposal =
   makeNewObject mkWidget $
   {#call gtk_source_completion_provider_get_info_widget #}
@@ -132,7 +132,7 @@ sourceCompletionProviderGetStartIter scp context proposal = do
                 context
                 proposal
                 iter
-  if success 
+  if success
      then return (Just iter)
      else return Nothing
 

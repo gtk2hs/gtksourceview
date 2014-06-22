@@ -39,7 +39,7 @@ module Graphics.UI.Gtk.SourceView.SourceView (
   SourceDrawSpacesFlags(..),
   SourceViewGutterPosition (..),
 
--- * Methods  
+-- * Methods
   castToSourceView,
   sourceViewNew,
   sourceViewNewWithBuffer,
@@ -78,7 +78,7 @@ module Graphics.UI.Gtk.SourceView.SourceView (
   sourceViewGetDrawSpaces,
   sourceViewGetGutter,
 
--- * Attributes  
+-- * Attributes
   sourceViewAutoIndent,
   sourceViewCompletion,
   sourceViewDrawSpaces,
@@ -143,41 +143,41 @@ sourceViewNewWithBuffer sb = makeNewObject mkSourceView $ liftM castPtr $
 
 -- | If 'True' auto indentation of text is enabled.
 --
-sourceViewSetAutoIndent :: SourceViewClass sv => sv 
-                        -> Bool  -- ^ @enable@ whether to enable auto indentation. 
+sourceViewSetAutoIndent :: SourceViewClass sv => sv
+                        -> Bool  -- ^ @enable@ whether to enable auto indentation.
                         -> IO ()
 sourceViewSetAutoIndent sv enable =
   {#call source_view_set_auto_indent#} (toSourceView sv) (fromBool enable)
-  
+
 -- | Returns whether auto indentation of text is enabled.
 --
-sourceViewGetAutoIndent :: SourceViewClass sv => sv 
-                        -> IO Bool  -- ^ returns 'True' if auto indentation is enabled. 
+sourceViewGetAutoIndent :: SourceViewClass sv => sv
+                        -> IO Bool  -- ^ returns 'True' if auto indentation is enabled.
 sourceViewGetAutoIndent sv = liftM toBool $
   {#call unsafe source_view_get_auto_indent#} (toSourceView sv)
 
 -- | If 'True', when the tab key is pressed and there is a selection, the selected text is indented of one
 -- level instead of being replaced with the \t characters. Shift+Tab unindents the selection.
 --
-sourceViewSetIndentOnTab :: SourceViewClass sv => sv 
-                         -> Bool  -- ^ @enable@ whether to indent a block when tab is pressed. 
+sourceViewSetIndentOnTab :: SourceViewClass sv => sv
+                         -> Bool  -- ^ @enable@ whether to indent a block when tab is pressed.
                          -> IO ()
 sourceViewSetIndentOnTab sv enable =
   {#call source_view_set_indent_on_tab#} (toSourceView sv) (fromBool enable)
-  
+
 -- | Returns whether when the tab key is pressed the current selection should get indented instead of
 -- replaced with the \t character.
 --
-sourceViewGetIndentOnTab :: SourceViewClass sv => sv 
-                         -> IO Bool  -- ^ returns 'True' if the selection is indented when tab is pressed. 
+sourceViewGetIndentOnTab :: SourceViewClass sv => sv
+                         -> IO Bool  -- ^ returns 'True' if the selection is indented when tab is pressed.
 sourceViewGetIndentOnTab sv = liftM toBool $
   {#call unsafe source_view_get_indent_on_tab#} (toSourceView sv)
 
 -- | Sets the number of spaces to use for each step of indent. If width is -1, the value of the
 -- 'tabWidth' property will be used.
 --
-sourceViewSetIndentWidth :: SourceViewClass sv => sv 
-                         -> Int  -- ^ @width@ indent width in characters. 
+sourceViewSetIndentWidth :: SourceViewClass sv => sv
+                         -> Int  -- ^ @width@ indent width in characters.
                          -> IO ()
 sourceViewSetIndentWidth sv width =
   {#call source_view_set_indent_width#} (toSourceView sv) (fromIntegral width)
@@ -185,130 +185,130 @@ sourceViewSetIndentWidth sv width =
 -- | Returns the number of spaces to use for each step of indent. See 'sourceViewSetIndentWidth'
 -- for details.
 --
-sourceViewGetIndentWidth :: SourceViewClass sv => sv 
-                         -> IO Int -- ^ returns indent width.    
+sourceViewGetIndentWidth :: SourceViewClass sv => sv
+                         -> IO Int -- ^ returns indent width.
 sourceViewGetIndentWidth sv = liftM fromIntegral $
   {#call unsafe source_view_get_indent_width#} (toSourceView sv)
 
 -- | If 'True' any tabulator character inserted is replaced by a group of space characters.
 --
-sourceViewSetInsertSpacesInsteadOfTabs :: SourceViewClass sv => sv 
-                                       -> Bool  -- ^ @enable@ whether to insert spaces instead of tabs. 
+sourceViewSetInsertSpacesInsteadOfTabs :: SourceViewClass sv => sv
+                                       -> Bool  -- ^ @enable@ whether to insert spaces instead of tabs.
                                        -> IO ()
 sourceViewSetInsertSpacesInsteadOfTabs sv enable =
   {#call source_view_set_insert_spaces_instead_of_tabs#} (toSourceView sv) (fromBool enable)
-  
+
 -- | Returns whether when inserting a tabulator character it should be replaced by a group of space
 -- characters.
 --
-sourceViewGetInsertSpacesInsteadOfTabs :: SourceViewClass sv => sv 
-                                       -> IO Bool  -- ^ returns 'True' if spaces are inserted instead of tabs. 
+sourceViewGetInsertSpacesInsteadOfTabs :: SourceViewClass sv => sv
+                                       -> IO Bool  -- ^ returns 'True' if spaces are inserted instead of tabs.
 sourceViewGetInsertSpacesInsteadOfTabs sv = liftM toBool $
   {#call unsafe source_view_get_insert_spaces_instead_of_tabs#} (toSourceView sv)
 
 -- | Set the desired movement of the cursor when HOME and END keys are pressed.
 --
-sourceViewSetSmartHomeEnd :: SourceViewClass sv => sv 
-                          -> SourceSmartHomeEndType  -- ^ @smartHe@ the desired behavior among 'SourceSmartHomeEndType'. 
+sourceViewSetSmartHomeEnd :: SourceViewClass sv => sv
+                          -> SourceSmartHomeEndType  -- ^ @smartHe@ the desired behavior among 'SourceSmartHomeEndType'.
                           -> IO ()
 sourceViewSetSmartHomeEnd sv newVal =
   {#call source_view_set_smart_home_end#} (toSourceView sv) (fromIntegral $ fromEnum newVal)
-  
+
 -- | Returns a 'SourceSmartHomeEndType' end value specifying how the cursor will move when HOME and END
 -- keys are pressed.
 --
-sourceViewGetSmartHomeEnd :: SourceViewClass sv => sv 
-                          -> IO SourceSmartHomeEndType -- ^ returns a 'SourceSmartHomeEndTypeend' value. 
+sourceViewGetSmartHomeEnd :: SourceViewClass sv => sv
+                          -> IO SourceSmartHomeEndType -- ^ returns a 'SourceSmartHomeEndTypeend' value.
 sourceViewGetSmartHomeEnd sv = liftM (toEnum . fromIntegral) $
   {#call unsafe source_view_get_smart_home_end#} (toSourceView sv)
 
 -- | If show is 'True' the current line is highlighted.
 --
-sourceViewSetHighlightCurrentLine :: SourceViewClass sv => sv 
-                                  -> Bool  -- ^ @show@ whether to highlight the current line 
+sourceViewSetHighlightCurrentLine :: SourceViewClass sv => sv
+                                  -> Bool  -- ^ @show@ whether to highlight the current line
                                   -> IO ()
 sourceViewSetHighlightCurrentLine sv newVal =
   {#call source_view_set_highlight_current_line#} (toSourceView sv) (fromBool newVal)
-  
+
 -- | Returns whether the current line is highlighted
 --
-sourceViewGetHighlightCurrentLine :: SourceViewClass sv => sv 
-                                  -> IO Bool  -- ^ returns 'True' if the current line is highlighted. 
+sourceViewGetHighlightCurrentLine :: SourceViewClass sv => sv
+                                  -> IO Bool  -- ^ returns 'True' if the current line is highlighted.
 sourceViewGetHighlightCurrentLine sv = liftM toBool $
   {#call unsafe source_view_get_highlight_current_line#} (toSourceView sv)
 
 -- | If 'True' line marks will be displayed beside the text.
 --
-sourceViewSetShowLineMarks :: SourceViewClass sv => sv 
-                           -> Bool  -- ^ @show@ whether line marks should be displayed. 
+sourceViewSetShowLineMarks :: SourceViewClass sv => sv
+                           -> Bool  -- ^ @show@ whether line marks should be displayed.
                            -> IO ()
 sourceViewSetShowLineMarks sv newVal =
   {#call source_view_set_show_line_marks#} (toSourceView sv) (fromBool newVal)
-  
+
 -- | Returns whether line marks are displayed beside the text.
 --
-sourceViewGetShowLineMarks :: SourceViewClass sv => sv 
-                           -> IO Bool  -- ^ returns 'True' if the line marks are displayed. 
+sourceViewGetShowLineMarks :: SourceViewClass sv => sv
+                           -> IO Bool  -- ^ returns 'True' if the line marks are displayed.
 sourceViewGetShowLineMarks sv = liftM toBool $
   {#call unsafe source_view_get_show_line_marks#} (toSourceView sv)
 
 -- | If 'True' line numbers will be displayed beside the text.
 --
-sourceViewSetShowLineNumbers :: SourceViewClass sv => sv 
-                             -> Bool  -- ^ @show@ whether line numbers should be displayed. 
+sourceViewSetShowLineNumbers :: SourceViewClass sv => sv
+                             -> Bool  -- ^ @show@ whether line numbers should be displayed.
                              -> IO ()
 sourceViewSetShowLineNumbers sv newVal =
   {#call source_view_set_show_line_numbers#} (toSourceView sv) (fromBool newVal)
-  
+
 -- | Returns whether line numbers are displayed beside the text.
 --
-sourceViewGetShowLineNumbers :: SourceViewClass sv => sv 
-                             -> IO Bool  -- ^ returns 'True' if the line numbers are displayed. 
+sourceViewGetShowLineNumbers :: SourceViewClass sv => sv
+                             -> IO Bool  -- ^ returns 'True' if the line numbers are displayed.
 sourceViewGetShowLineNumbers sv = liftM toBool $
   {#call unsafe source_view_get_show_line_numbers#} (toSourceView sv)
 
 -- | If 'True' a right margin is displayed
 --
-sourceViewSetShowRightMargin :: SourceViewClass sv => sv 
-                             -> Bool  -- ^ @show@ whether to show a right margin. 
+sourceViewSetShowRightMargin :: SourceViewClass sv => sv
+                             -> Bool  -- ^ @show@ whether to show a right margin.
                              -> IO ()
 sourceViewSetShowRightMargin sv newVal =
   {#call source_view_set_show_right_margin#} (toSourceView sv) (fromBool newVal)
-  
+
 -- | Returns whether a right margin is displayed.
 --
-sourceViewGetShowRightMargin :: SourceViewClass sv => sv 
-                             -> IO Bool -- ^ returns 'True' if the right margin is shown. 
+sourceViewGetShowRightMargin :: SourceViewClass sv => sv
+                             -> IO Bool -- ^ returns 'True' if the right margin is shown.
 sourceViewGetShowRightMargin sv = liftM toBool $
   {#call source_view_get_show_right_margin#} (toSourceView sv)
-  
+
 -- | Sets the position of the right margin in the given view.
 --
-sourceViewSetRightMarginPosition :: SourceViewClass sv => sv 
-                                 -> Word -- ^ @pos@  the width in characters where to position the right margin.  
+sourceViewSetRightMarginPosition :: SourceViewClass sv => sv
+                                 -> Word -- ^ @pos@  the width in characters where to position the right margin.
                                  -> IO ()
 sourceViewSetRightMarginPosition sv margin =
   {#call source_view_set_right_margin_position#} (toSourceView sv) (fromIntegral margin)
-  
+
 -- | Gets the position of the right margin in the given view.
 --
-sourceViewGetRightMarginPosition :: SourceViewClass sv => sv 
-                                 -> IO Int  -- ^ returns the position of the right margin. 
+sourceViewGetRightMarginPosition :: SourceViewClass sv => sv
+                                 -> IO Int  -- ^ returns the position of the right margin.
 sourceViewGetRightMarginPosition sv = liftM fromIntegral $
   {#call unsafe source_view_get_right_margin_position#} (toSourceView sv)
 
 -- | Sets the width of tabulation in characters.
 --
-sourceViewSetTabWidth :: SourceViewClass sv => sv 
-                      -> Int  -- ^ @width@ width of tab in characters. 
+sourceViewSetTabWidth :: SourceViewClass sv => sv
+                      -> Int  -- ^ @width@ width of tab in characters.
                       -> IO ()
 sourceViewSetTabWidth sv width =
   {#call source_view_set_tab_width#} (toSourceView sv) (fromIntegral width)
-  
+
 -- | Returns the width of tabulation in characters.
 --
-sourceViewGetTabWidth :: SourceViewClass sv => sv 
-                      -> IO Int -- ^ returns width of tab.     
+sourceViewGetTabWidth :: SourceViewClass sv => sv
+                      -> IO Int -- ^ returns width of tab.
 sourceViewGetTabWidth sv = liftM fromIntegral $
   {#call unsafe source_view_get_tab_width#} (toSourceView sv)
 
@@ -318,14 +318,14 @@ sourceViewSetDrawSpaces :: SourceViewClass sv => sv
                         -> SourceDrawSpacesFlags -- ^ @flags@ 'SourceDrawSpacesFlags' specifing how white spaces should be displayed
                         -> IO ()
 sourceViewSetDrawSpaces view flags =
-  {#call gtk_source_view_set_draw_spaces #}  
+  {#call gtk_source_view_set_draw_spaces #}
     (toSourceView view)
     (fromIntegral $ fromEnum flags)
 
 -- | Returns the 'SourceDrawSpacesFlags' specifying if and how spaces should be displayed for this view.
 sourceViewGetDrawSpaces :: SourceViewClass sv => sv
-                        -> IO SourceDrawSpacesFlags -- ^ returns the 'SourceDrawSpacesFlags', 0 if no spaces should be drawn. 
-sourceViewGetDrawSpaces view =                        
+                        -> IO SourceDrawSpacesFlags -- ^ returns the 'SourceDrawSpacesFlags', 0 if no spaces should be drawn.
+sourceViewGetDrawSpaces view =
   liftM (toEnum . fromIntegral) $
   {#call gtk_source_view_get_draw_spaces #}
      (toSourceView view)
@@ -334,8 +334,8 @@ sourceViewGetDrawSpaces view =
 -- and 'TextWindowRight' are supported, respectively corresponding to the left and right
 -- gutter. The line numbers and mark category icons are rendered in the gutter corresponding to
 -- 'TextWindowLeft'.
-sourceViewGetGutter :: SourceViewClass sv => sv 
-                    -> TextWindowType  -- ^ @windowType@ the gutter window type 
+sourceViewGetGutter :: SourceViewClass sv => sv
+                    -> TextWindowType  -- ^ @windowType@ the gutter window type
                     -> IO SourceGutter
 sourceViewGetGutter sv windowType =
   makeNewGObject mkSourceGutter $
@@ -347,29 +347,29 @@ sourceViewGetGutter sv windowType =
 -- | Set the priority for the given mark category. When there are multiple marks on the same line, marks
 -- of categories with higher priorities will be drawn on top.
 --
-sourceViewSetMarkCategoryPriority :: SourceViewClass sv => sv 
-                                  -> String  -- ^ @category@ a mark category.              
-                                  -> Int  -- ^ @priority@ the priority for the category 
+sourceViewSetMarkCategoryPriority :: (SourceViewClass sv, GlibString string) => sv
+                                  -> string  -- ^ @category@ a mark category.
+                                  -> Int  -- ^ @priority@ the priority for the category
                                   -> IO ()
-sourceViewSetMarkCategoryPriority sv markerType priority = withCString markerType $ \strPtr ->
+sourceViewSetMarkCategoryPriority sv markerType priority = withUTFString markerType $ \strPtr ->
   {#call source_view_set_mark_category_priority#} (toSourceView sv) strPtr (fromIntegral priority)
 
 -- | Gets the priority which is associated with the given category.
 --
-sourceViewGetMarkCategoryPriority :: SourceViewClass sv => sv 
-                                  -> String  -- ^ @category@ a mark category.   
+sourceViewGetMarkCategoryPriority :: (SourceViewClass sv, GlibString string) => sv
+                                  -> string  -- ^ @category@ a mark category.
                                   -> IO Int -- ^ returns  the priority or if category exists but no priority was set, it defaults to 0.
-sourceViewGetMarkCategoryPriority sv markerType = withCString markerType $ \strPtr ->
+sourceViewGetMarkCategoryPriority sv markerType = withUTFString markerType $ \strPtr ->
   liftM fromIntegral $
   {#call unsafe source_view_get_mark_category_priority#} (toSourceView sv) strPtr
 
 -- | Sets the icon to be used for category to pixbuf. If pixbuf is 'Nothing', the icon is unset.
-sourceViewSetMarkCategoryIconFromPixbuf :: SourceViewClass sv => sv
-                                        -> String -- ^ @category@ a mark category.     
-                                        -> Maybe Pixbuf -- ^ @pixbuf@   a 'Pixbuf' or 'Nothing'. 
+sourceViewSetMarkCategoryIconFromPixbuf :: (SourceViewClass sv, GlibString string) => sv
+                                        -> string -- ^ @category@ a mark category.
+                                        -> Maybe Pixbuf -- ^ @pixbuf@   a 'Pixbuf' or 'Nothing'.
                                         -> IO ()
 sourceViewSetMarkCategoryIconFromPixbuf sv category pixbuf =
-  withCString category $ \categoryPtr ->
+  withUTFString category $ \categoryPtr ->
   {#call gtk_source_view_set_mark_category_icon_from_pixbuf #}
      (toSourceView sv)
      categoryPtr
@@ -377,13 +377,13 @@ sourceViewSetMarkCategoryIconFromPixbuf sv category pixbuf =
 
 -- | Sets the icon to be used for category to the stock item @stockId@. If @stockId@ is 'Nothing', the icon is
 -- unset.
-sourceViewSetMarkCategoryIconFromStock :: SourceViewClass sv => sv
-                                       -> String -- ^ @category@ a mark category.      
-                                       -> Maybe String -- ^ @stockId@ the stock id or 'Nothing'. 
+sourceViewSetMarkCategoryIconFromStock :: (SourceViewClass sv, GlibString string) => sv
+                                       -> string -- ^ @category@ a mark category.
+                                       -> Maybe string -- ^ @stockId@ the stock id or 'Nothing'.
                                        -> IO ()
 sourceViewSetMarkCategoryIconFromStock sv category stockId =
-  withCString category $ \categoryPtr ->
-  maybeWith withCString stockId $ \stockIdPtr ->
+  withUTFString category $ \categoryPtr ->
+  maybeWith withUTFString stockId $ \stockIdPtr ->
   {#call gtk_source_view_set_mark_category_icon_from_stock #}
     (toSourceView sv)
     categoryPtr
@@ -391,28 +391,28 @@ sourceViewSetMarkCategoryIconFromStock sv category stockId =
 
 -- | Sets the icon to be used for category to the named theme item name. If name is 'Nothing', the icon is
 -- unset.
-sourceViewSetMarkCategoryIconFromIconName :: SourceViewClass sv => sv
-                                       -> String -- ^ @category@ a mark category.      
-                                       -> Maybe String -- ^ @name@     the themed icon name or 'Nothing'. 
+sourceViewSetMarkCategoryIconFromIconName :: (SourceViewClass sv, GlibString string) => sv
+                                       -> string -- ^ @category@ a mark category.
+                                       -> Maybe string -- ^ @name@     the themed icon name or 'Nothing'.
                                        -> IO ()
 sourceViewSetMarkCategoryIconFromIconName sv category name =
-  withCString category $ \categoryPtr ->
-  maybeWith withCString name $ \namePtr ->
+  withUTFString category $ \categoryPtr ->
+  maybeWith withUTFString name $ \namePtr ->
   {#call gtk_source_view_set_mark_category_icon_from_icon_name #}
     (toSourceView sv)
     categoryPtr
     namePtr
 
 -- | Sets given background color for mark category. If color is 'Nothing', the background color is unset.
-sourceViewSetMarkCategoryBackground :: SourceViewClass sv => sv
-                                    -> String -- ^ @category@ a mark category.                      
-                                    -> Maybe Color  -- ^ @color@    background color or 'Nothing' to unset it. 
+sourceViewSetMarkCategoryBackground :: (SourceViewClass sv, GlibString string) => sv
+                                    -> string -- ^ @category@ a mark category.
+                                    -> Maybe Color  -- ^ @color@    background color or 'Nothing' to unset it.
                                     -> IO ()
 sourceViewSetMarkCategoryBackground sv category color =
   let withMB :: Storable a => Maybe a -> (Ptr a -> IO b) -> IO b
       withMB Nothing f = f nullPtr
       withMB (Just x) f = with x f
-  in withCString category $ \categoryPtr ->
+  in withUTFString category $ \categoryPtr ->
      withMB color $ \colorPtr ->
      {#call gtk_source_view_set_mark_category_background #}
        (toSourceView sv)
@@ -420,13 +420,13 @@ sourceViewSetMarkCategoryBackground sv category color =
        (castPtr colorPtr)
 
 -- | Gets the background color associated with given category.
-sourceViewGetMarkCategoryBackground :: SourceViewClass sv => sv
-                                    -> String -- ^ @category@ a mark category.
+sourceViewGetMarkCategoryBackground :: (SourceViewClass sv, GlibString string) => sv
+                                    -> string -- ^ @category@ a mark category.
                                     -> Color -- ^ @dest@     destination 'Color' structure to fill in.
                                     -> IO Bool -- ^ returns  'True' if background color for category was set and dest is set to a valid color, or 'False' otherwise.
-sourceViewGetMarkCategoryBackground sv category color = 
+sourceViewGetMarkCategoryBackground sv category color =
     liftM toBool $
-    withCString category $ \ categoryPtr ->
+    withUTFString category $ \ categoryPtr ->
     with color $ \ colorPtr ->
     {#call gtk_source_view_get_mark_category_background #}
       (toSourceView sv)
@@ -435,7 +435,7 @@ sourceViewGetMarkCategoryBackground sv category color =
 #endif
 
 -- | Whether to enable auto indentation.
--- 
+--
 -- Default value: 'False'
 --
 sourceViewAutoIndent :: SourceViewClass sv => Attr sv Bool
@@ -453,71 +453,71 @@ sourceViewDrawSpaces :: SourceViewClass sv => Attr sv SourceDrawSpacesFlags
 sourceViewDrawSpaces = newAttrFromEnumProperty "draw-spaces" {#call fun gtk_source_draw_spaces_flags_get_type#}
 
 -- | Whether to highlight the current line.
--- 
+--
 -- Default value: 'False'
 --
 sourceViewHighlightCurrentLine :: SourceViewClass sv => Attr sv Bool
 sourceViewHighlightCurrentLine = newAttrFromBoolProperty "highlight-current-line"
 
 -- | Whether to indent the selected text when the tab key is pressed.
--- 
+--
 -- Default value: 'True'
 --
 sourceViewIndentOnTab :: SourceViewClass sv => Attr sv Bool
 sourceViewIndentOnTab = newAttrFromBoolProperty "indent-on-tab"
 
 -- | Width of an indentation step expressed in number of spaces.
--- 
+--
 -- Allowed values: [GMaxulong,32]
--- 
+--
 -- Default value: -1
 --
 sourceViewIndentWidth :: SourceViewClass sv => Attr sv Int
 sourceViewIndentWidth = newAttrFromIntProperty "indent-width"
 
 -- | Whether to insert spaces instead of tabs.
--- 
+--
 -- Default value: 'False'
 --
 sourceViewInsertSpacesInsteadOfTabs :: SourceViewClass sv => Attr sv Bool
 sourceViewInsertSpacesInsteadOfTabs = newAttrFromBoolProperty "insert-spaces-instead-of-tabs"
 
 -- | Position of the right margin.
--- 
+--
 -- Allowed values: [1,200]
--- 
+--
 -- Default value: 80
 --
 sourceViewRightMarginPosition :: SourceViewClass sv => Attr sv Int
 sourceViewRightMarginPosition = newAttrFromUIntProperty "right-margin-position"
 
 -- | Whether to display line numbers
--- 
+--
 -- Default value: 'False'
 --
 sourceViewShowLineNumbers :: SourceViewClass sv => Attr sv Bool
 sourceViewShowLineNumbers = newAttrFromBoolProperty "show-line-numbers"
 
 -- | Whether to display line mark pixbufs
--- 
+--
 -- Default value: 'False'
 --
 sourceViewShowRightMargin :: SourceViewClass sv => Attr sv Bool
 sourceViewShowRightMargin = newAttrFromBoolProperty "show-right-margin"
 
 -- | Set the behavior of the HOME and END keys.
--- 
+--
 -- Default value: 'SourceSmartHomeEndDisabled'
--- 
+--
 -- Since 2.0
 --
 sourceViewSmartHomeEnd :: SourceViewClass sv => Attr sv SourceSmartHomeEndType
 sourceViewSmartHomeEnd = newAttrFromEnumProperty "smart-home-end" {#call fun gtk_source_smart_home_end_type_get_type#}
 
 -- | Width of an tab character expressed in number of spaces.
--- 
+--
 -- Allowed values: [1,32]
--- 
+--
 -- Default value: 8
 --
 sourceViewTabWidth :: SourceViewClass sv => Attr sv Int
@@ -541,7 +541,7 @@ sourceViewMoveLines = Signal $ connect_BOOL_INT__NONE "move-lines"
 
 -- | The 'showCompletion' signal is a keybinding signal which gets emitted when the user initiates a
 -- completion in default mode.
--- 
+--
 -- Applications should not connect to it, but may emit it with @gSignalEmitByName@ if they need to
 -- control the default mode completion activation.
 sourceViewShowCompletion :: SourceViewClass sv => Signal sv (IO ())
@@ -550,8 +550,8 @@ sourceViewShowCompletion = Signal $ connect_NONE__NONE "show-completion"
 -- | Emitted when a line mark has been activated (for instance when there was a button press in the line
 -- marks gutter). You can use iter to determine on which line the activation took place.
 sourceViewLineMarkActivated :: SourceViewClass sv => Signal sv (TextIter -> EventM EAny ())
-sourceViewLineMarkActivated = 
-  Signal (\after obj fun -> 
+sourceViewLineMarkActivated =
+  Signal (\after obj fun ->
            connect_BOXED_PTR__NONE "line-mark-activated" mkTextIterCopy after obj
                                    (\iter eventPtr -> runReaderT (fun iter) eventPtr)
          )
@@ -562,14 +562,14 @@ sourceViewLineMarkActivated =
 -- | 'sourceViewSetMarkCategoryPixbuf' is deprecated and should not be used in newly-written
 -- code. Use 'sourceViewSetMarkCategoryIconFromPixbuf' instead
 --
-sourceViewSetMarkCategoryPixbuf :: SourceViewClass sv => sv -> String -> Pixbuf -> IO ()
-sourceViewSetMarkCategoryPixbuf sv markerType marker = withCString markerType $ \strPtr ->
+sourceViewSetMarkCategoryPixbuf :: (SourceViewClass sv, GlibString string) => sv -> string -> Pixbuf -> IO ()
+sourceViewSetMarkCategoryPixbuf sv markerType marker = withUTFString markerType $ \strPtr ->
   {#call source_view_set_mark_category_pixbuf#} (toSourceView sv) strPtr marker
 
 -- | 'sourceViewGetMarkCategoryPixbuf' is deprecated and should not be used in newly-written code.
 --
-sourceViewGetMarkCategoryPixbuf :: SourceViewClass sv => sv -> String -> IO Pixbuf
-sourceViewGetMarkCategoryPixbuf sv markerType = withCString markerType $ \strPtr ->
+sourceViewGetMarkCategoryPixbuf :: (SourceViewClass sv, GlibString string) => sv -> string -> IO Pixbuf
+sourceViewGetMarkCategoryPixbuf sv markerType = withUTFString markerType $ \strPtr ->
   wrapNewGObject mkPixbuf $
   {#call unsafe source_view_get_mark_category_pixbuf#} (toSourceView sv) strPtr
 #endif

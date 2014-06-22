@@ -29,7 +29,7 @@ module Graphics.UI.Gtk.SourceView.SourceStyleScheme (
 -- | 'SourceStyleScheme' contains all the text styles to be used in 'SourceView' and
 -- 'SourceBuffer'. For instance, it contains text styles for syntax highlighting, it may contain
 -- foreground and background color for non-highlighted text, color for the line numbers, etc.
--- 
+--
 -- Style schemes are stored in XML files. The format of a scheme file is the documented in the style
 -- scheme reference.
 
@@ -37,7 +37,7 @@ module Graphics.UI.Gtk.SourceView.SourceStyleScheme (
   SourceStyleScheme,
   SourceStyleSchemeClass,
 
--- * Methods  
+-- * Methods
   castToSourceStyleScheme,
   sourceStyleSchemeGetId,
   sourceStyleSchemeGetName,
@@ -46,7 +46,7 @@ module Graphics.UI.Gtk.SourceView.SourceStyleScheme (
   sourceStyleSchemeGetFilename,
   sourceStyleSchemeGetStyle,
 
--- * Attributes  
+-- * Attributes
   sourceStyleSchemeDescription,
   sourceStyleSchemeFilename,
   sourceStyleSchemeId,
@@ -69,45 +69,45 @@ import System.Glib.UTFString
 
 -- methods
 
--- | 
--- 
-sourceStyleSchemeGetId :: SourceStyleSchemeClass sss => sss
-                       -> IO String -- ^ returns scheme id.              
+-- |
+--
+sourceStyleSchemeGetId :: (SourceStyleSchemeClass sss, GlibString string) => sss
+                       -> IO string -- ^ returns scheme id.
 sourceStyleSchemeGetId ss =
   {#call source_style_scheme_get_id#} (toSourceStyleScheme ss) >>= peekUTFString
 
--- | 
--- 
-sourceStyleSchemeGetName :: SourceStyleSchemeClass sss => sss 
-                         -> IO String -- ^ returns scheme name.            
+-- |
+--
+sourceStyleSchemeGetName :: (SourceStyleSchemeClass sss, GlibString string) => sss
+                         -> IO string -- ^ returns scheme name.
 sourceStyleSchemeGetName ss =
   {#call source_style_scheme_get_name#} (toSourceStyleScheme ss) >>= peekUTFString
 
--- | 
--- 
-sourceStyleSchemeGetDescription :: SourceStyleSchemeClass sss => sss 
-                                -> IO String -- ^ returns scheme description (if defined) or empty. 
+-- |
+--
+sourceStyleSchemeGetDescription :: (SourceStyleSchemeClass sss, GlibString string) => sss
+                                -> IO string -- ^ returns scheme description (if defined) or empty.
 sourceStyleSchemeGetDescription ss =
   {#call source_style_scheme_get_description#} (toSourceStyleScheme ss) >>= peekUTFString
 
 -- |
 --
-sourceStyleSchemeGetAuthors :: SourceStyleSchemeClass sss => sss 
-                            -> IO [String] -- ^ returns an array containing the scheme authors or empty if no author is specified by the style scheme.
+sourceStyleSchemeGetAuthors :: (SourceStyleSchemeClass sss, GlibString string) => sss
+                            -> IO [string] -- ^ returns an array containing the scheme authors or empty if no author is specified by the style scheme.
 sourceStyleSchemeGetAuthors ss =
   {#call source_style_scheme_get_authors#} (toSourceStyleScheme ss) >>= peekUTFStringArray0
 
--- | 
--- 
-sourceStyleSchemeGetFilename :: SourceStyleSchemeClass sss => sss 
-                             -> IO String -- ^ returns scheme file name if the scheme was created parsing a style scheme file or empty in the other cases.
+-- |
+--
+sourceStyleSchemeGetFilename :: (SourceStyleSchemeClass sss, GlibString string) => sss
+                             -> IO string -- ^ returns scheme file name if the scheme was created parsing a style scheme file or empty in the other cases.
 sourceStyleSchemeGetFilename ss =
   {#call source_style_scheme_get_filename#} (toSourceStyleScheme ss) >>= peekUTFString
 
--- | 
--- 
-sourceStyleSchemeGetStyle :: SourceStyleSchemeClass sss => sss 
-                          -> String  -- ^ @styleId@ id of the style to retrieve.
+-- |
+--
+sourceStyleSchemeGetStyle :: (SourceStyleSchemeClass sss, GlibString string) => sss
+                          -> string  -- ^ @styleId@ id of the style to retrieve.
                           -> IO SourceStyle -- ^ returns  style which corresponds to @styleId@ in the scheme
 sourceStyleSchemeGetStyle ss id = do
   styleObj <- makeNewGObject mkSourceStyleObject $
@@ -115,29 +115,29 @@ sourceStyleSchemeGetStyle ss id = do
   sourceStyleFromObject styleObj
 
 -- | Style scheme description.
--- 
+--
 -- Default value: \"\"
 --
-sourceStyleSchemeDescription :: SourceStyleSchemeClass sss => ReadAttr sss String
+sourceStyleSchemeDescription :: (SourceStyleSchemeClass sss, GlibString string) => ReadAttr sss string
 sourceStyleSchemeDescription = readAttrFromStringProperty "description"
 
 -- | Style scheme filename or 'Nothing'.
--- 
+--
 -- Default value: \"\"
 --
 sourceStyleSchemeFilename :: SourceStyleSchemeClass sss => ReadAttr sss FilePath
 sourceStyleSchemeFilename = readAttrFromStringProperty "filename"
 
 -- | Style scheme id, a unique string used to identify the style scheme in 'SourceStyleSchemeManager'.
--- 
+--
 -- Default value: \"\"
 --
-sourceStyleSchemeId :: SourceStyleSchemeClass sss => ReadAttr sss String
+sourceStyleSchemeId :: (SourceStyleSchemeClass sss, GlibString string) => ReadAttr sss string
 sourceStyleSchemeId = readAttrFromStringProperty "id"
 
 -- | Style scheme name, a translatable string to present to user.
--- 
+--
 -- Default value: \"\"
 --
-sourceStyleSchemeName :: SourceStyleSchemeClass sss => ReadAttr sss String
+sourceStyleSchemeName :: (SourceStyleSchemeClass sss, GlibString string) => ReadAttr sss string
 sourceStyleSchemeName = readAttrFromStringProperty "name"

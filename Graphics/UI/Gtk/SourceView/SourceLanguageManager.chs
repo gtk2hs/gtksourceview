@@ -80,37 +80,37 @@ sourceLanguageManagerGetDefault = wrapNewGObject mkSourceLanguageManager $ liftM
 
 -- | Sets the list of directories where the lm looks for language files. If dirs is 'Nothing', the search path
 -- is reset to default.
--- 
+--
 -- Note
--- 
+--
 -- At the moment this function can be called only before the language files are loaded for the first
 -- time. In practice to set a custom search path for a 'SourceLanguageManager', you have to call this
 -- function right after creating it.
 --
-sourceLanguageManagerSetSearchPath :: SourceLanguageManagerClass slm => slm -> Maybe [String] -> IO ()
+sourceLanguageManagerSetSearchPath :: (SourceLanguageManagerClass slm, GlibString string) => slm -> Maybe [string] -> IO ()
 sourceLanguageManagerSetSearchPath slm dirs =
   maybeWith withUTFStringArray0 dirs $ \dirsPtr -> do
     {#call unsafe source_language_manager_set_search_path#} (toSourceLanguageManager slm) dirsPtr
 
 -- | Gets the list directories where lm looks for language files.
 --
-sourceLanguageManagerGetSearchPath :: SourceLanguageManagerClass slm => slm -> IO [String]
+sourceLanguageManagerGetSearchPath :: (SourceLanguageManagerClass slm, GlibString string) => slm -> IO [string]
 sourceLanguageManagerGetSearchPath slm = do
   dirsPtr <- {#call unsafe source_language_manager_get_search_path#} (toSourceLanguageManager slm)
   liftM (fromMaybe []) $ maybePeek peekUTFStringArray0 dirsPtr
 
 -- | Returns the ids of the available languages.
 --
-sourceLanguageManagerGetLanguageIds :: SourceLanguageManagerClass slm => slm -> IO [String]
+sourceLanguageManagerGetLanguageIds :: (SourceLanguageManagerClass slm, GlibString string) => slm -> IO [string]
 sourceLanguageManagerGetLanguageIds slm = do
   idsPtr <- {#call unsafe source_language_manager_get_language_ids#} (toSourceLanguageManager slm)
   liftM (fromMaybe []) $ maybePeek peekUTFStringArray0 idsPtr
 
 -- | Gets the 'SourceLanguage' identified by the given id in the language manager.
 --
-sourceLanguageManagerGetLanguage :: SourceLanguageManagerClass slm => slm 
-                                 -> String  -- ^ @id@      a language id.
-                                 -> IO (Maybe SourceLanguage) -- ^ returns a 'SourceLanguage', or 'Nothing' if there is no language identified by the given id. 
+sourceLanguageManagerGetLanguage :: (SourceLanguageManagerClass slm, GlibString string) => slm
+                                 -> string  -- ^ @id@      a language id.
+                                 -> IO (Maybe SourceLanguage) -- ^ returns a 'SourceLanguage', or 'Nothing' if there is no language identified by the given id.
 sourceLanguageManagerGetLanguage slm id = do
   slPtr <- liftM castPtr $
     withUTFString id ({#call unsafe source_language_manager_get_language#} (toSourceLanguageManager slm))
@@ -121,10 +121,10 @@ sourceLanguageManagerGetLanguage slm id = do
 -- | Picks a 'SourceLanguage' for given file name and content type, according to the information in lang
 -- files. Either filename or @contentType@ may be 'Nothing'.
 --
-sourceLanguageManagerGuessLanguage :: SourceLanguageManagerClass slm => slm 
-                                   -> Maybe String  -- ^ @filename@     a filename in Glib filename encoding, or 'Nothing'.
-                                   -> Maybe String  -- ^ @contentType@ a content type (as in GIO API), or 'Nothing'.
-                                   -> IO (Maybe SourceLanguage) -- ^ returns      a 'SourceLanguage', or 'Nothing' if there is no suitable language for given filename and/or @contentType@. 
+sourceLanguageManagerGuessLanguage :: (SourceLanguageManagerClass slm, GlibString string) => slm
+                                   -> Maybe string  -- ^ @filename@     a filename in Glib filename encoding, or 'Nothing'.
+                                   -> Maybe string  -- ^ @contentType@ a content type (as in GIO API), or 'Nothing'.
+                                   -> IO (Maybe SourceLanguage) -- ^ returns      a 'SourceLanguage', or 'Nothing' if there is no suitable language for given filename and/or @contentType@.
 sourceLanguageManagerGuessLanguage slm filename contentType =
   maybeWith withUTFString filename $ \cFilename ->
   maybeWith withUTFString contentType $ \cContentType -> do
@@ -136,14 +136,14 @@ sourceLanguageManagerGuessLanguage slm filename contentType =
 
 -- | List of the ids of the available languages.
 --
-sourceLanguageManagerLanguageIds :: SourceLanguageManagerClass slm => ReadAttr slm [String]
+sourceLanguageManagerLanguageIds :: (SourceLanguageManagerClass slm, GlibString string) => ReadAttr slm [string]
 sourceLanguageManagerLanguageIds =
   readAttrFromBoxedOpaqueProperty (liftM (fromMaybe []) . maybePeek peekUTFStringArray0 . castPtr)
                                   "language-ids" {#call pure g_strv_get_type#}
 
 -- | List of directories where the language specification files (.lang) are located.
 --
-sourceLanguageManagerSearchPath :: SourceLanguageManagerClass slm => ReadWriteAttr slm [String] (Maybe [String])
+sourceLanguageManagerSearchPath :: (SourceLanguageManagerClass slm, GlibString string) => ReadWriteAttr slm [string] (Maybe [string])
 sourceLanguageManagerSearchPath =
   newAttr (objectGetPropertyBoxedOpaque (peekUTFStringArray0 . castPtr) gtype "search-path")
           (objectSetPropertyBoxedOpaque (\dirs f -> maybeWith withUTFStringArray0 dirs (f . castPtr)) gtype "search-path")

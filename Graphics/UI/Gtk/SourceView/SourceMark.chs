@@ -29,7 +29,7 @@ module Graphics.UI.Gtk.SourceView.SourceMark (
 -- * Description
 -- | A 'SourceMark' marks a position in the text where you want to display additional info. It is based
 -- on 'TextMark' and thus is still valid after the text has changed though its position may change.
--- 
+--
 -- 'SourceMarks' are organised in categories which you have to set when you create the mark. Each
 -- category can have a pixbuf and a priority associated using @gtkSourceViewSetMarkCategoryPixbuf@
 -- and @gtkSourceViewSetMarkCategoryPriority@. The pixbuf will be displayed in the margin at the
@@ -70,10 +70,11 @@ import System.Glib.UTFString
 -- is anonymous; otherwise, the mark can be retrieved by name using
 -- 'textBufferGetMark'. Normally marks are created using the utility function
 -- 'sourceBufferCreateMark'.
-sourceMarkNew :: Maybe String -- ^ @name@     Name of the 'SourceMark', can be 'Nothing' when not using a name
-              -> String  -- ^ @category@ is used to classify marks according to common characteristics (e.g. all the marks representing a bookmark could  
+sourceMarkNew :: GlibString string
+              => Maybe string -- ^ @name@     Name of the 'SourceMark', can be 'Nothing' when not using a name
+              -> string  -- ^ @category@ is used to classify marks according to common characteristics (e.g. all the marks representing a bookmark could
               -> IO SourceMark
-sourceMarkNew name category = 
+sourceMarkNew name category =
   wrapNewGObject mkSourceMark $
   maybeWith withUTFString name $ \namePtr ->
   withUTFString category $ \categoryPtr ->
@@ -82,9 +83,9 @@ sourceMarkNew name category =
     categoryPtr
 
 -- | Returns the mark category
--- 
-sourceMarkGetCategory :: SourceMarkClass mark => mark
-                      -> IO String -- ^ returns the category of the 'SourceMark' 
+--
+sourceMarkGetCategory :: (SourceMarkClass mark, GlibString string) => mark
+                      -> IO string -- ^ returns the category of the 'SourceMark'
 sourceMarkGetCategory mark = do
   strPtr <- {#call unsafe source_mark_get_category#} (toSourceMark mark)
   markType <- peekUTFString strPtr
@@ -93,25 +94,25 @@ sourceMarkGetCategory mark = do
 
 -- | Returns the next 'SourceMark' in the buffer or 'Nothing' if the mark was not added to a buffer. If there
 -- is no next mark, 'Nothing' will be returned.
--- 
+--
 -- If category is 'Nothing', looks for marks of any category
--- 
-sourceMarkNext :: SourceMarkClass mark => mark 
-               -> Maybe String  -- ^ @category@ a string specifying the mark category or 'Nothing' 
-               -> IO (Maybe SourceMark) -- ^ returns  the next 'SourceMark' or 'Nothing'                
-sourceMarkNext mark category = 
+--
+sourceMarkNext :: (SourceMarkClass mark, GlibString string) => mark
+               -> Maybe string  -- ^ @category@ a string specifying the mark category or 'Nothing'
+               -> IO (Maybe SourceMark) -- ^ returns  the next 'SourceMark' or 'Nothing'
+sourceMarkNext mark category =
     maybeNull (makeNewGObject mkSourceMark) $
     maybeWith withUTFString category $ {#call unsafe source_mark_next#} (toSourceMark mark)
 
 -- | Returns the previous 'SourceMark' in the buffer or 'Nothing' if the mark was not added to a buffer. If
 -- there is no previous mark, 'Nothing' is returned.
--- 
+--
 -- If category is 'Nothing', looks for marks of any category
--- 
-sourceMarkPrev :: SourceMarkClass mark => mark 
-               -> Maybe String  -- ^ @category@ a string specifying the mark category or 'Nothing' 
-               -> IO (Maybe SourceMark) -- ^ returns  the previous 'SourceMark' or 'Nothing'            
-sourceMarkPrev mark category = 
+--
+sourceMarkPrev :: (SourceMarkClass mark, GlibString string) => mark
+               -> Maybe string  -- ^ @category@ a string specifying the mark category or 'Nothing'
+               -> IO (Maybe SourceMark) -- ^ returns  the previous 'SourceMark' or 'Nothing'
+sourceMarkPrev mark category =
     maybeNull (makeNewGObject mkSourceMark) $
     maybeWith withUTFString category $ {#call unsafe source_mark_prev#} (toSourceMark mark)
 
@@ -119,5 +120,5 @@ sourceMarkPrev mark category =
 -- which priority it is drawn.
 -- Default value: \"\"
 --
-sourceMarkCategory :: SourceMarkClass mark => Attr mark String
+sourceMarkCategory :: (SourceMarkClass mark, GlibString string) => Attr mark string
 sourceMarkCategory = newAttrFromStringProperty "category"

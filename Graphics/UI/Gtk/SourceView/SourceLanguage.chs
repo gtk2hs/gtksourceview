@@ -71,38 +71,38 @@ import System.Glib.UTFString
 
 -- | Returns the ID of the language. The ID is not locale-dependent.
 --
-sourceLanguageGetId :: SourceLanguageClass sl => sl
-                    -> IO String -- ^ returns  the ID of language. The returned string is owned by language and should not be freed or modified.
+sourceLanguageGetId :: (SourceLanguageClass sl, GlibString string) => sl
+                    -> IO string -- ^ returns  the ID of language. The returned string is owned by language and should not be freed or modified.
 sourceLanguageGetId sl =
   {#call unsafe source_language_get_id#} (toSourceLanguage sl) >>= peekUTFString
 
 -- | Returns the localized name of the language.
 --
-sourceLanguageGetName :: SourceLanguageClass sl => sl 
-                      -> IO String -- ^ returns  the name of language. The returned string is owned by language and should not be freed or modified.
+sourceLanguageGetName :: (SourceLanguageClass sl, GlibString string) => sl
+                      -> IO string -- ^ returns  the name of language. The returned string is owned by language and should not be freed or modified.
 sourceLanguageGetName sl =
   {#call unsafe source_language_get_name#} (toSourceLanguage sl) >>= peekUTFString
 
 -- | Returns the localized section of the language. Each language belong to a section (ex. HTML belogs to
 -- the Markup section).
 --
-sourceLanguageGetSection :: SourceLanguageClass sl => sl 
-                         -> IO String -- ^ returns  the section of language. The returned string is owned by language and should not be freed or modified.
+sourceLanguageGetSection :: (SourceLanguageClass sl, GlibString string) => sl
+                         -> IO string -- ^ returns  the section of language. The returned string is owned by language and should not be freed or modified.
 sourceLanguageGetSection sl =
   {#call unsafe source_language_get_section#} (toSourceLanguage sl) >>= peekUTFString
 
 -- | Returns whether the language should be hidden from the user.
 --
-sourceLanguageGetHidden :: SourceLanguageClass sl => sl 
-                        -> IO Bool -- ^ returns  'True' if the language should be hidden, 'False' otherwise. 
+sourceLanguageGetHidden :: SourceLanguageClass sl => sl
+                        -> IO Bool -- ^ returns  'True' if the language should be hidden, 'False' otherwise.
 sourceLanguageGetHidden sl = liftM toBool $
   {#call unsafe source_language_get_hidden#} (toSourceLanguage sl)
 
 -- |
 --
-sourceLanguageGetMetadata :: SourceLanguageClass sl => sl 
-                          -> String  -- ^ @name@     metadata property name.
-                          -> IO String -- ^ returns  value of property name stored in the metadata of language or empty if language doesn't contain that metadata
+sourceLanguageGetMetadata :: (SourceLanguageClass sl, GlibString string) => sl
+                          -> string  -- ^ @name@     metadata property name.
+                          -> IO string -- ^ returns  value of property name stored in the metadata of language or empty if language doesn't contain that metadata
 sourceLanguageGetMetadata sl name = do
   withUTFString name ({#call unsafe source_language_get_metadata#} (toSourceLanguage sl)) >>= peekUTFString
 
@@ -110,8 +110,8 @@ sourceLanguageGetMetadata sl name = do
 -- 'sourceLanguageGetMetadata ' to retrieve the "mimetypes" metadata property and split it into
 -- an array.
 --
-sourceLanguageGetMimeTypes :: SourceLanguageClass sl => sl 
-                           -> IO [String] -- ^ returns  an array containing the mime types or empty if no mime types are found. The        
+sourceLanguageGetMimeTypes :: (SourceLanguageClass sl, GlibString string) => sl
+                           -> IO [string] -- ^ returns  an array containing the mime types or empty if no mime types are found. The
 sourceLanguageGetMimeTypes sl = do
   mimeTypesArray <- {#call unsafe source_language_get_mime_types#} (toSourceLanguage sl)
   mimeTypes <- liftM (fromMaybe []) $ maybePeek peekUTFStringArray0 mimeTypesArray
@@ -122,8 +122,8 @@ sourceLanguageGetMimeTypes sl = do
 -- 'sourceLanguageGetMetadata' to retrieve the "globs" metadata property and split it into an
 -- array.
 --
-sourceLanguageGetGlobs :: SourceLanguageClass sl => sl 
-                       -> IO [String] -- ^ returns  an array containing the globs or empty if no globs are found. 
+sourceLanguageGetGlobs :: (SourceLanguageClass sl, GlibString string) => sl
+                       -> IO [string] -- ^ returns  an array containing the globs or empty if no globs are found.
 sourceLanguageGetGlobs sl = do
   globsArray <- {#call unsafe source_language_get_globs#} (toSourceLanguage sl)
   globs <- liftM (fromMaybe []) $ maybePeek peekUTFStringArray0 globsArray
@@ -131,9 +131,9 @@ sourceLanguageGetGlobs sl = do
   return globs
 
 -- | Returns the name of the style with ID @styleId@ defined by this language.
-sourceLanguageGetStyleName :: SourceLanguageClass sl => sl 
-                           -> String -- ^ @styleId@ a style ID
-                           -> IO String  -- ^ returns the name of the style with ID @styleId@ defined by this language or empty if the style has no name or there is no style with ID @styleId@ defined by this language. The returned string is owned by the language and must not be modified.
+sourceLanguageGetStyleName :: (SourceLanguageClass sl, GlibString string) => sl
+                           -> string -- ^ @styleId@ a style ID
+                           -> IO string  -- ^ returns the name of the style with ID @styleId@ defined by this language or empty if the style has no name or there is no style with ID @styleId@ defined by this language. The returned string is owned by the language and must not be modified.
 sourceLanguageGetStyleName sl styleId =
     withUTFString styleId $ \styleIdPtr ->
     {#call gtk_source_language_get_style_name#}
@@ -142,8 +142,8 @@ sourceLanguageGetStyleName sl styleId =
     >>= peekUTFString
 
 -- | Returns the ids of the styles defined by this language.
-sourceLanguageGetStyleIds :: SourceLanguageClass sl => sl 
-                          -> IO [String] -- ^ returns  an array containing ids of the styles defined by this language or empty if no style is defined. 
+sourceLanguageGetStyleIds :: (SourceLanguageClass sl, GlibString string) => sl
+                          -> IO [string] -- ^ returns  an array containing ids of the styles defined by this language or empty if no style is defined.
 sourceLanguageGetStyleIds sl = do
   globsArray <- {#call gtk_source_language_get_style_ids#} (toSourceLanguage sl)
   globs <- liftM (fromMaybe []) $ maybePeek peekUTFStringArray0 globsArray
@@ -151,29 +151,29 @@ sourceLanguageGetStyleIds sl = do
   return globs
 
 -- | Whether the language should be hidden from the user.
--- 
+--
 -- Default value: 'False'
 --
 sourceLanguageHidden :: SourceLanguageClass sl => ReadAttr sl Bool
 sourceLanguageHidden = readAttrFromBoolProperty "hidden"
 
 -- | Language id.
--- 
+--
 -- Default value: \"\"
 --
-sourceLanguageId :: SourceLanguageClass sl => ReadAttr sl String
+sourceLanguageId :: (SourceLanguageClass sl, GlibString string) => ReadAttr sl string
 sourceLanguageId = readAttrFromStringProperty "id"
 
 -- | Language name.
--- 
+--
 -- Default value: \"\"
 --
-sourceLanguageName :: SourceLanguageClass sl => ReadAttr sl String
+sourceLanguageName :: (SourceLanguageClass sl, GlibString string) => ReadAttr sl string
 sourceLanguageName = readAttrFromStringProperty "name"
 
 -- | Language section.
--- 
+--
 -- Default value: \"\"
 --
-sourceLanguageSection :: SourceLanguageClass sl => ReadAttr sl String
+sourceLanguageSection :: (SourceLanguageClass sl, GlibString string) => ReadAttr sl string
 sourceLanguageSection = readAttrFromStringProperty "section"

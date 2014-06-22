@@ -58,86 +58,89 @@ import System.Glib.UTFString
 -- | Create a new 'SourceCompletionItem' with label label, icon icon and extra information info. Both
 -- icon and info can be 'Nothing' in which case there will be no icon shown and no extra information
 -- available.
-sourceCompletionItemNew :: String -- ^ @label@   The item label                   
-                        -> String -- ^ @text@    The item text                    
+sourceCompletionItemNew :: GlibString string
+                        => string -- ^ @label@   The item label
+                        -> string -- ^ @text@    The item text
                         -> Maybe Pixbuf -- ^ @icon@    The item icon or 'Nothing'
-                        -> String -- ^ @info@    The item extra information       
+                        -> string -- ^ @info@    The item extra information
                         -> IO SourceCompletionItem
 sourceCompletionItemNew label text icon info =
   wrapNewGObject mkSourceCompletionItem $
-  withUTFString label $ \ labelPtr -> 
-  withUTFString text $ \ textPtr -> 
-  withUTFString info $ \ infoPtr -> 
+  withUTFString label $ \ labelPtr ->
+  withUTFString text $ \ textPtr ->
+  withUTFString info $ \ infoPtr ->
   {#call gtk_source_completion_item_new #}
     labelPtr
     textPtr
     (fromMaybe (Pixbuf nullForeignPtr) icon)
     infoPtr
-  
-  
+
+
 -- | Create a new 'SourceCompletionItem' with markup label markup, icon icon and extra information
 -- info. Both icon and info can be 'Nothing' in which case there will be no icon shown and no extra
 -- information available.
-sourceCompletionItemNewWithMarkup :: String
-                                  -> String
+sourceCompletionItemNewWithMarkup :: GlibString string
+                                  => string
+                                  -> string
                                   -> Maybe Pixbuf
-                                  -> String
+                                  -> string
                                   -> IO SourceCompletionItem
-sourceCompletionItemNewWithMarkup markup text icon info = 
-  wrapNewGObject mkSourceCompletionItem $ 
-  withUTFString markup $ \ markupPtr -> 
-  withUTFString text $ \ textPtr -> 
-  withUTFString info $ \ infoPtr -> 
+sourceCompletionItemNewWithMarkup markup text icon info =
+  wrapNewGObject mkSourceCompletionItem $
+  withUTFString markup $ \ markupPtr ->
+  withUTFString text $ \ textPtr ->
+  withUTFString info $ \ infoPtr ->
   {#call gtk_source_completion_item_new_with_markup #}
     markupPtr
     textPtr
     (fromMaybe (Pixbuf nullForeignPtr) icon)
     infoPtr
-  
+
 -- | Creates a new 'SourceCompletionItem' from a stock item. If label is 'Nothing', the stock label will be
 -- used.
-sourceCompletionItemNewFromStock :: Maybe String -- ^ @label@   The item label or 'Nothing'
-                                 -> String -- ^ @text@    The item text                                  
-                                 -> String -- ^ @stock@   The stock icon                                 
-                                 -> String -- ^ @info@    The item extra information                     
+sourceCompletionItemNewFromStock :: GlibString string
+                                 => Maybe string -- ^ @label@   The item label or 'Nothing'
+                                 -> string -- ^ @text@    The item text
+                                 -> string -- ^ @stock@   The stock icon
+                                 -> string -- ^ @info@    The item extra information
                                  -> IO SourceCompletionItem
 sourceCompletionItemNewFromStock label text stock info =
   wrapNewGObject mkSourceCompletionItem $
-  maybeWith withUTFString label $ \ labelPtr -> 
-  withUTFString text $ \ textPtr -> 
-  withUTFString stock $ \ stockPtr -> 
-  withUTFString info $ \ infoPtr -> 
+  maybeWith withUTFString label $ \ labelPtr ->
+  withUTFString text $ \ textPtr ->
+  withUTFString stock $ \ stockPtr ->
+  withUTFString info $ \ infoPtr ->
   {#call gtk_source_completion_item_new_from_stock #}
     labelPtr
     textPtr
     stockPtr
     infoPtr
-   
+
 -- | Icon to be shown for this proposal.
 sourceCompletionItemIcon :: SourceCompletionItemClass item => Attr item Pixbuf
 sourceCompletionItemIcon = newAttrFromObjectProperty "icon"
                            {# call pure unsafe gdk_pixbuf_get_type #}
 
 -- | Optional extra information to be shown for this proposal.
--- 
+--
 -- Default value: \"\"
-sourceCompletionItemInfo :: SourceCompletionItemClass item => Attr item String
+sourceCompletionItemInfo :: (SourceCompletionItemClass item, GlibString string) => Attr item string
 sourceCompletionItemInfo = newAttrFromStringProperty "info"
 
 -- | Optional extra labelrmation to be shown for this proposal.
--- 
+--
 -- Default value: \"\"
-sourceCompletionItemLabel :: SourceCompletionItemClass item => Attr item String
+sourceCompletionItemLabel :: (SourceCompletionItemClass item, GlibString string) => Attr item string
 sourceCompletionItemLabel = newAttrFromStringProperty "label"
 
 -- | Optional extra markuprmation to be shown for this proposal.
--- 
+--
 -- Default value: \"\"
-sourceCompletionItemMarkup :: SourceCompletionItemClass item => Attr item String
+sourceCompletionItemMarkup :: (SourceCompletionItemClass item, GlibString string) => Attr item string
 sourceCompletionItemMarkup = newAttrFromStringProperty "markup"
 
 -- | Optional extra textrmation to be shown for this proposal.
--- 
+--
 -- Default value: \"\"
-sourceCompletionItemText :: SourceCompletionItemClass item => Attr item String
+sourceCompletionItemText :: (SourceCompletionItemClass item, GlibString string) => Attr item string
 sourceCompletionItemText = newAttrFromStringProperty "text"

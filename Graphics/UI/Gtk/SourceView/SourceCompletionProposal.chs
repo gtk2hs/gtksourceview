@@ -62,8 +62,8 @@ import System.Glib.UTFString
 -- | Gets the label of proposal. The label is shown in the list of proposals as plain text. If you need
 -- any markup (such as bold or italic text), you have to implement
 -- 'sourceCompletionProposalGetMarkup'.
-sourceCompletionProposalGetLabel :: SourceCompletionProposalClass scp => scp
-                                 -> IO String -- ^ returns  A new string containing the label of proposal. 
+sourceCompletionProposalGetLabel :: (SourceCompletionProposalClass scp, GlibString string) => scp
+                                 -> IO string -- ^ returns  A new string containing the label of proposal.
 sourceCompletionProposalGetLabel scp =
   {#call gtk_source_completion_proposal_get_label #}
     (toSourceCompletionProposal scp)
@@ -71,8 +71,8 @@ sourceCompletionProposalGetLabel scp =
 
 -- | Gets the label of proposal with markup. The label is shown in the list of proposals and may contain
 -- markup. This will be used instead of 'sourceCompletionProposalGetLabel' if implemented.
-sourceCompletionProposalGetMarkup :: SourceCompletionProposalClass scp => scp
-                                  -> IO String -- ^ returns  A new string containing the label of proposal with markup. 
+sourceCompletionProposalGetMarkup :: (SourceCompletionProposalClass scp, GlibString string) => scp
+                                  -> IO string -- ^ returns  A new string containing the label of proposal with markup.
 sourceCompletionProposalGetMarkup scp =
   {#call gtk_source_completion_proposal_get_markup #}
     (toSourceCompletionProposal scp)
@@ -81,8 +81,8 @@ sourceCompletionProposalGetMarkup scp =
 -- | Gets the text of proposal. The text that is inserted into the text buffer when the proposal is
 -- activated by the default activation. You are free to implement a custom activation handler in the
 -- provider and not implement this function.
-sourceCompletionProposalGetText :: SourceCompletionProposalClass scp => scp
-                                -> IO String -- ^ returns  A new string containing the text of proposal. 
+sourceCompletionProposalGetText :: (SourceCompletionProposalClass scp, GlibString string) => scp
+                                -> IO string -- ^ returns  A new string containing the text of proposal.
 sourceCompletionProposalGetText scp =
   {#call gtk_source_completion_proposal_get_text #}
     (toSourceCompletionProposal scp)
@@ -90,7 +90,7 @@ sourceCompletionProposalGetText scp =
 
 -- | Gets the icon of proposal.
 sourceCompletionProposalGetIcon :: SourceCompletionProposalClass scp => scp
-                                -> IO Pixbuf -- ^ returns  The icon of proposal.         
+                                -> IO Pixbuf -- ^ returns  The icon of proposal.
 sourceCompletionProposalGetIcon scp =
   wrapNewGObject mkPixbuf $
   {#call gtk_source_completion_proposal_get_icon #}
@@ -98,28 +98,28 @@ sourceCompletionProposalGetIcon scp =
 
 -- | Gets extra information associated to the proposal. This information will be used to present the user
 -- with extra, detailed information about the selected proposal.
-sourceCompletionProposalGetInfo :: SourceCompletionProposalClass scp => scp
-                                -> IO String -- ^ returns  A new string containing extra information of proposal or empty if no extra information is associated to proposal.
+sourceCompletionProposalGetInfo :: (SourceCompletionProposalClass scp, GlibString string) => scp
+                                -> IO string -- ^ returns  A new string containing extra information of proposal or empty if no extra information is associated to proposal.
 sourceCompletionProposalGetInfo scp =
   {#call gtk_source_completion_proposal_get_info #}
     (toSourceCompletionProposal scp)
   >>= peekUTFString
 
 -- | Get the hash value of proposal. This is used to (together with 'sourceCompletionProposalEqual')
--- to match proposals in the completion model. 
+-- to match proposals in the completion model.
 sourceCompletionProposalHash :: SourceCompletionProposalClass scp => scp
-                             -> IO Int  -- ^ returns  The hash value of proposal    
+                             -> IO Int  -- ^ returns  The hash value of proposal
 sourceCompletionProposalHash scp =
   liftM fromIntegral $
   {#call gtk_source_completion_proposal_hash #}
     (toSourceCompletionProposal scp)
 
 -- | Get whether two proposal objects are the same. This is used to (together with
--- 'sourceCompletionProposalHash') to match proposals in the completion model. 
-sourceCompletionProposalEqual :: (SourceCompletionProposalClass scp1, SourceCompletionProposalClass scp2) 
+-- 'sourceCompletionProposalHash') to match proposals in the completion model.
+sourceCompletionProposalEqual :: (SourceCompletionProposalClass scp1, SourceCompletionProposalClass scp2)
                               => scp1
                               -> scp2
-                              -> IO Bool  -- ^ returns  'True' if proposal and object are the same proposal 
+                              -> IO Bool  -- ^ returns  'True' if proposal and object are the same proposal
 sourceCompletionProposalEqual scp1 scp2 =
     liftM toBool $
     {#call gtk_source_completion_proposal_equal #}
