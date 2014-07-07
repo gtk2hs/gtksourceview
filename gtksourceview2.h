@@ -1,3 +1,6 @@
+#ifdef __BLOCKS__
+#undef __BLOCKS__
+#endif
 #include "gtk2hs_macros.h"
 #include <gtksourceview/gtksourcebuffer.h>
 #if GTK_MAJOR_VERSION < 3
