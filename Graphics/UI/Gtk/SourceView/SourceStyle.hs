@@ -28,13 +28,15 @@ module Graphics.UI.Gtk.SourceView.SourceStyle (
   SourceStyle(..),
   ) where
 
+import Data.Text (Text)
+
 data SourceStyle =
   SourceStyle
-  { sourceStyleBackground     :: Maybe String
+  { sourceStyleBackground     :: Maybe Text
   , sourceStyleBold           :: Maybe Bool
-  , sourceStyleForeground     :: Maybe String
+  , sourceStyleForeground     :: Maybe Text
   , sourceStyleItalic         :: Maybe Bool
-  , sourceStyleLineBackground :: Maybe String
+  , sourceStyleLineBackground :: Maybe Text
   , sourceStyleStrikethrough  :: Maybe Bool
   , sourceStyleUnderline      :: Maybe Bool
   }

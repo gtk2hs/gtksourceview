@@ -87,17 +87,17 @@ sourceLanguageManagerGetDefault = wrapNewGObject mkSourceLanguageManager $ liftM
 -- time. In practice to set a custom search path for a 'SourceLanguageManager', you have to call this
 -- function right after creating it.
 --
-sourceLanguageManagerSetSearchPath :: (SourceLanguageManagerClass slm, GlibString string) => slm -> Maybe [string] -> IO ()
+sourceLanguageManagerSetSearchPath :: (SourceLanguageManagerClass slm, GlibFilePath fp) => slm -> Maybe [fp] -> IO ()
 sourceLanguageManagerSetSearchPath slm dirs =
-  maybeWith withUTFStringArray0 dirs $ \dirsPtr -> do
+  maybeWith withUTFFilePathArray0 dirs $ \dirsPtr -> do
     {#call unsafe source_language_manager_set_search_path#} (toSourceLanguageManager slm) dirsPtr
 
 -- | Gets the list directories where lm looks for language files.
 --
-sourceLanguageManagerGetSearchPath :: (SourceLanguageManagerClass slm, GlibString string) => slm -> IO [string]
+sourceLanguageManagerGetSearchPath :: (SourceLanguageManagerClass slm, GlibFilePath fp) => slm -> IO [fp]
 sourceLanguageManagerGetSearchPath slm = do
   dirsPtr <- {#call unsafe source_language_manager_get_search_path#} (toSourceLanguageManager slm)
-  liftM (fromMaybe []) $ maybePeek peekUTFStringArray0 dirsPtr
+  liftM (fromMaybe []) $ maybePeek peekUTFFilePathArray0 dirsPtr
 
 -- | Returns the ids of the available languages.
 --
@@ -121,12 +121,12 @@ sourceLanguageManagerGetLanguage slm id = do
 -- | Picks a 'SourceLanguage' for given file name and content type, according to the information in lang
 -- files. Either filename or @contentType@ may be 'Nothing'.
 --
-sourceLanguageManagerGuessLanguage :: (SourceLanguageManagerClass slm, GlibString string) => slm
-                                   -> Maybe string  -- ^ @filename@     a filename in Glib filename encoding, or 'Nothing'.
+sourceLanguageManagerGuessLanguage :: (SourceLanguageManagerClass slm, GlibFilePath fp, GlibString string) => slm
+                                   -> Maybe fp      -- ^ @filename@     a filename in Glib filename encoding, or 'Nothing'.
                                    -> Maybe string  -- ^ @contentType@ a content type (as in GIO API), or 'Nothing'.
                                    -> IO (Maybe SourceLanguage) -- ^ returns      a 'SourceLanguage', or 'Nothing' if there is no suitable language for given filename and/or @contentType@.
 sourceLanguageManagerGuessLanguage slm filename contentType =
-  maybeWith withUTFString filename $ \cFilename ->
+  maybeWith withUTFFilePath filename $ \cFilename ->
   maybeWith withUTFString contentType $ \cContentType -> do
     slPtr <- liftM castPtr $
       {#call unsafe source_language_manager_guess_language#} (toSourceLanguageManager slm) cFilename cContentType

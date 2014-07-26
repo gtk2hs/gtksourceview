@@ -75,37 +75,37 @@ sourceStyleSchemeManagerGetDefault = makeNewGObject mkSourceStyleSchemeManager $
 -- | Sets the list of directories where the manager looks for style scheme files. If dirs is 'Nothing', the
 -- search path is reset to default.
 --
-sourceStyleSchemeManagerSetSearchPath :: (SourceStyleSchemeManagerClass sssm, GlibString string) => sssm -> Maybe [string] -> IO ()
+sourceStyleSchemeManagerSetSearchPath :: (SourceStyleSchemeManagerClass sssm, GlibFilePath fp) => sssm -> Maybe [fp] -> IO ()
 sourceStyleSchemeManagerSetSearchPath ssm dirs =
-  maybeWith withUTFStringArray0 dirs $ \dirsPtr -> do
+  maybeWith withUTFFilePathArray0 dirs $ \dirsPtr -> do
     {#call unsafe source_style_scheme_manager_set_search_path#} (toSourceStyleSchemeManager ssm) dirsPtr
 
 -- | Appends path to the list of directories where the manager looks for style scheme files. See
 -- 'sourceStyleSchemeManagerSetSearchPath' for details.
 --
-sourceStyleSchemeManagerAppendSearchPath :: (SourceStyleSchemeManagerClass sssm, GlibString string) => sssm
-                                         -> string  -- ^ @path@    a directory or a filename.
+sourceStyleSchemeManagerAppendSearchPath :: (SourceStyleSchemeManagerClass sssm, GlibFilePath fp) => sssm
+                                         -> fp  -- ^ @path@    a directory or a filename.
                                          -> IO ()
 sourceStyleSchemeManagerAppendSearchPath ssm dir =
-  withUTFString dir $ {#call unsafe source_style_scheme_manager_append_search_path#} (toSourceStyleSchemeManager ssm)
+  withUTFFilePath dir $ {#call unsafe source_style_scheme_manager_append_search_path#} (toSourceStyleSchemeManager ssm)
 
 -- | Prepends path to the list of directories where the manager looks for style scheme files. See
 -- 'sourceStyleSchemeManagerSetSearchPath' for details.
 --
-sourceStyleSchemeManagerPrependSearchPath :: (SourceStyleSchemeManagerClass sssm, GlibString string) => sssm
-                                          -> string  -- ^ @path@    a directory or a filename.
+sourceStyleSchemeManagerPrependSearchPath :: (SourceStyleSchemeManagerClass sssm, GlibFilePath fp) => sssm
+                                          -> fp  -- ^ @path@    a directory or a filename.
                                           -> IO ()
 sourceStyleSchemeManagerPrependSearchPath ssm dir =
-  withUTFString dir $ {#call unsafe source_style_scheme_manager_prepend_search_path#} (toSourceStyleSchemeManager ssm)
+  withUTFFilePath dir $ {#call unsafe source_style_scheme_manager_prepend_search_path#} (toSourceStyleSchemeManager ssm)
 
 -- | Returns the current search path for the manager. See
 -- 'sourceStyleSchemeManagerSetSearchPath' for details.
 --
-sourceStyleSchemeManagerGetSearchPath :: (SourceStyleSchemeManagerClass sssm, GlibString string) => sssm
-                                      -> IO [string]
+sourceStyleSchemeManagerGetSearchPath :: (SourceStyleSchemeManagerClass sssm, GlibFilePath fp) => sssm
+                                      -> IO [fp]
 sourceStyleSchemeManagerGetSearchPath ssm = do
   dirsPtr <- {#call unsafe source_style_scheme_manager_get_search_path#} (toSourceStyleSchemeManager ssm)
-  peekUTFStringArray0 dirsPtr
+  peekUTFFilePathArray0 dirsPtr
 
 -- | Returns the ids of the available style schemes.
 --
@@ -138,8 +138,8 @@ sourceStyleSchemeManagerStyleIds =
 
 -- | List of directories and files where the style schemes are located.
 --
-sourceStyleSchemeManagerSearchPath :: (SourceStyleSchemeManagerClass sssm, GlibString string) => ReadWriteAttr sssm [string] (Maybe [string])
+sourceStyleSchemeManagerSearchPath :: (SourceStyleSchemeManagerClass sssm, GlibFilePath fp) => ReadWriteAttr sssm [fp] (Maybe [fp])
 sourceStyleSchemeManagerSearchPath =
-  newAttr (objectGetPropertyBoxedOpaque (peekUTFStringArray0 . castPtr) gtype "search-path")
-          (objectSetPropertyBoxedOpaque (\dirs f -> maybeWith withUTFStringArray0 dirs (f . castPtr)) gtype "search-path")
+  newAttr (objectGetPropertyBoxedOpaque (peekUTFFilePathArray0 . castPtr) gtype "search-path")
+          (objectSetPropertyBoxedOpaque (\dirs f -> maybeWith withUTFFilePathArray0 dirs (f . castPtr)) gtype "search-path")
   where gtype = {#call pure g_strv_get_type#}

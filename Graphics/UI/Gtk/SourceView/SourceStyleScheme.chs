@@ -125,8 +125,8 @@ sourceStyleSchemeDescription = readAttrFromStringProperty "description"
 --
 -- Default value: \"\"
 --
-sourceStyleSchemeFilename :: SourceStyleSchemeClass sss => ReadAttr sss FilePath
-sourceStyleSchemeFilename = readAttrFromStringProperty "filename"
+sourceStyleSchemeFilename :: (SourceStyleSchemeClass sss, GlibFilePath fp) => ReadAttr sss fp
+sourceStyleSchemeFilename = readAttrFromFilePathProperty "filename"
 
 -- | Style scheme id, a unique string used to identify the style scheme in 'SourceStyleSchemeManager'.
 --
