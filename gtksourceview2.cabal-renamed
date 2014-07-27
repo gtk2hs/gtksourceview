@@ -9,7 +9,7 @@ Build-Type:     Custom
 Cabal-Version:  >= 1.8
 Stability:      provisional
 homepage:       http://projects.haskell.org/gtk2hs/
-bug-reports:    http://hackage.haskell.org/trac/gtk2hs/
+bug-reports:    https://github.com/gtk2hs/gtksourceview/issues
 Synopsis:       Binding to the GtkSourceView library.
 Description:    GtkSourceView is a text widget that extends the standard GTK+ 2.x text widget
                 GtkTextView. It improves GtkTextView by implementing syntax highlighting and
