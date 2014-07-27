@@ -22,8 +22,9 @@ before_install:
 
 install:
   - cabal install Cabal
-  - cabal install gtk2hs/tools
-  - cabal install gtk2hs/glib gtk2hs/gio gtk2hs/cairo gtk2hs/pango gtk2hs/gtk
+  - cd gtk2hs
+  - ./install-both.sh
+  - cd ..
 
 script:
   - ./install-both.sh
