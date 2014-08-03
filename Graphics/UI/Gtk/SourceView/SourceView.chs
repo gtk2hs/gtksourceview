@@ -121,6 +121,7 @@ import Graphics.UI.GtkInternals  ( TextIter, mkTextIterCopy )
 import System.Glib.GObject	(wrapNewGObject, makeNewGObject)
 import System.Glib.Attributes
 import System.Glib.FFI
+import System.Glib.UTFString
 
 {#import Graphics.UI.Gtk.SourceView.Signals#}
 {#import Graphics.UI.Gtk.SourceView.Types#}
