@@ -24,6 +24,7 @@
         GtkSourceCompletionContext if gtksourceview2
         GtkSourceCompletionItem if gtksourceview2
         GtkSourceCompletion if gtksourceview2
+        GtkSourceGutterRenderer if gtksourceview2
         GtkTextBuffer
             GtkSourceBuffer     if gtksourceview2
         GtkTextMark
