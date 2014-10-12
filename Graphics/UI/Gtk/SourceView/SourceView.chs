@@ -122,6 +122,7 @@ import System.Glib.GObject	(wrapNewGObject, makeNewGObject)
 import System.Glib.Attributes
 import System.Glib.FFI
 import System.Glib.UTFString
+import System.Glib.Flags (toFlags, fromFlags)
 
 {#import Graphics.UI.Gtk.SourceView.Signals#}
 {#import Graphics.UI.Gtk.SourceView.Types#}
@@ -313,21 +314,21 @@ sourceViewGetTabWidth :: SourceViewClass sv => sv
 sourceViewGetTabWidth sv = liftM fromIntegral $
   {#call unsafe source_view_get_tab_width#} (toSourceView sv)
 
--- | Set if and how the spaces should be visualized. Specifying flags as 0 will disable display of
+-- | Set if and how the spaces should be visualized. Specifying flags as [] will disable display of
 -- spaces.
 sourceViewSetDrawSpaces :: SourceViewClass sv => sv
-                        -> SourceDrawSpacesFlags -- ^ @flags@ 'SourceDrawSpacesFlags' specifing how white spaces should be displayed
+                        -> [SourceDrawSpacesFlags] -- ^ @flags@ 'SourceDrawSpacesFlags' specifing how white spaces should be displayed
                         -> IO ()
 sourceViewSetDrawSpaces view flags =
   {#call gtk_source_view_set_draw_spaces #}
     (toSourceView view)
-    (fromIntegral $ fromEnum flags)
+    (fromIntegral $ fromFlags flags)
 
 -- | Returns the 'SourceDrawSpacesFlags' specifying if and how spaces should be displayed for this view.
 sourceViewGetDrawSpaces :: SourceViewClass sv => sv
-                        -> IO SourceDrawSpacesFlags -- ^ returns the 'SourceDrawSpacesFlags', 0 if no spaces should be drawn.
+                        -> IO [SourceDrawSpacesFlags] -- ^ returns the 'SourceDrawSpacesFlags', [] if no spaces should be drawn.
 sourceViewGetDrawSpaces view =
-  liftM (toEnum . fromIntegral) $
+  liftM (toFlags . fromIntegral) $
   {#call gtk_source_view_get_draw_spaces #}
      (toSourceView view)
 
@@ -450,8 +451,8 @@ sourceViewCompletion = readAttrFromObjectProperty "completion"
 
 -- | Set if and how the spaces should be visualized.
 --
-sourceViewDrawSpaces :: SourceViewClass sv => Attr sv SourceDrawSpacesFlags
-sourceViewDrawSpaces = newAttrFromEnumProperty "draw-spaces" {#call fun gtk_source_draw_spaces_flags_get_type#}
+sourceViewDrawSpaces :: SourceViewClass sv => Attr sv [SourceDrawSpacesFlags]
+sourceViewDrawSpaces = newAttrFromFlagsProperty "draw-spaces" {#call fun gtk_source_draw_spaces_flags_get_type#}
 
 -- | Whether to highlight the current line.
 --

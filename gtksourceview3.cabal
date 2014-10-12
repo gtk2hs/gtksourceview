@@ -1,12 +1,12 @@
 Name:           gtksourceview3
-Version:        0.13.0.0
+Version:        0.13.1.0
 License:        LGPL-2.1
 License-file:   COPYING
 Copyright:      (c) 2001-2010 The Gtk2Hs Team
 Author:         Duncan Coutts, Peter Gavin, Axel Simon
 Maintainer:     gtk2hs-users@lists.sourceforge.net
 Build-Type:     Custom
-Cabal-Version:  >= 1.8
+Cabal-Version:  >= 1.18
 Stability:      provisional
 homepage:       http://projects.haskell.org/gtk2hs/
 bug-reports:    https://github.com/gtk2hs/gtksourceview/issues
@@ -71,7 +71,8 @@ Library
           Graphics.UI.Gtk.SourceView.Types
           Graphics.UI.Gtk.SourceView.Signals
 
-        extensions:     ForeignFunctionInterface
+        default-language:   Haskell98
+        default-extensions: ForeignFunctionInterface
 
         x-Signals-File:  Graphics/UI/Gtk/SourceView/Signals.chs
         x-Signals-Modname: Graphics.UI.Gtk.SourceView.Signals
