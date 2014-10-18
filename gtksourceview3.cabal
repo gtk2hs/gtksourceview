@@ -1,5 +1,5 @@
 Name:           gtksourceview3
-Version:        0.13.1.0
+Version:        0.13.1.1
 License:        LGPL-2.1
 License-file:   COPYING
 Copyright:      (c) 2001-2010 The Gtk2Hs Team
@@ -79,6 +79,7 @@ Library
         x-Signals-Types: marshal.list
 
         include-dirs:      .
+        cpp-options:       -DDISABLE_DEPRECATED -U__BLOCKS__ -D__attribute__(A)=
         x-c2hs-Header:     gtksourceview2.h
         pkgconfig-depends: gtksourceview-3.0 >= 3.0.0
         x-Types-Hierarchy: hierarchy3.list
