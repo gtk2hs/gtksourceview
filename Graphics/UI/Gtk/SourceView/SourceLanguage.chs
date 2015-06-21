@@ -54,7 +54,7 @@ module Graphics.UI.Gtk.SourceView.SourceLanguage (
   sourceLanguageSection
   ) where
 
-import Control.Monad	(liftM)
+import Control.Monad    (liftM)
 import Data.Maybe (fromMaybe)
 
 import System.Glib.Attributes

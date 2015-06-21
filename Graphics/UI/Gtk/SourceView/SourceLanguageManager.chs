@@ -52,7 +52,7 @@ module Graphics.UI.Gtk.SourceView.SourceLanguageManager (
   sourceLanguageManagerSearchPath,
   ) where
 
-import Control.Monad	(liftM)
+import Control.Monad    (liftM)
 import Data.Maybe (fromMaybe)
 
 import System.Glib.Attributes

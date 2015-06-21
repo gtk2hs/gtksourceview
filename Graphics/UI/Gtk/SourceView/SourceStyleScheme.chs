@@ -53,12 +53,12 @@ module Graphics.UI.Gtk.SourceView.SourceStyleScheme (
   sourceStyleSchemeName,
   ) where
 
-import Control.Monad	(liftM)
+import Control.Monad    (liftM)
 
 import Graphics.UI.Gtk.SourceView.SourceStyle
 import System.Glib.Attributes
 import System.Glib.FFI
-import System.Glib.GObject	(makeNewGObject)
+import System.Glib.GObject      (makeNewGObject)
 import System.Glib.UTFString
 
 {#import Graphics.UI.Gtk.SourceView.SourceStyle.Internal#}

@@ -43,12 +43,12 @@ module Graphics.UI.Gtk.SourceView.SourceCompletionContext (
    sourceCompletionContextCancelled,
 ) where
 
-import Control.Monad	(liftM)
+import Control.Monad    (liftM)
 
 import Graphics.UI.Gtk.SourceView.Enums
 import System.Glib.Attributes
 import System.Glib.FFI
-import System.Glib.GList		(fromGList, withGList)
+import System.Glib.GList                (fromGList, withGList)
 import System.Glib.Properties
 import System.Glib.UTFString
 

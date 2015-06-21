@@ -46,11 +46,11 @@ module Graphics.UI.Gtk.SourceView.SourceCompletionProposal (
    sourceCompletionProposalChanged,
 ) where
 
-import Control.Monad	(liftM)
+import Control.Monad    (liftM)
 
 import System.Glib.Attributes
 import System.Glib.FFI
-import System.Glib.GObject	(wrapNewGObject)
+import System.Glib.GObject      (wrapNewGObject)
 import System.Glib.Properties
 import System.Glib.UTFString
 

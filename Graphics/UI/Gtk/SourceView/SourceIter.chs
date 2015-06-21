@@ -41,13 +41,13 @@ module Graphics.UI.Gtk.SourceView.SourceIter (
 ) where
 
 #if GTK_MAJOR_VERSION < 3
-import Control.Monad	(liftM)
+import Control.Monad    (liftM)
 import Data.Maybe    (fromMaybe)
 
-import Graphics.UI.Gtk.Abstract.Object	(makeNewObject)
+import Graphics.UI.Gtk.Abstract.Object  (makeNewObject)
 import Graphics.UI.Gtk.SourceView.Enums
 import System.Glib.FFI
-import System.Glib.Flags		(Flags, fromFlags)
+import System.Glib.Flags                (Flags, fromFlags)
 import System.Glib.UTFString
 
 {#import Graphics.UI.Gtk.Multiline.TextIter#}

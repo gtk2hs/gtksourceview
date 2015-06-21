@@ -34,7 +34,7 @@ module Graphics.UI.Gtk.SourceView.Enums (
    SourceViewGutterPosition (..)
 ) where
 
-import Control.Monad	(liftM)
+import Control.Monad    (liftM)
 
 import System.Glib.FFI
 import System.Glib.Flags

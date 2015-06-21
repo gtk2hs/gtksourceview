@@ -118,7 +118,7 @@ module Graphics.UI.Gtk.SourceView.SourceView (
 #endif
   ) where
 
-import Control.Monad	(liftM)
+import Control.Monad    (liftM)
 import Control.Monad.Reader ( runReaderT )
 import Data.Maybe    (fromMaybe)
 
@@ -128,7 +128,7 @@ import Graphics.UI.Gtk.Gdk.EventM (EventM, EAny)
 import Graphics.UI.Gtk.Multiline.TextView (TextWindowType (..))
 import Graphics.UI.Gtk.SourceView.Enums
 import Graphics.UI.GtkInternals  ( TextIter, mkTextIterCopy )
-import System.Glib.GObject	(wrapNewGObject, makeNewGObject)
+import System.Glib.GObject      (wrapNewGObject, makeNewGObject)
 import System.Glib.Attributes
 import System.Glib.FFI
 import System.Glib.UTFString

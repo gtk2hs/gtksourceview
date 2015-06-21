@@ -47,7 +47,7 @@ module Graphics.UI.Gtk.SourceView.SourceStyleSchemeManager (
 
 {# context lib="gtk" prefix="gtk" #}
 
-import Control.Monad	(liftM)
+import Control.Monad    (liftM)
 import Data.Maybe (fromMaybe)
 
 import System.Glib.Attributes

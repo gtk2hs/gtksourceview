@@ -41,12 +41,12 @@ module Graphics.UI.Gtk.SourceView.SourceCompletionItem (
    sourceCompletionItemText,
 ) where
 
-import Control.Monad	(liftM)
+import Control.Monad    (liftM)
 import Data.Maybe (fromMaybe)
 
 import System.Glib.Attributes
 import System.Glib.FFI
-import System.Glib.GObject	(wrapNewGObject)
+import System.Glib.GObject      (wrapNewGObject)
 import System.Glib.Properties
 import System.Glib.UTFString
 

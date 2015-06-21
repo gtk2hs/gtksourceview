@@ -69,7 +69,7 @@ module Graphics.UI.Gtk.SourceView.SourceGutter (
     sourceGutterQueryTooltip,
 ) where
 
-import Control.Monad	(liftM)
+import Control.Monad    (liftM)
 import Control.Monad.Reader ( runReaderT )
 
 import Graphics.UI.Gtk.Gdk.EventM (EventM, EAny)
@@ -77,7 +77,7 @@ import Graphics.UI.Gtk.Multiline.TextView (TextWindowType (..))
 import Graphics.UI.GtkInternals  ( TextIter, mkTextIterCopy )
 import System.Glib.Attributes
 import System.Glib.FFI
-import System.Glib.GObject	(makeNewGObject)
+import System.Glib.GObject      (makeNewGObject)
 import System.Glib.Properties
 import System.Glib.UTFString
 

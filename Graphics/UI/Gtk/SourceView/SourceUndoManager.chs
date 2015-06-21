@@ -49,7 +49,7 @@ module Graphics.UI.Gtk.SourceView.SourceUndoManager (
     sourceUndoManagerCanUndoChanged,
 ) where
 
-import Control.Monad	(liftM)
+import Control.Monad    (liftM)
 
 import System.Glib.Attributes
 import System.Glib.FFI

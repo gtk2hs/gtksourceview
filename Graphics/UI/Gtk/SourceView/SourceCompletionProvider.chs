@@ -45,13 +45,13 @@ module Graphics.UI.Gtk.SourceView.SourceCompletionProvider (
    sourceCompletionProviderActivateProposal,
 ) where
 
-import Control.Monad	(liftM)
+import Control.Monad    (liftM)
 
-import Graphics.UI.Gtk.Abstract.Object	(makeNewObject)
+import Graphics.UI.Gtk.Abstract.Object  (makeNewObject)
 import Graphics.UI.Gtk.SourceView.Enums
 import System.Glib.Attributes
 import System.Glib.FFI
-import System.Glib.GObject	(wrapNewGObject)
+import System.Glib.GObject      (wrapNewGObject)
 import System.Glib.Properties
 import System.Glib.UTFString
 

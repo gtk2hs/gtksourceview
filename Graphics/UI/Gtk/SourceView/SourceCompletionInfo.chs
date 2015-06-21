@@ -52,10 +52,10 @@ module Graphics.UI.Gtk.SourceView.SourceCompletionInfo (
 -- * Signals
    sourceCompletionInfoBeforeShow,
 ) where
-import Control.Monad	(liftM)
+import Control.Monad    (liftM)
 import Data.Maybe (fromMaybe)
 
-import Graphics.UI.Gtk.Abstract.Object	(makeNewObject)
+import Graphics.UI.Gtk.Abstract.Object  (makeNewObject)
 import System.Glib.Attributes
 import System.Glib.FFI
 import System.Glib.Properties

@@ -52,11 +52,11 @@ module Graphics.UI.Gtk.SourceView.SourceMark (
   sourceMarkCategory
 ) where
 
-import Control.Monad	(liftM)
+import Control.Monad    (liftM)
 
 import System.Glib.Attributes
 import System.Glib.FFI
-import System.Glib.GObject	(wrapNewGObject, makeNewGObject)
+import System.Glib.GObject      (wrapNewGObject, makeNewGObject)
 import System.Glib.Properties
 import System.Glib.UTFString
 
