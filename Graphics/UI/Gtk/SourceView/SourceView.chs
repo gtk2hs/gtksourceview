@@ -118,6 +118,8 @@ module Graphics.UI.Gtk.SourceView.SourceView (
 #endif
   ) where
 
+import Control.Applicative
+import Prelude
 import Control.Monad    (liftM)
 import Control.Monad.Reader ( runReaderT )
 import Data.Maybe    (fromMaybe)

@@ -82,6 +82,8 @@ module Graphics.UI.Gtk.SourceView.SourceMarkAttributes (
   queryTooltipText
 ) where
 
+import Control.Applicative
+import Prelude
 import Control.Monad (liftM)
 import System.Glib.GObject (makeNewGObject)
 import System.Glib.Attributes
