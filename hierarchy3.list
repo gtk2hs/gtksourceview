@@ -16,7 +16,7 @@
 # --tag=<tag> is given on the command line of TypeGenerator.
 
 
-    GObject 
+    GObject
         GtkSourceGutter if gtksourceview2
         GtkSourceUndoManager if gtksourceview2
         GtkSourceCompletionProvider if gtksourceview2
@@ -29,6 +29,7 @@
             GtkSourceBuffer     if gtksourceview2
         GtkTextMark
             GtkSourceMark       if gtksourceview2
+        GtkSourceMarkAttributes if gtksourceview2
         GtkWidget
                 GtkContainer
                     GtkBin

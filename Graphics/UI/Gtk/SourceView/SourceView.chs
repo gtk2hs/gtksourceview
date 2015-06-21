@@ -78,6 +78,16 @@ module Graphics.UI.Gtk.SourceView.SourceView (
   sourceViewGetDrawSpaces,
   sourceViewGetGutter,
 
+#if GTK_MAJOR_VERSION >= 3
+#if MIN_VERSION_gtksourceview_3_0(3, 16, 0)
+  sourceViewIndentLines,
+  sourceViewUnindentLines,
+#endif
+  sourceViewGetVisualColumn,
+  sourceViewSetMarkAttributes,
+  sourceViewGetMarkAttributes,
+#endif
+
 -- * Attributes
   sourceViewAutoIndent,
   sourceViewCompletion,
@@ -435,6 +445,81 @@ sourceViewGetMarkCategoryBackground sv category color =
       categoryPtr
       (castPtr colorPtr)
 #endif
+
+#if MIN_VERSION_gtksourceview_3_0(3, 16, 0)
+-- | Insert one indentation level at the beginning of the specified lines.
+--
+sourceViewIndentLines :: SourceViewClass sv
+                      => sv
+                      -> TextIter -- ^ @start@ the first line to indent.
+                      -> TextIter -- ^ @end@ the last line to indent.
+                      -> IO ()
+sourceViewIndentLines sv start end =
+    {# call gtk_source_view_indent_lines #}
+      (toSourceView sv)
+      start
+      end
+
+-- | Removes one indentation level at the beginning of the specified lines.
+--
+sourceViewUnindentLines :: SourceViewClass sv
+                        => sv
+                        -> TextIter -- ^ @start@ the first line to indent.
+                        -> TextIter -- ^ @end@ the last line to indent.
+                        -> IO ()
+sourceViewUnindentLines sv start end =
+    {# call gtk_source_view_unindent_lines #}
+      (toSourceView sv)
+      start
+      end
+#endif
+
+-- | Determines the visual column at iter taking into consideration the `tabWidth` of the view.
+--
+sourceViewGetVisualColumn :: SourceViewClass sv
+                          => sv
+                          -> TextIter -- ^ @iter@ a position in view.
+                          -> IO Word
+sourceViewGetVisualColumn sv iter = fromIntegral <$>
+    {# call gtk_source_view_get_visual_column #}
+      (toSourceView sv)
+      iter
+
+-- | Sets attributes and priority for the category.
+--
+sourceViewSetMarkAttributes :: (SourceViewClass sv, GlibString category, SourceMarkAttributesClass attributes)
+                            => sv
+                            -> category
+                            -> Maybe attributes
+                            -> Int
+                            -> IO ()
+sourceViewSetMarkAttributes sv category attributes priority =
+  withUTFString category $ \categoryPtr ->
+    {# call gtk_source_view_set_mark_attributes #}
+      (toSourceView sv)
+      categoryPtr
+      (maybe (SourceMarkAttributes nullForeignPtr) toSourceMarkAttributes attributes)
+      (fromIntegral priority)
+
+-- | Gets attributes and priority for the category
+--
+sourceViewGetMarkAttributes :: (SourceViewClass sv, GlibString category)
+                            => sv
+                            -> category
+                            -> IO (Maybe (SourceMarkAttributes, Int))
+sourceViewGetMarkAttributes sv category =
+  withUTFString category $ \categoryPtr ->
+  alloca $ \ priority -> do
+    attributes <- maybeNull (makeNewObject mkSourceMarkAttributes) $
+                        {# call gtk_source_view_get_mark_attributes #}
+                          (toSourceView sv)
+                          categoryPtr
+                          priority
+    case attributes of
+        Just a -> do
+            p <- peek priority
+            return $ Just (a, fromIntegral p)
+        Nothing -> return Nothing
 
 -- | Whether to enable auto indentation.
 --

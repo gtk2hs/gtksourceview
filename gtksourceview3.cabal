@@ -61,6 +61,7 @@ Library
           Graphics.UI.Gtk.SourceView.SourceLanguage
           Graphics.UI.Gtk.SourceView.SourceLanguageManager
           Graphics.UI.Gtk.SourceView.SourceMark
+          Graphics.UI.Gtk.SourceView.SourceMarkAttributes
           Graphics.UI.Gtk.SourceView.SourceStyle
           Graphics.UI.Gtk.SourceView.SourceStyleScheme
           Graphics.UI.Gtk.SourceView.SourceStyleSchemeManager

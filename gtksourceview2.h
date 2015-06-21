@@ -19,4 +19,7 @@
 #include <gtksourceview/gtksourcecompletionprovider.h>
 #include <gtksourceview/gtksourcecompletionproposal.h>
 #include <gtksourceview/gtksourcemark.h>
+#if GTK_MAJOR_VERSION >= 3
+#include <gtksourceview/gtksourcemarkattributes.h>
+#endif
 #include <gtksourceview/gtksourcecompletioninfo.h>
