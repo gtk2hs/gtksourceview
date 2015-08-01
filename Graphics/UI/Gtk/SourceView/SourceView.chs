@@ -450,6 +450,7 @@ sourceViewGetMarkCategoryBackground sv category color =
       (castPtr colorPtr)
 #endif
 
+#if GTK_MAJOR_VERSION >= 3
 #if MIN_VERSION_gtksourceview_3_0(3, 16, 0)
 -- | Insert one indentation level at the beginning of the specified lines.
 --
@@ -524,6 +525,7 @@ sourceViewGetMarkAttributes sv category =
             p <- peek priority
             return $ Just (a, fromIntegral p)
         Nothing -> return Nothing
+#endif
 
 -- | Whether to enable auto indentation.
 --
