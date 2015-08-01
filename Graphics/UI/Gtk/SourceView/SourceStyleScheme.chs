@@ -39,6 +39,8 @@ module Graphics.UI.Gtk.SourceView.SourceStyleScheme (
 
 -- * Methods
   castToSourceStyleScheme,
+  gTypeSourceStyleScheme,
+  toSourceStyleScheme,
   sourceStyleSchemeGetId,
   sourceStyleSchemeGetName,
   sourceStyleSchemeGetDescription,

@@ -37,6 +37,8 @@ module Graphics.UI.Gtk.SourceView.SourceLanguage (
 
 -- * Methods
   castToSourceLanguage,
+  gTypeSourceLanguage,
+  toSourceLanguage,
   sourceLanguageGetId,
   sourceLanguageGetName,
   sourceLanguageGetSection,

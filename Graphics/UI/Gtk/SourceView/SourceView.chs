@@ -41,6 +41,8 @@ module Graphics.UI.Gtk.SourceView.SourceView (
 
 -- * Methods
   castToSourceView,
+  gTypeSourceView,
+  toSourceView,
   sourceViewNew,
   sourceViewNewWithBuffer,
   sourceViewSetAutoIndent,

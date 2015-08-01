@@ -43,6 +43,8 @@ module Graphics.UI.Gtk.SourceView.SourceMark (
 
 -- * Methods
   castToSourceMark,
+  gTypeSourceMark,
+  toSourceMark,
   sourceMarkNew,
   sourceMarkGetCategory,
   sourceMarkNext,

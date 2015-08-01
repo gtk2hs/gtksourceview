@@ -39,6 +39,8 @@ module Graphics.UI.Gtk.SourceView.SourceLanguageManager (
 
 -- * Methods
   castToSourceLanguageManager,
+  gTypeSourceLanguageManager,
+  toSourceLanguageManager,
   sourceLanguageManagerNew,
   sourceLanguageManagerGetDefault,
   sourceLanguageManagerSetSearchPath,

@@ -44,6 +44,8 @@ module Graphics.UI.Gtk.SourceView.SourceBuffer (
 
 -- * Methods
   castToSourceBuffer,
+  gTypeSourceBuffer,
+  toSourceBuffer,
   sourceBufferNew,
   sourceBufferNewWithLanguage,
   sourceBufferSetHighlightSyntax,

@@ -61,6 +61,8 @@ module Graphics.UI.Gtk.SourceView.SourceMarkAttributes (
 
 -- * Methods
   castToSourceMarkAttributes,
+  gTypeSourceMarkAttributes,
+  toSourceMarkAttributes,
   sourceMarkAttributesNew,
   sourceMarkAttributesSetBackground,
   sourceMarkAttributesGetBackground,
