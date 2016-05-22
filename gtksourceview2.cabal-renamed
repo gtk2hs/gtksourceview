@@ -6,7 +6,7 @@ Copyright:      (c) 2001-2010 The Gtk2Hs Team
 Author:         Duncan Coutts, Peter Gavin, Axel Simon
 Maintainer:     gtk2hs-users@lists.sourceforge.net
 Build-Type:     Custom
-Cabal-Version:  >= 1.18
+Cabal-Version:  >= 1.24
 Stability:      provisional
 homepage:       http://projects.haskell.org/gtk2hs/
 bug-reports:    https://github.com/gtk2hs/gtksourceview/issues
@@ -18,7 +18,6 @@ Description:    GtkSourceView is a text widget that extends the standard GTK+ 2.
 Category:       Graphics
 Tested-With:    GHC == 6.10.4, GHC == 6.12.3, GHC == 7.0.4, GHC == 7.2.1
 Extra-Source-Files: gtksourceview2.h
-                    SetupWrapper.hs SetupMain.hs Gtk2HsSetup.hs
                     marshal.list
                     hierarchy.list
 
@@ -38,6 +37,11 @@ x-Types-Hierarchy:  hierarchy.list
 Source-Repository head
   type:         git
   location:     https://github.com/gtk2hs/gtksourceview
+
+custom-setup
+  setup-depends: base >= 4.6,
+                 Cabal >= 1.24 && < 1.25,
+                 gtk2hs-buildtools >= 0.13.1.0 && < 0.14
 
 Library
         build-depends:  base >= 4 && < 5, array, containers, mtl, text,
